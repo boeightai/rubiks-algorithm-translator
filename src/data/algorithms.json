@@ -1,346 +1,470 @@
 [
-    {
-      "id": "white-cross-1",
-      "name": "White Cross Edge 1",
-      "notation": "F D R F' D'",
-      "category": "Beginner Cross",
-      "difficulty": "beginner",
-      "description": "Basic white cross formation"
-    },
-    {
-      "id": "white-cross-2", 
-      "name": "White Cross Edge 2",
-      "notation": "R D' R' D",
-      "category": "Beginner Cross",
-      "difficulty": "beginner",
-      "description": "Alternative white cross"
-    },
-    {
-      "id": "white-corners-1",
-      "name": "Right Hand Algorithm",
-      "notation": "R U R' U'",
-      "category": "Beginner Corners",
-      "difficulty": "beginner",
-      "description": "Basic corner insertion"
-    },
-    {
-      "id": "white-corners-2",
-      "name": "Left Hand Algorithm", 
-      "notation": "L' U' L U",
-      "category": "Beginner Corners",
-      "difficulty": "beginner",
-      "description": "Left-handed corner insertion"
-    },
-    {
-      "id": "second-layer-right",
-      "name": "Second Layer Right",
-      "notation": "U R U' R' U' F' U F",
-      "category": "Beginner F2L",
-      "difficulty": "beginner",
-      "description": "Insert edge to the right"
-    },
-    {
-      "id": "second-layer-left",
-      "name": "Second Layer Left", 
-      "notation": "U' L' U L U F U' F'",
-      "category": "Beginner F2L",
-      "difficulty": "beginner",
-      "description": "Insert edge to the left"
-    },
-    {
-      "id": "beginner-oll",
-      "name": "Beginner OLL Cross",
-      "notation": "F R U R' U' F'",
-      "category": "Beginner OLL",
-      "difficulty": "beginner",
-      "description": "Make yellow cross on top"
-    },
-    {
-      "id": "beginner-oll-corners",
-      "name": "Beginner OLL Corners",
-      "notation": "R U R' U R U2 R'",
-      "category": "Beginner OLL", 
-      "difficulty": "beginner",
-      "description": "Orient yellow corners"
-    },
-    {
-      "id": "beginner-pll-corners",
-      "name": "Beginner Corner Permutation",
-      "notation": "R' F R' B2 R F' R' B2 R2",
-      "category": "Beginner PLL",
-      "difficulty": "beginner", 
-      "description": "Permute corners"
-    },
-    {
-      "id": "beginner-pll-edges",
-      "name": "Beginner Edge Permutation",
-      "notation": "R U' R F' R F R' F R F' R' F' R U R'",
-      "category": "Beginner PLL",
-      "difficulty": "beginner",
-      "description": "Permute edges"
-    },
-    {
-      "id": "f2l-case-1",
-      "name": "F2L Case 1",
-      "notation": "R U' R'",
-      "category": "F2L",
-      "difficulty": "intermediate",
-      "description": "Corner and edge paired, simple insertion"
-    },
-    {
-      "id": "f2l-case-2", 
-      "name": "F2L Case 2",
-      "notation": "F' U F",
-      "category": "F2L",
-      "difficulty": "intermediate",
-      "description": "Alternative simple insertion"
-    },
-    {
-      "id": "f2l-case-3",
-      "name": "F2L Case 3",
-      "notation": "R U R' U' R U R'",
-      "category": "F2L",
-      "difficulty": "intermediate", 
-      "description": "Separated corner and edge"
-    },
-    {
-      "id": "f2l-case-4",
-      "name": "F2L Case 4",
-      "notation": "R U' R' U R U' R'",
-      "category": "F2L",
-      "difficulty": "intermediate",
-      "description": "Corner up, edge in slot"
-    },
-    {
-      "id": "sune",
-      "name": "Sune",
-      "notation": "R U R' U R U2 R'",
-      "category": "OLL",
-      "difficulty": "intermediate",
-      "description": "OLL Case 27 - Sune pattern"
-    },
-    {
-      "id": "antisune",
-      "name": "Anti-Sune", 
-      "notation": "R' U' R U' R' U2 R",
-      "category": "OLL",
-      "difficulty": "intermediate",
-      "description": "OLL Case 26 - Anti-Sune pattern"
-    },
-    {
-      "id": "oll-cross",
-      "name": "OLL Cross",
-      "notation": "F R U R' U' F'",
-      "category": "OLL",
-      "difficulty": "intermediate",
-      "description": "OLL Case 44 - Form cross on top"
-    },
-    {
-      "id": "oll-l-shape",
-      "name": "OLL L-Shape",
-      "notation": "F' L' U' L U F",
-      "category": "OLL",
-      "difficulty": "intermediate",
-      "description": "OLL Case 45 - L-shaped pattern"
-    },
-    {
-      "id": "oll-line",
-      "name": "OLL Line",
-      "notation": "F R U R' U' R U R' U' F'",
-      "category": "OLL",
-      "difficulty": "intermediate",
-      "description": "OLL Case 51 - Line pattern"
-    },
-    {
-      "id": "oll-dot",
-      "name": "OLL Dot",
-      "notation": "F R U R' U' F' f R U R' U' f'",
-      "category": "OLL",
-      "difficulty": "intermediate",
-      "description": "OLL Case 57 - Dot pattern"
-    },
-    {
-      "id": "oll-pi",
-      "name": "OLL Pi",
-      "notation": "R U2 R2 F R F' U2 R' F R F'",
-      "category": "OLL",
-      "difficulty": "advanced",
-      "description": "OLL Case 32 - Pi pattern"
-    },
-    {
-      "id": "oll-t-shape",
-      "name": "OLL T-Shape",
-      "notation": "R U R' U' R' F R F'",
-      "category": "OLL",
-      "difficulty": "advanced",
-      "description": "OLL Case 33 - T-shaped pattern"
-    },
-    {
-      "id": "aa-perm",
-      "name": "Aa-Perm",
-      "notation": "x R' U R' D2 R U' R' D2 R2 x'",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Adjacent corner swap clockwise"
-    },
-    {
-      "id": "ab-perm",
-      "name": "Ab-Perm",
-      "notation": "x R2 D2 R U R' D2 R U' R x'",
-      "category": "PLL",
-      "difficulty": "advanced", 
-      "description": "Adjacent corner swap counterclockwise"
-    },
-    {
-      "id": "e-perm",
-      "name": "E-Perm",
-      "notation": "x' R U' R' D R U R' D' R U R' D R U' R' D' x",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner swap"
-    },
-    {
-      "id": "f-perm",
-      "name": "F-Perm", 
-      "notation": "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Adjacent corner and edge swap"
-    },
-    {
-      "id": "ga-perm",
-      "name": "Ga-Perm",
-      "notation": "R2 U R' U R' U' R U' R2 D U' R' U R D'",
-      "category": "PLL", 
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "gb-perm",
-      "name": "Gb-Perm",
-      "notation": "R' U' R U D' R2 U R' U R U' R U' R2 D",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "gc-perm",
-      "name": "Gc-Perm", 
-      "notation": "R2 U' R U' R U R' U R2 D' U R U' R' D",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "gd-perm",
-      "name": "Gd-Perm",
-      "notation": "R U R' U' D R2 U' R U' R' U R' U R2 D'",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "h-perm",
-      "name": "H-Perm",
-      "notation": "M2 U M2 U2 M2 U M2",
-      "category": "PLL",
-      "difficulty": "intermediate",
-      "description": "Opposite edge swap"
-    },
-    {
-      "id": "ja-perm",
-      "name": "Ja-Perm",
-      "notation": "R' U L' U2 R U' R' U2 R L U'",
-      "category": "PLL", 
-      "difficulty": "intermediate",
-      "description": "Adjacent corner swap"
-    },
-    {
-      "id": "jb-perm",
-      "name": "Jb-Perm",
-      "notation": "R U R' F' R U R' U' R' F R2 U' R'",
-      "category": "PLL",
-      "difficulty": "intermediate",
-      "description": "Adjacent corner swap"
-    },
-    {
-      "id": "na-perm",
-      "name": "Na-Perm",
-      "notation": "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "nb-perm",
-      "name": "Nb-Perm",
-      "notation": "R' U R U' R' F' U' F R U R' F R' F' R U' R",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "ra-perm",
-      "name": "Ra-Perm",
-      "notation": "R U' R' F' R U2 R' U2 R' F R U R U2 R'",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Adjacent corner and edge swap"
-    },
-    {
-      "id": "rb-perm",
-      "name": "Rb-Perm", 
-      "notation": "R2 F R U R U' R' F' R U2 R' U2 R",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Adjacent corner and edge swap"
-    },
-    {
-      "id": "t-perm",
-      "name": "T-Perm",
-      "notation": "R U R' F' R U R' U' R' F R2 U' R'",
-      "category": "PLL",
-      "difficulty": "intermediate",
-      "description": "Adjacent edge swap"
-    },
-    {
-      "id": "ua-perm",
-      "name": "Ua-Perm",
-      "notation": "M2 U M U2 M' U M2",
-      "category": "PLL",
-      "difficulty": "intermediate",
-      "description": "Edge 3-cycle clockwise"
-    },
-    {
-      "id": "ub-perm",
-      "name": "Ub-Perm",
-      "notation": "M2 U' M U2 M' U' M2",
-      "category": "PLL",
-      "difficulty": "intermediate",
-      "description": "Edge 3-cycle counterclockwise"
-    },
-    {
-      "id": "v-perm",
-      "name": "V-Perm",
-      "notation": "R' U R' U' y R' F' R2 U' R' U R' F R F",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "y-perm", 
-      "name": "Y-Perm",
-      "notation": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal corner and edge swap"
-    },
-    {
-      "id": "z-perm",
-      "name": "Z-Perm",
-      "notation": "M' U M2 U M2 U M' U2 M2",
-      "category": "PLL",
-      "difficulty": "advanced",
-      "description": "Diagonal edge swap"
-    }
-  ]
+  {
+    "id": "white-cross-1",
+    "name": "White Cross Edge 1",
+    "notation": "F D R F' D'",
+    "category": "Beginner Cross",
+    "difficulty": "beginner",
+    "description": "Basic white cross formation",
+    "nicknames": []
+  },
+  {
+    "id": "white-cross-2", 
+    "name": "White Cross Edge 2",
+    "notation": "R D' R' D",
+    "category": "Beginner Cross",
+    "difficulty": "beginner",
+    "description": "Alternative white cross",
+    "nicknames": []
+  },
+  {
+    "id": "white-corners-1",
+    "name": "Right Hand Algorithm",
+    "notation": "R U R' U'",
+    "category": "Beginner Corners",
+    "difficulty": "beginner",
+    "description": "Basic corner insertion",
+    "nicknames": ["Right Hand", "Righty", "Sexy Move"]
+  },
+  {
+    "id": "white-corners-2",
+    "name": "Left Hand Algorithm", 
+    "notation": "L' U' L U",
+    "category": "Beginner Corners",
+    "difficulty": "beginner",
+    "description": "Left-handed corner insertion",
+    "nicknames": ["Left Hand", "Lefty", "Left Sexy Move"]
+  },
+  {
+    "id": "second-layer-right",
+    "name": "Second Layer Right",
+    "notation": "U R U' R' U' F' U F",
+    "category": "Beginner F2L",
+    "difficulty": "beginner",
+    "description": "Insert edge to the right",
+    "nicknames": ["Right Edge Insert"]
+  },
+  {
+    "id": "second-layer-left",
+    "name": "Second Layer Left", 
+    "notation": "U' L' U L U F U' F'",
+    "category": "Beginner F2L",
+    "difficulty": "beginner",
+    "description": "Insert edge to the left",
+    "nicknames": ["Left Edge Insert"]
+  },
+  {
+    "id": "beginner-oll",
+    "name": "Beginner OLL Cross",
+    "notation": "F R U R' U' F'",
+    "category": "Beginner OLL",
+    "difficulty": "beginner",
+    "description": "Make yellow cross on top",
+    "nicknames": ["OLL Cross", "FURU'R'F'"]
+  },
+  {
+    "id": "beginner-oll-corners",
+    "name": "Beginner OLL Corners",
+    "notation": "R U R' U R U2 R'",
+    "category": "Beginner OLL", 
+    "difficulty": "beginner",
+    "description": "Orient yellow corners",
+    "nicknames": ["Sune"]
+  },
+  {
+    "id": "beginner-pll-corners",
+    "name": "Beginner Corner Permutation",
+    "notation": "R' F R' B2 R F' R' B2 R2",
+    "category": "Beginner PLL",
+    "difficulty": "beginner", 
+    "description": "Permute corners",
+    "nicknames": []
+  },
+  {
+    "id": "beginner-pll-edges",
+    "name": "Beginner Edge Permutation",
+    "notation": "R U' R F' R F R' F R F' R' F' R U R'",
+    "category": "Beginner PLL",
+    "difficulty": "beginner",
+    "description": "Permute edges",
+    "nicknames": []
+  },
+  {
+    "id": "f2l-case-1",
+    "name": "F2L Case 1",
+    "notation": "R U' R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Corner and edge paired, simple insertion",
+    "nicknames": ["Basic F2L Insert"]
+  },
+  {
+    "id": "f2l-case-2", 
+    "name": "F2L Case 2",
+    "notation": "F' U F",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Alternative simple insertion",
+    "nicknames": ["Basic F2L Insert"]
+  },
+  {
+    "id": "f2l-case-3",
+    "name": "F2L Case 3",
+    "notation": "R U R' U' R U R'",
+    "category": "F2L",
+    "difficulty": "intermediate", 
+    "description": "Separated corner and edge",
+    "nicknames": []
+  },
+  {
+    "id": "f2l-case-4",
+    "name": "F2L Case 4",
+    "notation": "R U' R' U R U' R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Corner up, edge in slot",
+    "nicknames": []
+  },
+  {
+    "id": "sune",
+    "name": "Sune",
+    "notation": "R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 27 - Sune pattern",
+    "nicknames": ["Sune"]
+  },
+  {
+    "id": "antisune",
+    "name": "Anti-Sune", 
+    "notation": "R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 26 - Anti-Sune pattern",
+    "nicknames": ["Anti-Sune"]
+  },
+  {
+    "id": "oll-cross",
+    "name": "OLL Cross",
+    "notation": "F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 44 - Form cross on top",
+    "nicknames": ["Cross", "OLL Cross"]
+  },
+  {
+    "id": "oll-l-shape",
+    "name": "OLL L-Shape",
+    "notation": "F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 45 - L-shaped pattern",
+    "nicknames": ["L-Shape", "L"]
+  },
+  {
+    "id": "oll-line",
+    "name": "OLL Line",
+    "notation": "F R U R' U' R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 51 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-dot",
+    "name": "OLL Dot",
+    "notation": "F R U R' U' F' f R U R' U' f'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 57 - Dot pattern",
+    "nicknames": ["Dot"]
+  },
+  {
+    "id": "oll-pi",
+    "name": "OLL Pi",
+    "notation": "R U2 R2 F R F' U2 R' F R F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 32 - Pi pattern",
+    "nicknames": ["Pi"]
+  },
+  {
+    "id": "oll-t-shape",
+    "name": "OLL T-Shape",
+    "notation": "R U R' U' R' F R F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 33 - T-shaped pattern",
+    "nicknames": ["T-Shape", "T"]
+  },
+  {
+    "id": "oll-case-24",
+    "name": "OLL Case 24 - Chameleon", 
+    "notation": "r U R' U' r' F R F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 24 - Chameleon pattern",
+    "nicknames": ["Chameleon"]
+  },
+  {
+    "id": "2look-oll-1",
+    "name": "2-Look OLL Case 1 - Sune",
+    "notation": "R U R' U R U2 R'",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "All corners oriented except front-right",
+    "nicknames": ["Sune"]
+  },
+  {
+    "id": "2look-oll-2",
+    "name": "2-Look OLL Case 2 - Anti-Sune",
+    "notation": "R' U' R U' R' U2 R",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "All corners oriented except front-left",
+    "nicknames": ["Anti-Sune"]
+  },
+  {
+    "id": "2look-oll-3",
+    "name": "2-Look OLL Case 3 - Pi",
+    "notation": "R U2 R2 F R F' U2 R' F R F'",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "Two adjacent corners need orienting",
+    "nicknames": ["Pi"]
+  },
+  {
+    "id": "2look-oll-4",
+    "name": "2-Look OLL Case 4 - U",
+    "notation": "R2 D R' U2 R D' R' U2 R'",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "Two diagonal corners need orienting",
+    "nicknames": ["U", "Superman", "Headlights"]
+  },
+  {
+    "id": "2look-oll-5",
+    "name": "2-Look OLL Case 5 - T",
+    "notation": "R U R' U' R' F R F'",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "Front two corners need orienting",
+    "nicknames": ["T"]
+  },
+  {
+    "id": "2look-oll-6",
+    "name": "2-Look OLL Case 6 - L",
+    "notation": "F' L' U' L U L' U' L U F",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "Left two corners need orienting",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "2look-oll-7",
+    "name": "2-Look OLL Case 7 - H",
+    "notation": "R U R' U R U' R' U R U2 R'",
+    "category": "2-Look OLL",
+    "difficulty": "intermediate",
+    "description": "All four corners need orienting",
+    "nicknames": ["H"]
+  },
+  {
+    "id": "aa-perm",
+    "name": "Aa-Perm",
+    "notation": "x R' U R' D2 R U' R' D2 R2 x'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Adjacent corner swap clockwise",
+    "nicknames": []
+  },
+  {
+    "id": "ab-perm",
+    "name": "Ab-Perm",
+    "notation": "x R2 D2 R U R' D2 R U' R x'",
+    "category": "PLL",
+    "difficulty": "advanced", 
+    "description": "Adjacent corner swap counterclockwise",
+    "nicknames": []
+  },
+  {
+    "id": "e-perm",
+    "name": "E-Perm",
+    "notation": "x' R U' R' D R U R' D' R U R' D R U' R' D' x",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner swap",
+    "nicknames": []
+  },
+  {
+    "id": "f-perm",
+    "name": "F-Perm", 
+    "notation": "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Adjacent corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "ga-perm",
+    "name": "Ga-Perm",
+    "notation": "R2 U R' U R' U' R U' R2 D U' R' U R D'",
+    "category": "PLL", 
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "gb-perm",
+    "name": "Gb-Perm",
+    "notation": "R' U' R U D' R2 U R' U R U' R U' R2 D",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "gc-perm",
+    "name": "Gc-Perm", 
+    "notation": "R2 U' R U' R U R' U R2 D' U R U' R' D",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "gd-perm",
+    "name": "Gd-Perm",
+    "notation": "R U R' U' D R2 U' R U' R' U R' U R2 D'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "h-perm",
+    "name": "H-Perm",
+    "notation": "M2 U M2 U2 M2 U M2",
+    "category": "PLL",
+    "difficulty": "intermediate",
+    "description": "Opposite edge swap",
+    "nicknames": ["H", "PLL Opposite"]
+  },
+  {
+    "id": "ja-perm",
+    "name": "Ja-Perm",
+    "notation": "R' U L' U2 R U' R' U2 R L U'",
+    "category": "PLL", 
+    "difficulty": "intermediate",
+    "description": "Adjacent corner swap",
+    "nicknames": []
+  },
+  {
+    "id": "jb-perm",
+    "name": "Jb-Perm",
+    "notation": "R U R' F' R U R' U' R' F R2 U' R'",
+    "category": "PLL",
+    "difficulty": "intermediate",
+    "description": "Adjacent corner swap",
+    "nicknames": []
+  },
+  {
+    "id": "na-perm",
+    "name": "Na-Perm",
+    "notation": "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "nb-perm",
+    "name": "Nb-Perm",
+    "notation": "R' U R U' R' F' U' F R U R' F R' F' R U' R",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "ra-perm",
+    "name": "Ra-Perm",
+    "notation": "R U' R' F' R U2 R' U2 R' F R U R U2 R'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Adjacent corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "rb-perm",
+    "name": "Rb-Perm", 
+    "notation": "R2 F R U R U' R' F' R U2 R' U2 R",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Adjacent corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "t-perm",
+    "name": "T-Perm",
+    "notation": "R U R' F' R U R' U' R' F R2 U' R'",
+    "category": "PLL",
+    "difficulty": "intermediate",
+    "description": "Adjacent edge swap",
+    "nicknames": ["T"]
+  },
+  {
+    "id": "ua-perm",
+    "name": "Ua-Perm",
+    "notation": "M2 U M U2 M' U M2",
+    "category": "PLL",
+    "difficulty": "intermediate",
+    "description": "Edge 3-cycle clockwise",
+    "nicknames": []
+  },
+  {
+    "id": "ub-perm",
+    "name": "Ub-Perm",
+    "notation": "M2 U' M U2 M' U' M2",
+    "category": "PLL",
+    "difficulty": "intermediate",
+    "description": "Edge 3-cycle counterclockwise",
+    "nicknames": []
+  },
+  {
+    "id": "v-perm",
+    "name": "V-Perm",
+    "notation": "R' U R' U' y R' F' R2 U' R' U R' F R F",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "y-perm", 
+    "name": "Y-Perm",
+    "notation": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal corner and edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "z-perm",
+    "name": "Z-Perm",
+    "notation": "M' U M2 U M2 U M' U2 M2",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Diagonal edge swap",
+    "nicknames": []
+  },
+  {
+    "id": "ua-perm-variation",
+    "name": "Ua-Perm Variation",
+    "notation": "M' U' M2 U' M2 U' M' U2 M2",
+    "category": "PLL",
+    "difficulty": "intermediate",
+    "description": "PLL Ua-Perm variation: swaps two edge pieces in the top layer (front and right edges). Sequence: M' U' M2 U' M2 U' M' U2 M2.",
+    "nicknames": ["Ua-Perm Variation", "PLL Adjacent"]
+  }
+]
