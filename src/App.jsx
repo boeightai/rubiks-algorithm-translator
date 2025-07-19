@@ -1,7 +1,7 @@
-import AlgorithmSelector from './AlgorithmSelector'
+import AlgorithmSelectorRefactored from './AlgorithmSelectorRefactored'
 
 function App() {
-  return <AlgorithmSelector />
+  return <AlgorithmSelectorRefactored />
 }
 
 export default App
