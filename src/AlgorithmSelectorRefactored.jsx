@@ -20,7 +20,8 @@ function AlgorithmSelectorRefactored() {
     showFavoritesOnly,
     setShowFavoritesOnly,
     categories,
-    filteredAlgorithms
+    filteredAlgorithms,
+    algorithms
   } = useAlgorithms(favoriteIds)
   
   const { tutorialImageExists, tutorialImageSrc } = useTutorialImage(selectedAlgorithm)
@@ -41,9 +42,31 @@ function AlgorithmSelectorRefactored() {
         setShowFavoritesOnly={setShowFavoritesOnly}
       />
       
-      <h3 style={{ marginBottom: '10px', color: '#222', fontSize: '1.1rem', fontWeight: 600 }}>
-        Algorithms <span style={{ color: '#2563eb', fontWeight: 700 }}>({filteredAlgorithms.length})</span>
-      </h3>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '24px',
+      }}>
+        <h3 style={{
+          fontSize: '1.125rem',
+          fontWeight: 600,
+          color: '#1e293b',
+          margin: 0,
+        }}>
+          Algorithms
+        </h3>
+        <div style={{
+          background: '#f1f5f9',
+          color: '#475569',
+          padding: '4px 12px',
+          borderRadius: '9999px',
+          fontSize: '0.875rem',
+          fontWeight: 500,
+        }}>
+          {filteredAlgorithms.length} of {algorithms.length}
+        </div>
+      </div>
       
       <AlgorithmList
         algorithms={filteredAlgorithms}
@@ -67,7 +90,7 @@ function AlgorithmSelectorRefactored() {
       
       {/* Visual Sequence below details and image */}
       {selectedAlgorithm && (
-        <div style={{ marginTop: '24px' }}>
+        <div style={{ marginTop: '32px' }}>
           <VisualSequence notation={selectedAlgorithm.notation} />
         </div>
       )}

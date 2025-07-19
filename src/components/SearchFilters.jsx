@@ -1,3 +1,4 @@
+import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarIcon from './ui/StarIcon'
 
 const SearchFilters = ({
@@ -11,74 +12,241 @@ const SearchFilters = ({
 }) => {
   return (
     <div style={{
-      display: 'flex',
-      gap: '12px',
-      marginBottom: '16px',
-      alignItems: 'center',
-      flexWrap: 'wrap',
+      marginBottom: spacing[6],
     }}>
-      <input
-        type="text"
-        placeholder="Search algorithms..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{
-          flex: '2 1 160px',
-          padding: '8px 10px',
-          border: '1px solid #e5e7eb',
-          borderRadius: '6px',
-          fontSize: '15px',
-          background: '#f8fafc',
-          minWidth: '120px',
-        }}
-      />
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-        style={{
-          flex: '1 1 120px',
-          padding: '8px 10px',
-          border: '1px solid #e5e7eb',
-          borderRadius: '6px',
-          fontSize: '15px',
-          background: '#f8fafc',
-          minWidth: '100px',
-        }}
-      >
-        {categories.map(category => (
-          <option key={category} value={category}>
-            {category === 'all' ? 'All Categories' : category}
-          </option>
-        ))}
-      </select>
-      <button
-        onClick={() => setShowFavoritesOnly(fav => !fav)}
-        style={{
-          flex: 'none',
-          minWidth: '110px',
-          padding: '0 14px',
-          border: showFavoritesOnly ? '2px solid #facc15' : '1px solid #e5e7eb',
-          borderRadius: '6px',
-          background: showFavoritesOnly ? '#fef9c3' : '#f8fafc',
-          color: '#b45309',
-          fontWeight: 600,
-          fontSize: '15px',
-          cursor: 'pointer',
+      {/* Search and Filter Controls */}
+      <div style={{
+        display: 'flex',
+        gap: spacing[3],
+        marginBottom: spacing[4],
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}>
+        {/* Search Input */}
+        <div style={{ flex: '2 1 200px', minWidth: '200px', position: 'relative' }}>
+          <div style={{
+            position: 'absolute',
+            left: spacing[3],
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: colors.neutral[400],
+            zIndex: 1,
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+          </div>
+          <input
+            type="text"
+            placeholder="Search algorithms..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: `${spacing[3]} ${spacing[3]} ${spacing[3]} ${spacing[10]}`,
+              border: `1px solid ${colors.border.medium}`,
+              borderRadius: borderRadius.xl,
+              fontSize: typography.fontSize.sm,
+              background: colors.background.primary,
+              color: colors.neutral[800],
+              transition: transitions.fast,
+              boxSizing: 'border-box',
+              '&:focus': {
+                outline: 'none',
+                borderColor: colors.primary[500],
+                boxShadow: `0 0 0 3px ${colors.primary[100]}`,
+              },
+              '&:hover': {
+                borderColor: colors.border.dark,
+              },
+            }}
+          />
+        </div>
+
+        {/* Category Select */}
+        <div style={{ flex: '1 1 150px', minWidth: '150px', position: 'relative' }}>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            style={{
+              width: '100%',
+              padding: `${spacing[3]} ${spacing[4]}`,
+              border: `1px solid ${colors.border.medium}`,
+              borderRadius: borderRadius.xl,
+              fontSize: typography.fontSize.sm,
+              background: colors.background.primary,
+              color: colors.neutral[800],
+              cursor: 'pointer',
+              transition: transitions.fast,
+              appearance: 'none',
+              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+              backgroundPosition: `right ${spacing[2]} center`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: '16px 12px',
+              paddingRight: spacing[10],
+              '&:focus': {
+                outline: 'none',
+                borderColor: colors.primary[500],
+                boxShadow: `0 0 0 3px ${colors.primary[100]}`,
+              },
+              '&:hover': {
+                borderColor: colors.border.dark,
+              },
+            }}
+          >
+            {categories.map(category => (
+              <option key={category} value={category}>
+                {category === 'all' ? 'All Categories' : category}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Favorites Toggle */}
+        <button
+          onClick={() => setShowFavoritesOnly(fav => !fav)}
+          style={{
+            flex: 'none',
+            minWidth: '120px',
+            padding: `${spacing[3]} ${spacing[4]}`,
+            border: showFavoritesOnly ? `2px solid ${colors.warning[500]}` : `1px solid ${colors.border.medium}`,
+            borderRadius: borderRadius.xl,
+            background: showFavoritesOnly ? colors.warning[50] : colors.background.primary,
+            color: showFavoritesOnly ? colors.warning[700] : colors.neutral[700],
+            fontWeight: typography.fontWeight.medium,
+            fontSize: typography.fontSize.sm,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: spacing[2],
+            outline: 'none',
+            transition: transitions.fast,
+            boxSizing: 'border-box',
+            '&:hover': {
+              background: showFavoritesOnly ? colors.warning[100] : colors.neutral[50],
+              transform: 'translateY(-1px)',
+              boxShadow: shadows.sm,
+            },
+            '&:active': {
+              transform: 'translateY(0)',
+            },
+          }}
+          aria-pressed={showFavoritesOnly}
+          title={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
+        >
+          <StarIcon filled={showFavoritesOnly} size={16} />
+          <span style={{ color: 'inherit' }}>Favorites</span>
+        </button>
+      </div>
+
+      {/* Active Filters Display */}
+      {(searchTerm || selectedCategory !== 'all' || showFavoritesOnly) && (
+        <div style={{
           display: 'flex',
+          gap: spacing[2],
+          flexWrap: 'wrap',
           alignItems: 'center',
-          gap: '6px',
-          outline: 'none',
-          transition: 'background 0.2s, border 0.2s',
-          marginLeft: '8px',
-          height: '38px',
-          boxSizing: 'border-box',
-        }}
-        aria-pressed={showFavoritesOnly}
-        title={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
-      >
-        <StarIcon filled={showFavoritesOnly} size={20} />
-        <span style={{ color: '#000' }}>Favorites</span>
-      </button>
+        }}>
+          <span style={{
+            fontSize: typography.fontSize.sm,
+            color: colors.neutral[500],
+            fontWeight: typography.fontWeight.medium,
+          }}>
+            Active filters:
+          </span>
+          
+          {searchTerm && (
+            <div style={{
+              background: colors.primary[100],
+              color: colors.primary[700],
+              padding: `${spacing[1]} ${spacing[2]}`,
+              borderRadius: borderRadius.full,
+              fontSize: typography.fontSize.xs,
+              fontWeight: typography.fontWeight.medium,
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[1],
+            }}>
+              <span>Search: "{searchTerm}"</span>
+              <button
+                onClick={() => setSearchTerm('')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  color: 'inherit',
+                  fontSize: '14px',
+                  lineHeight: 1,
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+          
+          {selectedCategory !== 'all' && (
+            <div style={{
+              background: colors.success[100],
+              color: colors.success[700],
+              padding: `${spacing[1]} ${spacing[2]}`,
+              borderRadius: borderRadius.full,
+              fontSize: typography.fontSize.xs,
+              fontWeight: typography.fontWeight.medium,
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[1],
+            }}>
+              <span>Category: {selectedCategory}</span>
+              <button
+                onClick={() => setSelectedCategory('all')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  color: 'inherit',
+                  fontSize: '14px',
+                  lineHeight: 1,
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+          
+          {showFavoritesOnly && (
+            <div style={{
+              background: colors.warning[100],
+              color: colors.warning[700],
+              padding: `${spacing[1]} ${spacing[2]}`,
+              borderRadius: borderRadius.full,
+              fontSize: typography.fontSize.xs,
+              fontWeight: typography.fontWeight.medium,
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[1],
+            }}>
+              <span>Favorites only</span>
+              <button
+                onClick={() => setShowFavoritesOnly(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  color: 'inherit',
+                  fontSize: '14px',
+                  lineHeight: 1,
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
