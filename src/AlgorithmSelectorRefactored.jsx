@@ -27,7 +27,10 @@ function AlgorithmSelectorRefactored() {
   const { tutorialImageExists, tutorialImageSrc } = useTutorialImage(selectedAlgorithm)
 
   const header = (
-    <Header />
+    <Header 
+      showFavoritesOnly={showFavoritesOnly}
+      setShowFavoritesOnly={setShowFavoritesOnly}
+    />
   )
 
   const leftColumn = (
@@ -38,8 +41,6 @@ function AlgorithmSelectorRefactored() {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         categories={categories}
-        showFavoritesOnly={showFavoritesOnly}
-        setShowFavoritesOnly={setShowFavoritesOnly}
       />
       
       <div style={{

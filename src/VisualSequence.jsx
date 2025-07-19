@@ -1,4 +1,4 @@
-import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
+import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
 
 function VisualSequence({ notation }) {
@@ -131,10 +131,6 @@ function VisualSequence({ notation }) {
                       display: 'block',
                       boxShadow: shadows.sm,
                       transition: 'transform 0.2s ease',
-                      '&:hover': {
-                        transform: 'scale(1.05)',
-                        boxShadow: shadows.md,
-                      },
                     }}
                     onError={(e) => {
                       e.target.style.display = 'none'

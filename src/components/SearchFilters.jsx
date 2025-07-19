@@ -1,14 +1,11 @@
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
-import StarIcon from './ui/StarIcon'
 
 const SearchFilters = ({
   searchTerm,
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
-  categories,
-  showFavoritesOnly,
-  setShowFavoritesOnly
+  categories
 }) => {
   return (
     <div style={{
@@ -39,32 +36,24 @@ const SearchFilters = ({
           </div>
           <input
             type="text"
-            placeholder="Search algorithms..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search algorithms..."
             style={{
               width: '100%',
-              padding: `${spacing[3]} ${spacing[3]} ${spacing[3]} ${spacing[10]}`,
+              padding: `${spacing[3]} ${spacing[4]} ${spacing[3]} ${spacing[10]}`,
               border: `1px solid ${colors.border.medium}`,
               borderRadius: borderRadius.xl,
               fontSize: typography.fontSize.sm,
               background: colors.background.primary,
               color: colors.neutral[800],
+              outline: 'none',
               transition: transitions.fast,
-              boxSizing: 'border-box',
-              '&:focus': {
-                outline: 'none',
-                borderColor: colors.primary[500],
-                boxShadow: `0 0 0 3px ${colors.primary[100]}`,
-              },
-              '&:hover': {
-                borderColor: colors.border.dark,
-              },
             }}
           />
         </div>
 
-        {/* Category Select */}
+        {/* Category Filter */}
         <div style={{ flex: '1 1 150px', minWidth: '150px', position: 'relative' }}>
           <select
             value={selectedCategory}
@@ -85,14 +74,6 @@ const SearchFilters = ({
               backgroundRepeat: 'no-repeat',
               backgroundSize: '16px 12px',
               paddingRight: spacing[10],
-              '&:focus': {
-                outline: 'none',
-                borderColor: colors.primary[500],
-                boxShadow: `0 0 0 3px ${colors.primary[100]}`,
-              },
-              '&:hover': {
-                borderColor: colors.border.dark,
-              },
             }}
           >
             {categories.map(category => (
@@ -102,46 +83,10 @@ const SearchFilters = ({
             ))}
           </select>
         </div>
-
-        {/* Favorites Toggle */}
-        <button
-          onClick={() => setShowFavoritesOnly(fav => !fav)}
-          style={{
-            flex: 'none',
-            minWidth: '120px',
-            padding: `${spacing[3]} ${spacing[4]}`,
-            border: showFavoritesOnly ? `2px solid ${colors.warning[500]}` : `1px solid ${colors.border.medium}`,
-            borderRadius: borderRadius.xl,
-            background: showFavoritesOnly ? colors.warning[50] : colors.background.primary,
-            color: showFavoritesOnly ? colors.warning[700] : colors.neutral[700],
-            fontWeight: typography.fontWeight.medium,
-            fontSize: typography.fontSize.sm,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: spacing[2],
-            outline: 'none',
-            transition: transitions.fast,
-            boxSizing: 'border-box',
-            '&:hover': {
-              background: showFavoritesOnly ? colors.warning[100] : colors.neutral[50],
-              transform: 'translateY(-1px)',
-              boxShadow: shadows.sm,
-            },
-            '&:active': {
-              transform: 'translateY(0)',
-            },
-          }}
-          aria-pressed={showFavoritesOnly}
-          title={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
-        >
-          <StarIcon filled={showFavoritesOnly} size={16} />
-          <span style={{ color: 'inherit' }}>Favorites</span>
-        </button>
       </div>
 
       {/* Active Filters Display */}
-      {(searchTerm || selectedCategory !== 'all' || showFavoritesOnly) && (
+      {(searchTerm || selectedCategory !== 'all') && (
         <div style={{
           display: 'flex',
           gap: spacing[2],
@@ -201,36 +146,6 @@ const SearchFilters = ({
               <span>Category: {selectedCategory}</span>
               <button
                 onClick={() => setSelectedCategory('all')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  color: 'inherit',
-                  fontSize: '14px',
-                  lineHeight: 1,
-                }}
-              >
-                ×
-              </button>
-            </div>
-          )}
-          
-          {showFavoritesOnly && (
-            <div style={{
-              background: colors.warning[100],
-              color: colors.warning[700],
-              padding: `${spacing[1]} ${spacing[2]}`,
-              borderRadius: borderRadius.full,
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              display: 'flex',
-              alignItems: 'center',
-              gap: spacing[1],
-            }}>
-              <span>Favorites only</span>
-              <button
-                onClick={() => setShowFavoritesOnly(false)}
                 style={{
                   background: 'none',
                   border: 'none',
