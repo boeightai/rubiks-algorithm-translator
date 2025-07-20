@@ -70,24 +70,61 @@ const AlgorithmDetails = ({
         <div style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           gap: spacing[3],
           marginBottom: spacing[3],
         }}>
-          <h2 style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.neutral[900],
-            margin: 0,
-            lineHeight: typography.lineHeight.tight,
-          }}>
-            {selectedAlgorithm.name}
-          </h2>
-          
-          <StarButton
-            isFavorite={isFavorite(selectedAlgorithm.id)}
-            onToggle={() => onToggleFavorite(selectedAlgorithm.id)}
-            size={24}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
+            <h2 style={{
+              fontSize: typography.fontSize['2xl'],
+              fontWeight: typography.fontWeight.bold,
+              color: colors.neutral[900],
+              margin: 0,
+              lineHeight: typography.lineHeight.tight,
+            }}>
+              {selectedAlgorithm.name}
+            </h2>
+            <StarButton
+              isFavorite={isFavorite(selectedAlgorithm.id)}
+              onToggle={() => onToggleFavorite(selectedAlgorithm.id)}
+              size={24}
+            />
+          </div>
+          {/* Alternative Names (Nicknames) right-justified */}
+          {selectedAlgorithm.nicknames && selectedAlgorithm.nicknames.length > 0 && (
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: spacing[2],
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              maxWidth: '50%',
+            }}>
+              <span style={{
+                fontSize: typography.fontSize.sm,
+                color: colors.primary[700],
+                fontWeight: typography.fontWeight.medium,
+                marginRight: spacing[1],
+                whiteSpace: 'nowrap',
+              }}>
+                Alternative Names:
+              </span>
+              {selectedAlgorithm.nicknames.map((nickname, index) => (
+                <div key={index} style={{
+                  background: colors.primary[50],
+                  color: colors.primary[700],
+                  padding: `${spacing[2]} ${spacing[3]}`,
+                  borderRadius: borderRadius.lg,
+                  fontSize: typography.fontSize.sm,
+                  fontWeight: typography.fontWeight.medium,
+                  border: `1px solid ${colors.primary[200]}`,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {nickname}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div style={{
@@ -200,39 +237,6 @@ const AlgorithmDetails = ({
           {selectedAlgorithm.description}
         </p>
       </div>
-
-      {/* Nicknames */}
-      {selectedAlgorithm.nicknames && selectedAlgorithm.nicknames.length > 0 && (
-        <div>
-          <h3 style={{
-            fontSize: typography.fontSize.lg,
-            fontWeight: typography.fontWeight.semibold,
-            color: colors.neutral[900],
-            marginBottom: spacing[2],
-          }}>
-            Alternative Names
-          </h3>
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: spacing[2],
-          }}>
-            {selectedAlgorithm.nicknames.map((nickname, index) => (
-              <div key={index} style={{
-                background: colors.primary[50],
-                color: colors.primary[700],
-                padding: `${spacing[2]} ${spacing[3]}`,
-                borderRadius: borderRadius.lg,
-                fontSize: typography.fontSize.sm,
-                fontWeight: typography.fontWeight.medium,
-                border: `1px solid ${colors.primary[200]}`,
-              }}>
-                {nickname}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Notation */}
       <div>

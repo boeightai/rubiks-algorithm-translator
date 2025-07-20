@@ -24,7 +24,7 @@
     "category": "Beginner Corners",
     "difficulty": "beginner",
     "description": "Basic corner insertion",
-    "nicknames": ["Right Hand", "Righty", "Sexy Move"]
+    "nicknames": ["Right Trigger", "Sexy Move"]
   },
   {
     "id": "white-corners-2",
@@ -33,7 +33,7 @@
     "category": "Beginner Corners",
     "difficulty": "beginner",
     "description": "Left-handed corner insertion",
-    "nicknames": ["Left Hand", "Lefty", "Left Sexy Move"]
+    "nicknames": ["Left Trigger", "Left Sexy Move"]
   },
   {
     "id": "second-layer-right",
