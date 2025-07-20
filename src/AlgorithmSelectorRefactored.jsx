@@ -41,33 +41,11 @@ function AlgorithmSelectorRefactored() {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         categories={categories}
+        filteredCount={filteredAlgorithms.length}
+        totalCount={algorithms.length}
+        showFavoritesOnly={showFavoritesOnly}
+        setShowFavoritesOnly={setShowFavoritesOnly}
       />
-      
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '24px',
-      }}>
-        <h3 style={{
-          fontSize: '1.125rem',
-          fontWeight: 600,
-          color: '#1e293b',
-          margin: 0,
-        }}>
-          Algorithms
-        </h3>
-        <div style={{
-          background: '#f1f5f9',
-          color: '#475569',
-          padding: '4px 12px',
-          borderRadius: '9999px',
-          fontSize: '0.875rem',
-          fontWeight: 500,
-        }}>
-          {filteredAlgorithms.length} of {algorithms.length}
-        </div>
-      </div>
       
       <AlgorithmList
         algorithms={filteredAlgorithms}

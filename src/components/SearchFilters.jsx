@@ -1,11 +1,16 @@
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
+import StarIcon from './ui/StarIcon'
 
 const SearchFilters = ({
   searchTerm,
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
-  categories
+  categories,
+  filteredCount,
+  totalCount,
+  showFavoritesOnly,
+  setShowFavoritesOnly,
 }) => {
   return (
     <div style={{
@@ -83,6 +88,61 @@ const SearchFilters = ({
             ))}
           </select>
         </div>
+      </div>
+
+      {/* Count and Favorites button row */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: spacing[4],
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
+          {/* Title for count display */}
+          <div style={{
+            fontSize: typography.fontSize.sm,
+            color: colors.neutral[900],
+            fontWeight: typography.fontWeight.semibold,
+          }}>
+            Algorithms
+          </div>
+          {/* Count display shifted left */}
+          <div style={{
+            fontSize: typography.fontSize.sm,
+            color: colors.neutral[700],
+            fontWeight: typography.fontWeight.medium,
+          }}>
+            {filteredCount} of {totalCount}
+          </div>
+        </div>
+        {/* Favorites button right-justified */}
+        {setShowFavoritesOnly && (
+          <button
+            onClick={() => setShowFavoritesOnly(fav => !fav)}
+            style={{
+              padding: `${spacing[3]} ${spacing[4]}`,
+              border: showFavoritesOnly ? `2px solid ${colors.warning[500]}` : `1px solid ${colors.border.medium}`,
+              borderRadius: '12px',
+              background: showFavoritesOnly ? colors.warning[50] : colors.background.primary,
+              color: showFavoritesOnly ? colors.warning[700] : colors.neutral[700],
+              fontWeight: typography.fontWeight.medium,
+              fontSize: typography.fontSize.sm,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[2],
+              outline: 'none',
+              transition: 'all 0.2s ease',
+              boxSizing: 'border-box',
+              boxShadow: shadows.sm,
+            }}
+            aria-pressed={showFavoritesOnly}
+            title={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
+          >
+            <StarIcon filled={showFavoritesOnly} size={16} />
+            <span style={{ color: 'inherit' }}>Favorites</span>
+          </button>
+        )}
       </div>
 
       {/* Active Filters Display */}

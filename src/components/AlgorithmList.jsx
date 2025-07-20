@@ -12,7 +12,7 @@ const AlgorithmList = ({
     <div style={{ 
       maxHeight: 'calc(100vh - 400px)', 
       overflowY: 'auto', 
-      paddingRight: spacing[2],
+      paddingRight: spacing[4], // Increased from spacing[2] to spacing[4] for better scrollbar spacing
       scrollbarWidth: 'thin',
       scrollbarColor: `${colors.neutral[300]} transparent`,
     }}>
