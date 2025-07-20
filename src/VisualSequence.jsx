@@ -188,39 +188,6 @@ function VisualSequence({ notation }) {
           ))}
         </div>
       )}
-
-      {/* Notation display */}
-      {moveList.length > 0 && (
-        <div style={{
-          marginTop: spacing[6],
-          padding: spacing[4],
-          background: colors.neutral[50],
-          borderRadius: borderRadius.lg,
-          border: `1px solid ${colors.border.light}`,
-        }}>
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.neutral[600],
-            fontWeight: typography.fontWeight.medium,
-            marginBottom: spacing[2],
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-          }}>
-            Complete Notation
-          </div>
-          <div style={{
-            fontFamily: typography.fontFamily.mono,
-            fontSize: typography.fontSize.base,
-            color: colors.neutral[900],
-            fontWeight: typography.fontWeight.medium,
-            lineHeight: typography.lineHeight.normal,
-            textAlign: 'center',
-            letterSpacing: '0.05em',
-          }}>
-            {notation}
-          </div>
-        </div>
-      )}
     </div>
   )
 }
