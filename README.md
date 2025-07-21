@@ -41,3 +41,5 @@ Each algorithm:
 
 ---
 **Happy Solving! 🧩**
+
+<!-- Testing VS Code connection -->
