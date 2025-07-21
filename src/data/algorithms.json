@@ -464,7 +464,7 @@
     "notation": "M' U' M2 U' M2 U' M' U2 M2",
     "category": "PLL",
     "difficulty": "intermediate",
-    "description": "PLL Ua-Perm variation: swaps two edge pieces in the top layer (front and right edges). Sequence: M' U' M2 U' M2 U' M' U2 M2.",
+    "description": "PLL Ua-Perm variation: swaps two edge pieces in the top layer (front and right edges).",
     "nicknames": ["Ua-Perm Variation", "PLL Adjacent"]
   }
 ]
