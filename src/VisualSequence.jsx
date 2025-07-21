@@ -173,9 +173,9 @@ function VisualSequence({ notation }) {
 
               {/* Move label */}
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.neutral[700],
-                fontWeight: typography.fontWeight.medium,
+                fontSize: typography.fontSize.xl, // Increased font size
+                color: colors.neutral[900], // Make it darker for visibility
+                fontWeight: typography.fontWeight.bold, // Make it bold
                 fontFamily: typography.fontFamily.mono,
                 letterSpacing: '0.05em',
                 maxWidth: '80px',

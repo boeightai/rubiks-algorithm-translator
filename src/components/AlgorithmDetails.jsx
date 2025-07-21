@@ -220,14 +220,6 @@ const AlgorithmDetails = ({
 
       {/* Description */}
       <div>
-        <h3 style={{
-          fontSize: typography.fontSize.lg,
-          fontWeight: typography.fontWeight.semibold,
-          color: colors.neutral[900],
-          marginBottom: spacing[2],
-        }}>
-          Description
-        </h3>
         <p style={{
           fontSize: typography.fontSize.base,
           color: colors.neutral[700],
@@ -236,36 +228,6 @@ const AlgorithmDetails = ({
         }}>
           {selectedAlgorithm.description}
         </p>
-      </div>
-
-      {/* Notation */}
-      <div>
-        <h3 style={{
-          fontSize: typography.fontSize.lg,
-          fontWeight: typography.fontWeight.semibold,
-          color: colors.neutral[900],
-          marginBottom: spacing[3],
-        }}>
-          Algorithm Notation
-        </h3>
-        <div style={{
-          background: colors.neutral[50],
-          border: `1px solid ${colors.border.light}`,
-          borderRadius: borderRadius.xl,
-          padding: spacing[4],
-        }}>
-          <div style={{
-            fontFamily: typography.fontFamily.mono,
-            fontSize: typography.fontSize.lg,
-            color: colors.neutral[900],
-            fontWeight: typography.fontWeight.medium,
-            lineHeight: typography.lineHeight.normal,
-            textAlign: 'center',
-            letterSpacing: '0.05em',
-          }}>
-            {selectedAlgorithm.notation}
-          </div>
-        </div>
       </div>
     </div>
   )
