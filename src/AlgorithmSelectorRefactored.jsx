@@ -24,7 +24,7 @@ function AlgorithmSelectorRefactored() {
     algorithms
   } = useAlgorithms(favoriteIds)
   
-  const { tutorialImageExists, tutorialImageSrc } = useTutorialImage(selectedAlgorithm)
+  const { tutorialImageExists, tutorialImageSrc, patternImageExists, patternImageSrc } = useTutorialImage(selectedAlgorithm)
 
   const header = (
     <Header 
@@ -65,6 +65,8 @@ function AlgorithmSelectorRefactored() {
         onToggleFavorite={toggleFavorite}
         tutorialImageExists={tutorialImageExists}
         tutorialImageSrc={tutorialImageSrc}
+        patternImageExists={patternImageExists}
+        patternImageSrc={patternImageSrc}
       />
       
       {/* Visual Sequence below details and image */}
@@ -85,4 +87,4 @@ function AlgorithmSelectorRefactored() {
   )
 }
 
-export default AlgorithmSelectorRefactored 
+export default AlgorithmSelectorRefactored

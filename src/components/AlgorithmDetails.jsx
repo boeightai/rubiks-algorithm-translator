@@ -7,7 +7,9 @@ const AlgorithmDetails = ({
   isFavorite,
   onToggleFavorite,
   tutorialImageExists,
-  tutorialImageSrc
+  tutorialImageSrc,
+  patternImageExists,
+  patternImageSrc
 }) => {
   const [isImageZoomed, setIsImageZoomed] = useState(false)
 
@@ -147,76 +149,134 @@ const AlgorithmDetails = ({
         </div>
       </div>
 
-      {/* Tutorial Image Section */}
-      {tutorialImageExists && (
-        <div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: spacing[3],
-          }}>
-            <h3 style={{
-              fontSize: typography.fontSize.lg,
-              fontWeight: typography.fontWeight.semibold,
-              color: colors.neutral[900],
-              margin: 0,
-            }}>
-              Tutorial Image
-            </h3>
+      {/* Images Section */}
+      <div style={{
+        display: 'flex',
+        gap: spacing[6],
+        flexWrap: 'wrap',
+      }}>
+        {/* Pattern Image Section */}
+        {patternImageExists && (
+          <div style={{ flex: '1 1 250px', minWidth: '200px' }}>
             <div style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.neutral[500],
-              fontStyle: 'italic',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: spacing[3],
             }}>
-              Click to zoom
+              <h3 style={{
+                fontSize: typography.fontSize.lg,
+                fontWeight: typography.fontWeight.semibold,
+                color: colors.neutral[900],
+                margin: 0,
+              }}>
+                Pattern to Look For
+              </h3>
+              <div style={{
+                fontSize: typography.fontSize.sm,
+                color: colors.neutral[500],
+                fontStyle: 'italic',
+              }}>
+                Recognition pattern
+              </div>
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              background: colors.neutral[50],
+              borderRadius: borderRadius.xl,
+              padding: spacing[4],
+              border: `1px solid ${colors.border.light}`,
+            }}>
+              <img
+                src={patternImageSrc}
+                alt={`${selectedAlgorithm.name} pattern`}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '200px',
+                  width: 'auto',
+                  height: 'auto',
+                  borderRadius: borderRadius.lg,
+                  boxShadow: shadows.md,
+                  border: `1px solid ${colors.border.light}`,
+                  background: colors.background.primary,
+                }}
+              />
             </div>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            background: colors.neutral[50],
-            borderRadius: borderRadius.xl,
-            padding: spacing[4],
-            border: `1px solid ${colors.border.light}`,
-            cursor: 'pointer',
-            transition: transitions.fast,
-            '&:hover': {
-              background: colors.neutral[100],
-              borderColor: colors.border.medium,
-            },
-          }}
-          onClick={() => setIsImageZoomed(!isImageZoomed)}
-          >
-            <img
-              src={tutorialImageSrc}
-              alt={`${selectedAlgorithm.name} tutorial`}
-              style={{
-                maxWidth: isImageZoomed ? '100%' : '80%',
-                maxHeight: isImageZoomed ? '600px' : '300px',
-                width: 'auto',
-                height: 'auto',
-                borderRadius: borderRadius.lg,
-                boxShadow: shadows.md,
-                border: `1px solid ${colors.border.light}`,
-                background: colors.background.primary,
-                transition: transitions.normal,
-                transform: isImageZoomed ? 'scale(1.02)' : 'scale(1)',
-              }}
-            />
-          </div>
-          {isImageZoomed && (
+        )}
+
+        {/* Tutorial Image Section */}
+        {tutorialImageExists && (
+          <div style={{ flex: '1 1 250px', minWidth: '200px' }}>
             <div style={{
-              textAlign: 'center',
-              marginTop: spacing[2],
-              fontSize: typography.fontSize.sm,
-              color: colors.neutral[500],
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: spacing[3],
             }}>
-              Click again to zoom out
+              <h3 style={{
+                fontSize: typography.fontSize.lg,
+                fontWeight: typography.fontWeight.semibold,
+                color: colors.neutral[900],
+                margin: 0,
+              }}>
+                Tutorial Image
+              </h3>
+              <div style={{
+                fontSize: typography.fontSize.sm,
+                color: colors.neutral[500],
+                fontStyle: 'italic',
+              }}>
+                Click to zoom
+              </div>
             </div>
-          )}
-        </div>
-      )}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              background: colors.neutral[50],
+              borderRadius: borderRadius.xl,
+              padding: spacing[4],
+              border: `1px solid ${colors.border.light}`,
+              cursor: 'pointer',
+              transition: transitions.fast,
+              '&:hover': {
+                background: colors.neutral[100],
+                borderColor: colors.border.medium,
+              },
+            }}
+            onClick={() => setIsImageZoomed(!isImageZoomed)}
+            >
+              <img
+                src={tutorialImageSrc}
+                alt={`${selectedAlgorithm.name} tutorial`}
+                style={{
+                  maxWidth: isImageZoomed ? '100%' : '80%',
+                  maxHeight: isImageZoomed ? '600px' : '300px',
+                  width: 'auto',
+                  height: 'auto',
+                  borderRadius: borderRadius.lg,
+                  boxShadow: shadows.md,
+                  border: `1px solid ${colors.border.light}`,
+                  background: colors.background.primary,
+                  transition: transitions.normal,
+                  transform: isImageZoomed ? 'scale(1.02)' : 'scale(1)',
+                }}
+              />
+            </div>
+            {isImageZoomed && (
+              <div style={{
+                textAlign: 'center',
+                marginTop: spacing[2],
+                fontSize: typography.fontSize.sm,
+                color: colors.neutral[500],
+              }}>
+                Click again to zoom out
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Description */}
       <div>
@@ -233,4 +293,4 @@ const AlgorithmDetails = ({
   )
 }
 
-export default AlgorithmDetails 
+export default AlgorithmDetails
