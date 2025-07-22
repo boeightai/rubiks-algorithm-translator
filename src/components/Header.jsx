@@ -1,12 +1,10 @@
-import { colors, typography, spacing, shadows } from '../styles/designSystem'
+import { colors, typography, spacing } from '../styles/designSystem'
 import StarIcon from './ui/StarIcon'
 import Logo from './ui/Logo'
 
 const Header = ({ 
   title = "Bo's Visual Notation System",
   subtitle = "An Alternate Visual Notation System for Solving Rubik's Cubes",
-  showFavoritesOnly,
-  setShowFavoritesOnly,
   style = {}
 }) => {
   return (

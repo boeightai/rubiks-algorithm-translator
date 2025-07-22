@@ -1,5 +1,6 @@
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
+import ImageModal from './ui/ImageModal'
 import { useState } from 'react'
 
 const AlgorithmDetails = ({
@@ -12,6 +13,13 @@ const AlgorithmDetails = ({
   patternImageSrc
 }) => {
   const [isImageZoomed, setIsImageZoomed] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Check if this algorithm should show the "Sticker Image" link instead of direct image
+  const shouldShowStickerLink = selectedAlgorithm && (
+    selectedAlgorithm.id === '2look-oll-4' || 
+    selectedAlgorithm.id === 'oll-case-24'
+  )
 
   if (!selectedAlgorithm) {
     return (
@@ -221,50 +229,102 @@ const AlgorithmDetails = ({
                 color: colors.neutral[900],
                 margin: 0,
               }}>
-                Tutorial Image
+                {shouldShowStickerLink ? 'Sticker for Field Notes Notebook' : 'Tutorial Image'}
               </h3>
               <div style={{
                 fontSize: typography.fontSize.sm,
                 color: colors.neutral[500],
                 fontStyle: 'italic',
               }}>
-                Click to zoom
+                {shouldShowStickerLink ? 'Click to view' : 'Click to zoom'}
               </div>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              background: colors.neutral[50],
-              borderRadius: borderRadius.xl,
-              padding: spacing[4],
-              border: `1px solid ${colors.border.light}`,
-              cursor: 'pointer',
-              transition: transitions.fast,
-              '&:hover': {
-                background: colors.neutral[100],
-                borderColor: colors.border.medium,
-              },
-            }}
-            onClick={() => setIsImageZoomed(!isImageZoomed)}
-            >
-              <img
-                src={tutorialImageSrc}
-                alt={`${selectedAlgorithm.name} tutorial`}
-                style={{
-                  maxWidth: isImageZoomed ? '100%' : '80%',
-                  maxHeight: isImageZoomed ? '600px' : '300px',
-                  width: 'auto',
-                  height: 'auto',
-                  borderRadius: borderRadius.lg,
-                  boxShadow: shadows.md,
-                  border: `1px solid ${colors.border.light}`,
-                  background: colors.background.primary,
-                  transition: transitions.normal,
-                  transform: isImageZoomed ? 'scale(1.02)' : 'scale(1)',
-                }}
-              />
-            </div>
-            {isImageZoomed && (
+            
+            {shouldShowStickerLink ? (
+              // Show "Sticker Image" link for specific algorithms
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                background: colors.neutral[50],
+                borderRadius: borderRadius.xl,
+                padding: spacing[4],
+                border: `1px solid ${colors.border.light}`,
+              }}>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
+                    background: colors.primary[600],
+                    color: 'white',
+                    border: 'none',
+                    padding: `${spacing[3]} ${spacing[4]}`,
+                    borderRadius: borderRadius.lg,
+                    fontSize: typography.fontSize.base,
+                    fontWeight: typography.fontWeight.medium,
+                    cursor: 'pointer',
+                    transition: transitions.fast,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: spacing[2],
+                    '&:hover': {
+                      background: colors.primary[700],
+                    },
+                  }}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21,15 16,10 5,21" />
+                  </svg>
+                  Sticker Image
+                </button>
+              </div>
+            ) : (
+              // Show regular image display for other algorithms
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                background: colors.neutral[50],
+                borderRadius: borderRadius.xl,
+                padding: spacing[4],
+                border: `1px solid ${colors.border.light}`,
+                cursor: 'pointer',
+                transition: transitions.fast,
+                '&:hover': {
+                  background: colors.neutral[100],
+                  borderColor: colors.border.medium,
+                },
+              }}
+              onClick={() => setIsImageZoomed(!isImageZoomed)}
+              >
+                <img
+                  src={tutorialImageSrc}
+                  alt={`${selectedAlgorithm.name} tutorial`}
+                  style={{
+                    maxWidth: isImageZoomed ? '100%' : '80%',
+                    maxHeight: isImageZoomed ? '600px' : '300px',
+                    width: 'auto',
+                    height: 'auto',
+                    borderRadius: borderRadius.lg,
+                    boxShadow: shadows.md,
+                    border: `1px solid ${colors.border.light}`,
+                    background: colors.background.primary,
+                    transition: transitions.normal,
+                    transform: isImageZoomed ? 'scale(1.02)' : 'scale(1)',
+                  }}
+                />
+              </div>
+            )}
+            
+            {!shouldShowStickerLink && isImageZoomed && (
               <div style={{
                 textAlign: 'center',
                 marginTop: spacing[2],
@@ -289,6 +349,15 @@ const AlgorithmDetails = ({
           {selectedAlgorithm.description}
         </p>
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        imageSrc={tutorialImageSrc}
+        imageAlt={`${selectedAlgorithm.name} tutorial`}
+        algorithmName={selectedAlgorithm.name}
+      />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { colors } from '../../styles/designSystem'
+
 
 const Logo = ({ 
   size = 24, 
