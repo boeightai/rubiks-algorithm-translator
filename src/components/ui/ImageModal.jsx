@@ -1,15 +1,43 @@
+/*
+ * Rubik's Cube Algorithm Translator
+ * Copyright (C) 2025 Bo Nam
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../../styles/designSystem'
+import { useState } from 'react'
 
 const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
+  const [isCloseButtonHovered, setIsCloseButtonHovered] = useState(false)
+  const [isDownloadButtonHovered, setIsDownloadButtonHovered] = useState(false)
+  const [isCloseActionButtonHovered, setIsCloseActionButtonHovered] = useState(false)
+
   if (!isOpen) return null
 
   const handleDownload = () => {
-    const link = document.createElement('a')
-    link.href = imageSrc
-    link.download = `${algorithmName}-tutorial.png`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    try {
+      const link = document.createElement('a')
+      link.href = imageSrc
+      link.download = `${algorithmName}-tutorial.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (error) {
+      console.error('Failed to download image:', error)
+      // Could add user notification here
+    }
   }
 
   const handleBackdropClick = (e) => {
@@ -67,19 +95,17 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
           </h2>
           <button
             onClick={onClose}
+            onMouseEnter={() => setIsCloseButtonHovered(true)}
+            onMouseLeave={() => setIsCloseButtonHovered(false)}
             style={{
-              background: 'none',
+              background: isCloseButtonHovered ? colors.neutral[100] : 'transparent',
               border: 'none',
               fontSize: '24px',
               cursor: 'pointer',
-              color: colors.neutral[500],
+              color: isCloseButtonHovered ? colors.neutral[700] : colors.neutral[500],
               padding: spacing[2],
               borderRadius: borderRadius.base,
               transition: transitions.fast,
-              '&:hover': {
-                backgroundColor: colors.neutral[100],
-                color: colors.neutral[700],
-              },
             }}
           >
             ×
@@ -115,8 +141,10 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
         }}>
           <button
             onClick={handleDownload}
+            onMouseEnter={() => setIsDownloadButtonHovered(true)}
+            onMouseLeave={() => setIsDownloadButtonHovered(false)}
             style={{
-              background: colors.primary[600],
+              background: isDownloadButtonHovered ? colors.primary[700] : colors.primary[600],
               color: 'white',
               border: 'none',
               padding: `${spacing[3]} ${spacing[4]}`,
@@ -128,9 +156,6 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
               display: 'flex',
               alignItems: 'center',
               gap: spacing[2],
-              '&:hover': {
-                background: colors.primary[700],
-              },
             }}
           >
             <svg
@@ -152,8 +177,10 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
           
           <button
             onClick={onClose}
+            onMouseEnter={() => setIsCloseActionButtonHovered(true)}
+            onMouseLeave={() => setIsCloseActionButtonHovered(false)}
             style={{
-              background: colors.neutral[100],
+              background: isCloseActionButtonHovered ? colors.neutral[200] : colors.neutral[100],
               color: colors.neutral[700],
               border: `1px solid ${colors.border.medium}`,
               padding: `${spacing[3]} ${spacing[4]}`,
@@ -162,9 +189,6 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
               fontWeight: typography.fontWeight.medium,
               cursor: 'pointer',
               transition: transitions.fast,
-              '&:hover': {
-                background: colors.neutral[200],
-              },
             }}
           >
             Close

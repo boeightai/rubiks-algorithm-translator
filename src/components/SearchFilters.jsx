@@ -1,5 +1,24 @@
+/*
+ * Rubik's Cube Algorithm Translator
+ * Copyright (C) 2025 Bo Nam
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarIcon from './ui/StarIcon'
+import { useCallback } from 'react'
 
 const SearchFilters = ({
   searchTerm,
@@ -12,6 +31,27 @@ const SearchFilters = ({
   showFavoritesOnly,
   setShowFavoritesOnly,
 }) => {
+  // Memoized handlers for better performance
+  const handleSearchChange = useCallback((e) => {
+    setSearchTerm(e.target.value)
+  }, [setSearchTerm])
+
+  const handleCategoryChange = useCallback((e) => {
+    setSelectedCategory(e.target.value)
+  }, [setSelectedCategory])
+
+  const handleFavoritesToggle = useCallback(() => {
+    setShowFavoritesOnly(prev => !prev)
+  }, [setShowFavoritesOnly])
+
+  const clearSearch = useCallback(() => {
+    setSearchTerm('')
+  }, [setSearchTerm])
+
+  const clearCategory = useCallback(() => {
+    setSelectedCategory('all')
+  }, [setSelectedCategory])
+
   return (
     <div style={{
       marginBottom: spacing[6],
@@ -42,8 +82,9 @@ const SearchFilters = ({
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             placeholder="Search algorithms..."
+            aria-label="Search algorithms by name, description, or nickname"
             style={{
               width: '100%',
               padding: `${spacing[3]} ${spacing[4]} ${spacing[3]} ${spacing[10]}`,
@@ -55,6 +96,14 @@ const SearchFilters = ({
               outline: 'none',
               transition: transitions.fast,
             }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary[500]
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border.medium
+              e.target.style.boxShadow = 'none'
+            }}
           />
         </div>
 
@@ -62,7 +111,8 @@ const SearchFilters = ({
         <div style={{ flex: '1 1 150px', minWidth: '150px', position: 'relative' }}>
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={handleCategoryChange}
+            aria-label="Filter by algorithm category"
             style={{
               width: '100%',
               padding: `${spacing[3]} ${spacing[4]}`,
@@ -79,6 +129,14 @@ const SearchFilters = ({
               backgroundRepeat: 'no-repeat',
               backgroundSize: '16px 12px',
               paddingRight: spacing[10],
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary[500]
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border.medium
+              e.target.style.boxShadow = 'none'
             }}
           >
             {categories.map(category => (
@@ -118,7 +176,9 @@ const SearchFilters = ({
         {/* Favorites button right-justified */}
         {setShowFavoritesOnly && (
           <button
-            onClick={() => setShowFavoritesOnly(fav => !fav)}
+            onClick={handleFavoritesToggle}
+            aria-pressed={showFavoritesOnly}
+            aria-label={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
             style={{
               padding: `${spacing[3]} ${spacing[4]}`,
               border: showFavoritesOnly ? `2px solid ${colors.warning[500]}` : `1px solid ${colors.border.medium}`,
@@ -136,8 +196,12 @@ const SearchFilters = ({
               boxSizing: 'border-box',
               boxShadow: shadows.sm,
             }}
-            aria-pressed={showFavoritesOnly}
-            title={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
+            onFocus={(e) => {
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = shadows.sm
+            }}
           >
             <StarIcon filled={showFavoritesOnly} size={16} />
             <span style={{ color: 'inherit' }}>Favorites</span>
@@ -175,7 +239,8 @@ const SearchFilters = ({
             }}>
               <span>Search: "{searchTerm}"</span>
               <button
-                onClick={() => setSearchTerm('')}
+                onClick={clearSearch}
+                aria-label="Clear search"
                 style={{
                   background: 'none',
                   border: 'none',
@@ -184,6 +249,18 @@ const SearchFilters = ({
                   color: 'inherit',
                   fontSize: '14px',
                   lineHeight: 1,
+                  borderRadius: '50%',
+                  width: '16px',
+                  height: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onFocus={(e) => {
+                  e.target.style.background = colors.primary[200]
+                }}
+                onBlur={(e) => {
+                  e.target.style.background = 'none'
                 }}
               >
                 ×
@@ -205,7 +282,8 @@ const SearchFilters = ({
             }}>
               <span>Category: {selectedCategory}</span>
               <button
-                onClick={() => setSelectedCategory('all')}
+                onClick={clearCategory}
+                aria-label="Clear category filter"
                 style={{
                   background: 'none',
                   border: 'none',
@@ -214,6 +292,18 @@ const SearchFilters = ({
                   color: 'inherit',
                   fontSize: '14px',
                   lineHeight: 1,
+                  borderRadius: '50%',
+                  width: '16px',
+                  height: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onFocus={(e) => {
+                  e.target.style.background = colors.success[200]
+                }}
+                onBlur={(e) => {
+                  e.target.style.background = 'none'
                 }}
               >
                 ×

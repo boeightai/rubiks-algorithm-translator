@@ -1,3 +1,21 @@
+/*
+ * Rubik's Cube Algorithm Translator
+ * Copyright (C) 2025 Bo Nam
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
 import ImageModal from './ui/ImageModal'
@@ -14,6 +32,8 @@ const AlgorithmDetails = ({
 }) => {
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isButtonHovered, setIsButtonHovered] = useState(false)
+  const [isImageHovered, setIsImageHovered] = useState(false)
 
   // Check if this algorithm should show the "Sticker Image" link instead of direct image
   const shouldShowStickerLink = selectedAlgorithm && (
@@ -252,8 +272,10 @@ const AlgorithmDetails = ({
               }}>
                 <button
                   onClick={() => setIsModalOpen(true)}
+                  onMouseEnter={() => setIsButtonHovered(true)}
+                  onMouseLeave={() => setIsButtonHovered(false)}
                   style={{
-                    background: colors.primary[600],
+                    background: isButtonHovered ? colors.primary[700] : colors.primary[600],
                     color: 'white',
                     border: 'none',
                     padding: `${spacing[3]} ${spacing[4]}`,
@@ -265,9 +287,6 @@ const AlgorithmDetails = ({
                     display: 'flex',
                     alignItems: 'center',
                     gap: spacing[2],
-                    '&:hover': {
-                      background: colors.primary[700],
-                    },
                   }}
                 >
                   <svg
@@ -289,21 +308,20 @@ const AlgorithmDetails = ({
               </div>
             ) : (
               // Show regular image display for other algorithms
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                background: colors.neutral[50],
-                borderRadius: borderRadius.xl,
-                padding: spacing[4],
-                border: `1px solid ${colors.border.light}`,
-                cursor: 'pointer',
-                transition: transitions.fast,
-                '&:hover': {
-                  background: colors.neutral[100],
-                  borderColor: colors.border.medium,
-                },
-              }}
-              onClick={() => setIsImageZoomed(!isImageZoomed)}
+              <div 
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  background: isImageHovered ? colors.neutral[100] : colors.neutral[50],
+                  borderRadius: borderRadius.xl,
+                  padding: spacing[4],
+                  border: `1px solid ${isImageHovered ? colors.border.medium : colors.border.light}`,
+                  cursor: 'pointer',
+                  transition: transitions.fast,
+                }}
+                onClick={() => setIsImageZoomed(!isImageZoomed)}
+                onMouseEnter={() => setIsImageHovered(true)}
+                onMouseLeave={() => setIsImageHovered(false)}
               >
                 <img
                   src={tutorialImageSrc}

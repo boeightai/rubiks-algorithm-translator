@@ -1,6 +1,24 @@
+/*
+ * Rubik's Cube Algorithm Translator
+ * Copyright (C) 2025 Bo Nam
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
 const AlgorithmList = ({
   algorithms,
@@ -11,39 +29,64 @@ const AlgorithmList = ({
 }) => {
   // Track which algorithms have pattern images
   const [patternImageStatus, setPatternImageStatus] = useState({})
+  // Track hover state for each algorithm
+  const [hoveredAlgorithm, setHoveredAlgorithm] = useState(null)
+
+  // Memoized function to check pattern images
+  const checkPatternImages = useCallback(async (algorithmList) => {
+    const status = {}
+    const imagePromises = []
+    
+    for (const algorithm of algorithmList) {
+      const img = new Image()
+      const promise = new Promise((resolve) => {
+        img.onload = () => {
+          status[algorithm.id] = true
+          resolve()
+        }
+        img.onerror = () => {
+          status[algorithm.id] = false
+          resolve()
+        }
+        img.src = `/images/patterns/${algorithm.id}-pattern.png`
+      })
+      imagePromises.push(promise)
+    }
+    
+    await Promise.all(imagePromises)
+    return status
+  }, [])
 
   // Check for pattern images for each algorithm
   useEffect(() => {
-    const checkPatternImages = async () => {
-      const status = {}
-      
-      for (const algorithm of algorithms) {
-        const img = new Image()
-        try {
-          await new Promise((resolve, reject) => {
-            img.onload = resolve
-            img.onerror = reject
-            img.src = `/images/patterns/${algorithm.id}-pattern.png`
-          })
-          status[algorithm.id] = true
-        } catch {
-          status[algorithm.id] = false
-        }
-      }
-      
-      setPatternImageStatus(status)
-    }
-
     if (algorithms.length > 0) {
-      checkPatternImages()
+      checkPatternImages(algorithms).then(setPatternImageStatus)
+    } else {
+      setPatternImageStatus({})
     }
-  }, [algorithms])
+  }, [algorithms, checkPatternImages])
+
+  // Memoized algorithm list to prevent unnecessary re-renders
+  const algorithmItems = useMemo(() => {
+    return algorithms.map(algorithm => {
+      const isSelected = selectedAlgorithm?.id === algorithm.id
+      const isFav = isFavorite(algorithm.id)
+      const hasPatternImage = patternImageStatus[algorithm.id]
+      
+      return {
+        ...algorithm,
+        isSelected,
+        isFav,
+        hasPatternImage
+      }
+    })
+  }, [algorithms, selectedAlgorithm, isFavorite, patternImageStatus])
 
   return (
     <div style={{ 
       maxHeight: 'calc(100vh - 400px)', 
       overflowY: 'auto', 
-      paddingRight: spacing[4], // Increased from spacing[2] to spacing[4] for better scrollbar spacing
+      paddingRight: spacing[4],
       scrollbarWidth: 'thin',
       scrollbarColor: `${colors.neutral[300]} transparent`,
     }}>
@@ -80,30 +123,37 @@ const AlgorithmList = ({
           flexDirection: 'column',
           gap: spacing[3],
         }}>
-          {algorithms.map(algorithm => {
-            const isSelected = selectedAlgorithm?.id === algorithm.id
-            const isFav = isFavorite(algorithm.id)
-            const hasPatternImage = patternImageStatus[algorithm.id]
+          {algorithmItems.map(algorithm => {
+            const isHovered = hoveredAlgorithm === algorithm.id
             
             return (
               <div
                 key={algorithm.id}
                 onClick={() => onSelectAlgorithm(algorithm)}
+                onMouseEnter={() => setHoveredAlgorithm(algorithm.id)}
+                onMouseLeave={() => setHoveredAlgorithm(null)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onSelectAlgorithm(algorithm)
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`Select ${algorithm.name} algorithm`}
                 style={{
-                  background: isSelected ? colors.primary[50] : colors.background.primary,
-                  border: isSelected ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.light}`,
+                  background: algorithm.isSelected ? colors.primary[50] : colors.background.primary,
+                  border: algorithm.isSelected ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.light}`,
                   borderRadius: borderRadius.xl,
                   padding: spacing[4],
                   cursor: 'pointer',
                   transition: transitions.normal,
-                  boxShadow: isSelected ? shadows.lg : shadows.sm,
                   position: 'relative',
                   overflow: 'hidden',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: shadows.lg,
-                    borderColor: isSelected ? colors.primary[600] : colors.border.medium,
-                  },
+                  transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                  boxShadow: isHovered ? shadows.lg : (algorithm.isSelected ? shadows.lg : shadows.sm),
+                  borderColor: isHovered ? (algorithm.isSelected ? colors.primary[600] : colors.border.medium) : (algorithm.isSelected ? colors.primary[500] : colors.border.light),
+                  outline: 'none',
                 }}
               >
                 <div style={{
@@ -186,7 +236,7 @@ const AlgorithmList = ({
                       border: `1px solid ${colors.border.light}`,
                       minHeight: '120px',
                     }}>
-                      {hasPatternImage ? (
+                      {algorithm.hasPatternImage ? (
                         <div style={{
                           display: 'flex',
                           gap: spacing[4],
@@ -304,7 +354,7 @@ const AlgorithmList = ({
                     marginTop: spacing[1],
                   }}>
                     <StarButton
-                      isFavorite={isFav}
+                      isFavorite={algorithm.isFav}
                       onToggle={(e) => {
                         e.stopPropagation()
                         onToggleFavorite(algorithm.id)

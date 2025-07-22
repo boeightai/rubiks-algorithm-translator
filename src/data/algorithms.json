@@ -279,33 +279,6 @@
     "nicknames": ["H"]
   },
   {
-    "id": "aa-perm",
-    "name": "Aa-Perm",
-    "notation": "x R' U R' D2 R U' R' D2 R2 x'",
-    "category": "PLL",
-    "difficulty": "advanced",
-    "description": "Adjacent corner swap clockwise",
-    "nicknames": []
-  },
-  {
-    "id": "ab-perm",
-    "name": "Ab-Perm",
-    "notation": "x R2 D2 R U R' D2 R U' R x'",
-    "category": "PLL",
-    "difficulty": "advanced", 
-    "description": "Adjacent corner swap counterclockwise",
-    "nicknames": []
-  },
-  {
-    "id": "e-perm",
-    "name": "E-Perm",
-    "notation": "x' R U' R' D R U R' D' R U R' D R U' R' D' x",
-    "category": "PLL",
-    "difficulty": "advanced",
-    "description": "Diagonal corner swap",
-    "nicknames": []
-  },
-  {
     "id": "f-perm",
     "name": "F-Perm", 
     "notation": "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
@@ -438,15 +411,6 @@
     "category": "PLL",
     "difficulty": "intermediate",
     "description": "Edge 3-cycle counterclockwise",
-    "nicknames": []
-  },
-  {
-    "id": "v-perm",
-    "name": "V-Perm",
-    "notation": "R' U R' U' y R' F' R2 U' R' U R' F R F",
-    "category": "PLL",
-    "difficulty": "advanced",
-    "description": "Diagonal corner and edge swap",
     "nicknames": []
   },
   {
