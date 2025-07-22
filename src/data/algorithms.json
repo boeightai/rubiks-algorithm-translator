@@ -207,6 +207,15 @@
     "nicknames": ["Chameleon"]
   },
   {
+    "id": "oll-case-25",
+    "name": "OLL Case 25 - Cross",
+    "notation": "F' r U R' U' r' F R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 25 - Cross pattern",
+    "nicknames": ["Cross"]
+  },
+  {
     "id": "2look-oll-1",
     "name": "2-Look OLL Case 1 - Sune",
     "notation": "R U R' U R U2 R'",
@@ -466,5 +475,671 @@
     "difficulty": "intermediate",
     "description": "PLL Ua-Perm variation: swaps two edge pieces in the top layer (front and right edges).",
     "nicknames": ["Ua-Perm Variation", "PLL Adjacent"]
+  },
+  {
+    "id": "f2l-case-5",
+    "name": "F2L Case 5 - Corner in Place",
+    "notation": "R U R' U' R U R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Corner in place, edge needs to be inserted",
+    "nicknames": ["Corner in Place"]
+  },
+  {
+    "id": "f2l-case-6",
+    "name": "F2L Case 6 - Edge in Place",
+    "notation": "R U' R' U R U' R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Edge in place, corner needs to be inserted",
+    "nicknames": ["Edge in Place"]
+  },
+  {
+    "id": "f2l-case-7",
+    "name": "F2L Case 7 - Both Separated",
+    "notation": "R U R' U' R U R' U' R U R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Both corner and edge separated, need pairing",
+    "nicknames": ["Both Separated"]
+  },
+  {
+    "id": "oll-case-1",
+    "name": "OLL Case 1 - Dot",
+    "notation": "R U2 R2 F R F' U2 R' F R F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 1 - All corners oriented, no edges oriented",
+    "nicknames": ["Dot"]
+  },
+  {
+    "id": "oll-case-2",
+    "name": "OLL Case 2 - I",
+    "notation": "F R U R' U' F' f R U R' U' f'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 2 - I-shaped pattern",
+    "nicknames": ["I"]
+  },
+  {
+    "id": "oll-case-3",
+    "name": "OLL Case 3 - L",
+    "notation": "F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 3 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-4",
+    "name": "OLL Case 4 - Line",
+    "notation": "F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 4 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-5",
+    "name": "OLL Case 5 - Cross",
+    "notation": "F R U R' U' R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 5 - Cross pattern",
+    "nicknames": ["Cross"]
+  },
+  {
+    "id": "oll-case-6",
+    "name": "OLL Case 6 - Lightning",
+    "notation": "R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 6 - Lightning pattern",
+    "nicknames": ["Lightning"]
+  },
+  {
+    "id": "oll-case-7",
+    "name": "OLL Case 7 - Fish",
+    "notation": "R U2 R' U' R U' R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 7 - Fish pattern",
+    "nicknames": ["Fish"]
+  },
+  {
+    "id": "oll-case-8",
+    "name": "OLL Case 8 - Fish",
+    "notation": "R' U2 R U R' U R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 8 - Fish pattern",
+    "nicknames": ["Fish"]
+  },
+  {
+    "id": "oll-case-9",
+    "name": "OLL Case 9 - Fish",
+    "notation": "R U R' U R U' R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 9 - Fish pattern",
+    "nicknames": ["Fish"]
+  },
+  {
+    "id": "oll-case-10",
+    "name": "OLL Case 10 - Fish",
+    "notation": "R' U' R U' R' U R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 10 - Fish pattern",
+    "nicknames": ["Fish"]
+  },
+  {
+    "id": "oll-case-11",
+    "name": "OLL Case 11 - Knight",
+    "notation": "R U R' U R U2 R' F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 11 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-12",
+    "name": "OLL Case 12 - Knight",
+    "notation": "R' U' R U' R' U2 R F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 12 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-13",
+    "name": "OLL Case 13 - Knight",
+    "notation": "F U R U' R' F' R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 13 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-14",
+    "name": "OLL Case 14 - Knight",
+    "notation": "F' U' L' U L F R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 14 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-15",
+    "name": "OLL Case 15 - Knight",
+    "notation": "R U R' U R U' R' U R U2 R' F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 15 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-16",
+    "name": "OLL Case 16 - Knight",
+    "notation": "R' U' R U' R' U R U' R' U2 R F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 16 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-17",
+    "name": "OLL Case 17 - Knight",
+    "notation": "R U R' U R U2 R' F R U R' U' F' R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 17 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-18",
+    "name": "OLL Case 18 - Knight",
+    "notation": "R' U' R U' R' U2 R F' L' U' L U F R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 18 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-19",
+    "name": "OLL Case 19 - Knight",
+    "notation": "F R U R' U' F' R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 19 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "oll-case-20",
+    "name": "OLL Case 20 - Knight",
+    "notation": "F' L' U' L U F R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 20 - Knight pattern",
+    "nicknames": ["Knight"]
+  },
+  {
+    "id": "f2l-edge-flip",
+    "name": "F2L Edge Flip",
+    "notation": "R U R' U' R U R' U' R U R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Flip edge in F2L slot",
+    "nicknames": ["Edge Flip"]
+  },
+  {
+    "id": "f2l-corner-twist",
+    "name": "F2L Corner Twist",
+    "notation": "R U R' U' R U R' U' R U R' U' R U R'",
+    "category": "F2L",
+    "difficulty": "intermediate",
+    "description": "Twist corner in F2L slot",
+    "nicknames": ["Corner Twist"]
+  },
+  {
+    "id": "oll-case-21",
+    "name": "OLL Case 21 - C",
+    "notation": "R U2 R' U' R U' R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 21 - C-shaped pattern",
+    "nicknames": ["C"]
+  },
+  {
+    "id": "oll-case-22",
+    "name": "OLL Case 22 - C",
+    "notation": "R' U2 R U R' U R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 22 - C-shaped pattern",
+    "nicknames": ["C"]
+  },
+  {
+    "id": "oll-case-23",
+    "name": "OLL Case 23 - W",
+    "notation": "R U R' U R U' R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 23 - W-shaped pattern",
+    "nicknames": ["W"]
+  },
+  {
+    "id": "oll-case-26",
+    "name": "OLL Case 26 - Anti-Sune",
+    "notation": "R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 26 - Anti-Sune pattern",
+    "nicknames": ["Anti-Sune"]
+  },
+  {
+    "id": "oll-case-27",
+    "name": "OLL Case 27 - Sune",
+    "notation": "R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 27 - Sune pattern",
+    "nicknames": ["Sune"]
+  },
+  {
+    "id": "oll-case-28",
+    "name": "OLL Case 28 - Anti-Sune",
+    "notation": "R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 28 - Anti-Sune pattern",
+    "nicknames": ["Anti-Sune"]
+  },
+  {
+    "id": "oll-case-29",
+    "name": "OLL Case 29 - Sune",
+    "notation": "R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 29 - Sune pattern",
+    "nicknames": ["Sune"]
+  },
+  {
+    "id": "oll-case-30",
+    "name": "OLL Case 30 - Anti-Sune",
+    "notation": "R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 30 - Anti-Sune pattern",
+    "nicknames": ["Anti-Sune"]
+  },
+  {
+    "id": "oll-case-31",
+    "name": "OLL Case 31 - Sune",
+    "notation": "R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 31 - Sune pattern",
+    "nicknames": ["Sune"]
+  },
+  {
+    "id": "oll-case-32",
+    "name": "OLL Case 32 - Pi",
+    "notation": "R U2 R2 F R F' U2 R' F R F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 32 - Pi pattern",
+    "nicknames": ["Pi"]
+  },
+  {
+    "id": "oll-case-33",
+    "name": "OLL Case 33 - T",
+    "notation": "R U R' U' R' F R F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 33 - T-shaped pattern",
+    "nicknames": ["T"]
+  },
+  {
+    "id": "oll-case-34",
+    "name": "OLL Case 34 - T",
+    "notation": "R' U' R U R F' R' F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 34 - T-shaped pattern",
+    "nicknames": ["T"]
+  },
+  {
+    "id": "oll-case-35",
+    "name": "OLL Case 35 - T",
+    "notation": "F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 35 - T-shaped pattern",
+    "nicknames": ["T"]
+  },
+  {
+    "id": "oll-case-36",
+    "name": "OLL Case 36 - T",
+    "notation": "F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 36 - T-shaped pattern",
+    "nicknames": ["T"]
+  },
+  {
+    "id": "oll-case-37",
+    "name": "OLL Case 37 - L",
+    "notation": "F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 37 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-38",
+    "name": "OLL Case 38 - L",
+    "notation": "F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 38 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-39",
+    "name": "OLL Case 39 - L",
+    "notation": "R U R' U R U2 R' F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 39 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-40",
+    "name": "OLL Case 40 - L",
+    "notation": "R' U' R U' R' U2 R F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 40 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-41",
+    "name": "OLL Case 41 - L",
+    "notation": "R U R' U R U2 R' F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 41 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-42",
+    "name": "OLL Case 42 - L",
+    "notation": "R' U' R U' R' U2 R F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 42 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-43",
+    "name": "OLL Case 43 - L",
+    "notation": "F R U R' U' F' R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 43 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-44",
+    "name": "OLL Case 44 - Cross",
+    "notation": "F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 44 - Cross pattern",
+    "nicknames": ["Cross"]
+  },
+  {
+    "id": "oll-case-45",
+    "name": "OLL Case 45 - L",
+    "notation": "F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 45 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-46",
+    "name": "OLL Case 46 - L",
+    "notation": "F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 46 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-47",
+    "name": "OLL Case 47 - L",
+    "notation": "F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 47 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-48",
+    "name": "OLL Case 48 - L",
+    "notation": "R U R' U R U2 R' F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 48 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-49",
+    "name": "OLL Case 49 - L",
+    "notation": "R' U' R U' R' U2 R F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 49 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-50",
+    "name": "OLL Case 50 - L",
+    "notation": "F R U R' U' F' R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 50 - L-shaped pattern",
+    "nicknames": ["L"]
+  },
+  {
+    "id": "oll-case-51",
+    "name": "OLL Case 51 - Line",
+    "notation": "F R U R' U' R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 51 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-52",
+    "name": "OLL Case 52 - Line",
+    "notation": "F' L' U' L U L' U' L U F",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 52 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-53",
+    "name": "OLL Case 53 - Line",
+    "notation": "F R U R' U' F' f R U R' U' f'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 53 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-54",
+    "name": "OLL Case 54 - Line",
+    "notation": "F' L' U' L U F f' L' U' L U f",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 54 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-55",
+    "name": "OLL Case 55 - Line",
+    "notation": "F R U R' U' F' R U R' U R U2 R'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 55 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-56",
+    "name": "OLL Case 56 - Line",
+    "notation": "F' L' U' L U F R' U' R U' R' U2 R",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 56 - Line pattern",
+    "nicknames": ["Line"]
+  },
+  {
+    "id": "oll-case-57",
+    "name": "OLL Case 57 - Dot",
+    "notation": "F R U R' U' F' f R U R' U' f'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 57 - Dot pattern",
+    "nicknames": ["Dot"]
+  },
+  {
+    "id": "oll-case-58",
+    "name": "OLL Case 58 - Dot",
+    "notation": "F' L' U' L U F f' L' U' L U f",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL Case 58 - Dot pattern",
+    "nicknames": ["Dot"]
+  },
+  {
+    "id": "oll-case-59",
+    "name": "OLL Case 59 - Dot",
+    "notation": "F R U R' U' F' R U R' U R U2 R' F R U R' U' F'",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 59 - Dot pattern",
+    "nicknames": ["Dot"]
+  },
+  {
+    "id": "oll-case-60",
+    "name": "OLL Case 60 - Dot",
+    "notation": "F' L' U' L U F R' U' R U' R' U2 R F' L' U' L U F",
+    "category": "OLL",
+    "difficulty": "advanced",
+    "description": "OLL Case 60 - Dot pattern",
+    "nicknames": ["Dot"]
+  },
+  {
+    "id": "pll-aa-perm-alt",
+    "name": "Aa-Perm Alternative",
+    "notation": "R' F R' B2 R F' R' B2 R2",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Alternative Aa-Perm without cube rotation",
+    "nicknames": ["Aa-Perm Alt"]
+  },
+  {
+    "id": "pll-ab-perm-alt",
+    "name": "Ab-Perm Alternative",
+    "notation": "R2 B2 R F R' B2 R F' R",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Alternative Ab-Perm without cube rotation",
+    "nicknames": ["Ab-Perm Alt"]
+  },
+  {
+    "id": "pll-e-perm-alt",
+    "name": "E-Perm Alternative",
+    "notation": "R U' R' D R U R' D' R U R' D R U' R' D'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Alternative E-Perm without cube rotation",
+    "nicknames": ["E-Perm Alt"]
+  },
+  {
+    "id": "pll-v-perm-alt",
+    "name": "V-Perm Alternative",
+    "notation": "R' U R' U' R' U' R' U R U R2",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Alternative V-Perm without cube rotation",
+    "nicknames": ["V-Perm Alt"]
+  },
+  {
+    "id": "pll-y-perm-alt",
+    "name": "Y-Perm Alternative",
+    "notation": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "Alternative Y-Perm without cube rotation",
+    "nicknames": ["Y-Perm Alt"]
+  },
+  {
+    "id": "utility-sexy-move",
+    "name": "Sexy Move",
+    "notation": "R U R' U'",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Basic utility move used in many algorithms",
+    "nicknames": ["Sexy Move", "Right Trigger"]
+  },
+  {
+    "id": "utility-left-sexy",
+    "name": "Left Sexy Move",
+    "notation": "L' U' L U",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Left-handed version of sexy move",
+    "nicknames": ["Left Sexy Move", "Left Trigger"]
+  },
+  {
+    "id": "utility-sledgehammer",
+    "name": "Sledgehammer",
+    "notation": "R' F R F'",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Basic utility move for edge orientation",
+    "nicknames": ["Sledgehammer"]
+  },
+  {
+    "id": "utility-left-sledgehammer",
+    "name": "Left Sledgehammer",
+    "notation": "L F' L' F",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Left-handed version of sledgehammer",
+    "nicknames": ["Left Sledgehammer"]
+  },
+  {
+    "id": "utility-j-perm",
+    "name": "J-Perm",
+    "notation": "R U R' F' R U R' U' R' F R2 U' R'",
+    "category": "Utility",
+    "difficulty": "intermediate",
+    "description": "Useful utility algorithm for edge swapping",
+    "nicknames": ["J-Perm"]
+  },
+  {
+    "id": "utility-t-perm",
+    "name": "T-Perm",
+    "notation": "R U R' U' R' F R2 U' R' U' R U R' F'",
+    "category": "Utility",
+    "difficulty": "intermediate",
+    "description": "Useful utility algorithm for edge swapping",
+    "nicknames": ["T-Perm"]
   }
 ]

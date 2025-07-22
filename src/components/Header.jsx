@@ -3,7 +3,7 @@ import StarIcon from './ui/StarIcon'
 import Logo from './ui/Logo'
 
 const Header = ({ 
-  title = "Bo's Visual Notation System",
+  title = "Bo and Hailey's Visual Notation System",
   subtitle = "An Alternate Visual Notation System for Solving Rubik's Cubes",
   style = {}
 }) => {
