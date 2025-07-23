@@ -35,7 +35,9 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
       link.click()
       document.body.removeChild(link)
     } catch (error) {
-      console.error('Failed to download image:', error)
+      if (import.meta.env.DEV) {
+        console.error('Failed to download image:', error)
+      }
       // Could add user notification here
     }
   }
