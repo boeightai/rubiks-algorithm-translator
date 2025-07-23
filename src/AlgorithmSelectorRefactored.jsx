@@ -23,7 +23,7 @@ import SearchFilters from './components/SearchFilters'
 import AlgorithmList from './components/AlgorithmList'
 import AlgorithmDetails from './components/AlgorithmDetails'
 import VisualSequence from './VisualSequence'
-import GridLayout from './layouts/GridLayout'
+import MobileTabLayout from './layouts/MobileTabLayout'
 import Header from './components/Header'
 
 function AlgorithmSelectorRefactored() {
@@ -51,7 +51,7 @@ function AlgorithmSelectorRefactored() {
     />
   )
 
-  const leftColumn = (
+  const algorithmsContent = (
     <>
       <SearchFilters
         searchTerm={searchTerm}
@@ -75,7 +75,7 @@ function AlgorithmSelectorRefactored() {
     </>
   )
 
-  const rightColumn = (
+  const visualSequenceContent = (
     <>
       <AlgorithmDetails
         selectedAlgorithm={selectedAlgorithm}
@@ -97,10 +97,11 @@ function AlgorithmSelectorRefactored() {
   )
 
   return (
-    <GridLayout
+    <MobileTabLayout
       header={header}
-      leftColumn={leftColumn}
-      rightColumn={rightColumn}
+      algorithmsContent={algorithmsContent}
+      visualSequenceContent={visualSequenceContent}
+      selectedAlgorithm={selectedAlgorithm}
     />
   )
 }

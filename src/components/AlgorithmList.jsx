@@ -387,6 +387,7 @@ const AlgorithmList = ({
           .responsive-algorithm-list {
             max-height: none !important;
             padding-right: 0 !important;
+            overflow-y: visible !important;
           }
           
           .responsive-pattern-layout {
