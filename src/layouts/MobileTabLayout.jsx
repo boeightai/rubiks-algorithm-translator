@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
 import TabNavigation from '../components/ui/TabNavigation'
 
@@ -30,6 +30,7 @@ const MobileTabLayout = ({
   const [activeTab, setActiveTab] = useState('algorithms')
   const [isMobile, setIsMobile] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
+  const autoSwitchTimeoutRef = useRef(null)
 
   // Check if we're on mobile
   useEffect(() => {
@@ -44,17 +45,30 @@ const MobileTabLayout = ({
   }, [])
 
   // Auto-switch to visual sequence tab when an algorithm is selected on mobile
+  // Only auto-switch if we're currently on the algorithms tab and haven't manually switched yet
   useEffect(() => {
     if (isMobile && selectedAlgorithm && activeTab === 'algorithms') {
+      // Clear any existing timeout
+      if (autoSwitchTimeoutRef.current) {
+        clearTimeout(autoSwitchTimeoutRef.current)
+      }
+      
       // Show notification
       setShowNotification(true)
       
       // Add a small delay to allow the user to see the selection before switching
-      const timer = setTimeout(() => {
+      autoSwitchTimeoutRef.current = setTimeout(() => {
         setActiveTab('visual')
         setShowNotification(false)
-      }, 800)
-      return () => clearTimeout(timer)
+        autoSwitchTimeoutRef.current = null
+      }, 1200) // Increased delay to give users more time to see the selection
+      
+      return () => {
+        if (autoSwitchTimeoutRef.current) {
+          clearTimeout(autoSwitchTimeoutRef.current)
+          autoSwitchTimeoutRef.current = null
+        }
+      }
     }
   }, [selectedAlgorithm, isMobile, activeTab])
 
@@ -93,6 +107,7 @@ const MobileTabLayout = ({
             activeTab={activeTab}
             onTabChange={setActiveTab}
             tabs={tabs}
+            selectedAlgorithm={selectedAlgorithm}
           />
           
           {/* Notification when switching tabs */}
@@ -111,8 +126,35 @@ const MobileTabLayout = ({
               zIndex: 1000,
               boxShadow: shadows.lg,
               animation: 'slideDown 0.3s ease-out',
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[3],
             }}>
-              Switching to Visual Sequence...
+              <span>Switching to Visual Sequence...</span>
+              <button
+                onClick={() => {
+                  setShowNotification(false)
+                  // Clear the auto-switch timeout
+                  if (autoSwitchTimeoutRef.current) {
+                    clearTimeout(autoSwitchTimeoutRef.current)
+                    autoSwitchTimeoutRef.current = null
+                  }
+                }}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  border: 'none',
+                  color: colors.white,
+                  borderRadius: borderRadius.sm,
+                  padding: `${spacing[1]} ${spacing[2]}`,
+                  fontSize: typography.fontSize.xs,
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease',
+                }}
+                onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
+                onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+              >
+                ✕
+              </button>
             </div>
           )}
         </>

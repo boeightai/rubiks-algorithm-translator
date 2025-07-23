@@ -18,7 +18,7 @@
 
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../../styles/designSystem'
 
-const TabNavigation = ({ activeTab, onTabChange, tabs }) => {
+const TabNavigation = ({ activeTab, onTabChange, tabs, selectedAlgorithm }) => {
   return (
     <div style={{
       display: 'flex',
@@ -66,6 +66,18 @@ const TabNavigation = ({ activeTab, onTabChange, tabs }) => {
               color: activeTab === tab.id ? colors.neutral[900] : colors.neutral[600],
             }}>
               {tab.label}
+              {/* Show indicator when algorithm is selected and we're on visual tab */}
+              {tab.id === 'visual' && selectedAlgorithm && (
+                <span style={{
+                  display: 'inline-block',
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: colors.primary[500],
+                  marginLeft: spacing[1],
+                  verticalAlign: 'middle',
+                }} />
+              )}
             </span>
           </div>
         </button>
