@@ -25,12 +25,32 @@ const MobileTabLayout = ({
   algorithmsContent,
   visualSequenceContent,
   selectedAlgorithm,
+  setSelectedAlgorithm,
   containerStyle = {}
 }) => {
   const [activeTab, setActiveTab] = useState('algorithms')
   const [isMobile, setIsMobile] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
   const autoSwitchTimeoutRef = useRef(null)
+
+  // Handle tab changes and clear selection when switching to algorithms tab
+  const handleTabChange = (newTab) => {
+    // Clear any existing auto-switch timeout
+    if (autoSwitchTimeoutRef.current) {
+      clearTimeout(autoSwitchTimeoutRef.current)
+      autoSwitchTimeoutRef.current = null
+    }
+    
+    // Hide notification if it's showing
+    setShowNotification(false)
+    
+    // If switching to algorithms tab, clear the selected algorithm
+    if (newTab === 'algorithms' && selectedAlgorithm) {
+      setSelectedAlgorithm(null)
+    }
+    
+    setActiveTab(newTab)
+  }
 
   // Check if we're on mobile
   useEffect(() => {
@@ -105,7 +125,7 @@ const MobileTabLayout = ({
         <>
           <TabNavigation
             activeTab={activeTab}
-            onTabChange={setActiveTab}
+            onTabChange={handleTabChange}
             tabs={tabs}
             selectedAlgorithm={selectedAlgorithm}
           />
@@ -216,7 +236,7 @@ const MobileTabLayout = ({
                     Select an algorithm from the Algorithms tab to view its visual sequence
                   </div>
                   <button
-                    onClick={() => setActiveTab('algorithms')}
+                    onClick={() => handleTabChange('algorithms')}
                     style={{
                       padding: `${spacing[3]} ${spacing[4]}`,
                       background: colors.primary[500],

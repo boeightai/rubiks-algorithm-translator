@@ -102,6 +102,7 @@ function AlgorithmSelectorRefactored() {
       algorithmsContent={algorithmsContent}
       visualSequenceContent={visualSequenceContent}
       selectedAlgorithm={selectedAlgorithm}
+      setSelectedAlgorithm={setSelectedAlgorithm}
     />
   )
 }
