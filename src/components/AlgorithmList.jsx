@@ -83,13 +83,16 @@ const AlgorithmList = ({
   }, [algorithms, selectedAlgorithm, isFavorite, patternImageStatus])
 
   return (
-    <div style={{ 
-      maxHeight: 'calc(100vh - 400px)', 
-      overflowY: 'auto', 
-      paddingRight: spacing[4],
-      scrollbarWidth: 'thin',
-      scrollbarColor: `${colors.neutral[300]} transparent`,
-    }}>
+    <div 
+      className="responsive-algorithm-list"
+      style={{ 
+        maxHeight: 'calc(100vh - 400px)', 
+        overflowY: 'auto', 
+        paddingRight: spacing[4],
+        scrollbarWidth: 'thin',
+        scrollbarColor: `${colors.neutral[300]} transparent`,
+      }}
+    >
       {algorithms.length === 0 ? (
         <div style={{
           textAlign: 'center',
@@ -154,6 +157,7 @@ const AlgorithmList = ({
                   boxShadow: isHovered ? shadows.lg : (algorithm.isSelected ? shadows.lg : shadows.sm),
                   borderColor: isHovered ? (algorithm.isSelected ? colors.primary[600] : colors.border.medium) : (algorithm.isSelected ? colors.primary[500] : colors.border.light),
                   outline: 'none',
+                  minHeight: '44px', // Touch target optimization
                 }}
               >
                 <div style={{
@@ -228,21 +232,27 @@ const AlgorithmList = ({
                     )}
 
                     {/* Pattern Image and Notation preview */}
-                    <div style={{
-                      marginTop: spacing[3],
-                      padding: spacing[3],
-                      background: colors.neutral[50],
-                      borderRadius: borderRadius.lg,
-                      border: `1px solid ${colors.border.light}`,
-                      minHeight: '120px',
-                    }}>
+                    <div 
+                      className="responsive-pattern-section"
+                      style={{
+                        marginTop: spacing[3],
+                        padding: spacing[3],
+                        background: colors.neutral[50],
+                        borderRadius: borderRadius.lg,
+                        border: `1px solid ${colors.border.light}`,
+                        minHeight: '120px',
+                      }}
+                    >
                       {algorithm.hasPatternImage ? (
-                        <div style={{
-                          display: 'flex',
-                          gap: spacing[4],
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
+                        <div 
+                          className="responsive-pattern-layout"
+                          style={{
+                            display: 'flex',
+                            gap: spacing[4],
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}
+                        >
                           {/* Pattern Image Section */}
                           <div style={{
                             display: 'flex',
@@ -263,12 +273,14 @@ const AlgorithmList = ({
                             <img
                               src={`/images/patterns/${algorithm.id}-pattern.png`}
                               alt={`${algorithm.name} pattern`}
+                              className="responsive-pattern-image"
                               style={{
                                 width: '70px',
                                 height: '70px',
                                 border: `1px solid ${colors.border.light}`,
                                 borderRadius: borderRadius.base,
                                 background: colors.background.primary,
+                                maxWidth: '100%',
                               }}
                               onError={(e) => {
                                 e.target.style.display = 'none'
@@ -368,6 +380,71 @@ const AlgorithmList = ({
           })}
         </div>
       )}
+
+      {/* Mobile-responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-algorithm-list {
+            max-height: none !important;
+            padding-right: 0 !important;
+          }
+          
+          .responsive-pattern-layout {
+            flex-direction: column !important;
+            gap: 16px !important;
+            align-items: center !important;
+          }
+          
+          .responsive-pattern-image {
+            width: 60px !important;
+            height: 60px !important;
+          }
+          
+          .responsive-pattern-section {
+            min-height: auto !important;
+            padding: 16px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-pattern-layout {
+            gap: 12px !important;
+          }
+          
+          .responsive-pattern-image {
+            width: 50px !important;
+            height: 50px !important;
+          }
+          
+          .responsive-pattern-section {
+            padding: 12px !important;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .responsive-pattern-image {
+            width: 45px !important;
+            height: 45px !important;
+          }
+          
+          .responsive-pattern-section {
+            padding: 8px !important;
+          }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .responsive-pattern-layout {
+            flex-direction: row !important;
+            gap: 12px !important;
+          }
+          
+          .responsive-pattern-image {
+            width: 55px !important;
+            height: 55px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

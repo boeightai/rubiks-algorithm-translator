@@ -50,6 +50,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
 
   return (
     <div
+      className="responsive-modal-backdrop"
       style={{
         position: 'fixed',
         top: 0,
@@ -66,6 +67,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
       onClick={handleBackdropClick}
     >
       <div
+        className="responsive-modal-content"
         style={{
           background: colors.background.primary,
           borderRadius: borderRadius.xl,
@@ -79,19 +81,23 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
         }}
       >
         {/* Header */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: spacing[4],
-          paddingBottom: spacing[4],
-          borderBottom: `1px solid ${colors.border.light}`,
-        }}>
+        <div 
+          className="responsive-modal-header"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: spacing[4],
+            paddingBottom: spacing[4],
+            borderBottom: `1px solid ${colors.border.light}`,
+          }}
+        >
           <h2 style={{
             fontSize: typography.fontSize.xl,
             fontWeight: typography.fontWeight.semibold,
             color: colors.neutral[900],
             margin: 0,
+            flex: '1 1 auto',
           }}>
             {algorithmName} - Tutorial Image
           </h2>
@@ -108,6 +114,11 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
               padding: spacing[2],
               borderRadius: borderRadius.base,
               transition: transitions.fast,
+              minWidth: '44px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             ×
@@ -115,14 +126,18 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
         </div>
 
         {/* Image */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginBottom: spacing[4],
-        }}>
+        <div 
+          className="responsive-modal-image-container"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: spacing[4],
+          }}
+        >
           <img
             src={imageSrc}
             alt={imageAlt}
+            className="responsive-modal-image"
             style={{
               maxWidth: '100%',
               maxHeight: '60vh',
@@ -136,11 +151,14 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
         </div>
 
         {/* Actions */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: spacing[3],
-        }}>
+        <div 
+          className="responsive-modal-actions"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: spacing[3],
+          }}
+        >
           <button
             onClick={handleDownload}
             onMouseEnter={() => setIsDownloadButtonHovered(true)}
@@ -158,6 +176,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
               display: 'flex',
               alignItems: 'center',
               gap: spacing[2],
+              minHeight: '44px',
             }}
           >
             <svg
@@ -191,12 +210,114 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
               fontWeight: typography.fontWeight.medium,
               cursor: 'pointer',
               transition: transitions.fast,
+              minHeight: '44px',
             }}
           >
             Close
           </button>
         </div>
       </div>
+
+      {/* Mobile-responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-modal-backdrop {
+            padding: 12px !important;
+          }
+          
+          .responsive-modal-content {
+            padding: 20px !important;
+            max-width: 95vw !important;
+            max-height: 95vh !important;
+          }
+          
+          .responsive-modal-header {
+            margin-bottom: 16px !important;
+            padding-bottom: 16px !important;
+          }
+          
+          .responsive-modal-header h2 {
+            font-size: 1.125rem !important;
+          }
+          
+          .responsive-modal-image {
+            max-height: 50vh !important;
+          }
+          
+          .responsive-modal-actions {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          
+          .responsive-modal-actions button {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-modal-backdrop {
+            padding: 8px !important;
+          }
+          
+          .responsive-modal-content {
+            padding: 16px !important;
+            max-width: 98vw !important;
+            max-height: 98vh !important;
+          }
+          
+          .responsive-modal-header {
+            margin-bottom: 12px !important;
+            padding-bottom: 12px !important;
+          }
+          
+          .responsive-modal-header h2 {
+            font-size: 1rem !important;
+          }
+          
+          .responsive-modal-image {
+            max-height: 40vh !important;
+          }
+          
+          .responsive-modal-actions {
+            gap: 8px !important;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .responsive-modal-content {
+            padding: 12px !important;
+          }
+          
+          .responsive-modal-header h2 {
+            font-size: 0.875rem !important;
+          }
+          
+          .responsive-modal-image {
+            max-height: 35vh !important;
+          }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .responsive-modal-content {
+            max-height: 90vh !important;
+          }
+          
+          .responsive-modal-image {
+            max-height: 45vh !important;
+          }
+          
+          .responsive-modal-actions {
+            flex-direction: row !important;
+            gap: 12px !important;
+          }
+          
+          .responsive-modal-actions button {
+            width: auto !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

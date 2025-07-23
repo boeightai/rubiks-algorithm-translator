@@ -1,3 +1,21 @@
+/*
+ * Rubik's Cube Algorithm Translator
+ * Copyright (C) 2025 Bo Nam
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +57,35 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Mobile-responsive root adjustments */
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 0.5rem;
+  }
+}
+
+/* Ensure responsive container works properly */
+@media (max-width: 768px) {
+  .responsive-container {
+    width: 95% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-container {
+    width: 98% !important;
+    padding: 0 0.5rem !important;
+  }
 }

@@ -57,15 +57,23 @@ const SearchFilters = ({
       marginBottom: spacing[6],
     }}>
       {/* Search and Filter Controls */}
-      <div style={{
-        display: 'flex',
-        gap: spacing[3],
-        marginBottom: spacing[4],
-        alignItems: 'center',
-        flexWrap: 'wrap',
-      }}>
+      <div 
+        className="responsive-form"
+        style={{
+          display: 'flex',
+          gap: spacing[3],
+          marginBottom: spacing[4],
+          alignItems: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
         {/* Search Input */}
-        <div style={{ flex: '2 1 200px', minWidth: '200px', position: 'relative' }}>
+        <div style={{ 
+          flex: '2 1 200px', 
+          minWidth: '200px', 
+          position: 'relative',
+          width: '100%'
+        }}>
           <div style={{
             position: 'absolute',
             left: spacing[3],
@@ -90,11 +98,12 @@ const SearchFilters = ({
               padding: `${spacing[3]} ${spacing[4]} ${spacing[3]} ${spacing[10]}`,
               border: `1px solid ${colors.border.medium}`,
               borderRadius: borderRadius.xl,
-              fontSize: typography.fontSize.sm,
+              fontSize: '16px', // Prevent zoom on iOS
               background: colors.background.primary,
               color: colors.neutral[800],
               outline: 'none',
               transition: transitions.fast,
+              minHeight: '44px', // Touch target optimization
             }}
             onFocus={(e) => {
               e.target.style.borderColor = colors.primary[500]
@@ -108,7 +117,12 @@ const SearchFilters = ({
         </div>
 
         {/* Category Filter */}
-        <div style={{ flex: '1 1 150px', minWidth: '150px', position: 'relative' }}>
+        <div style={{ 
+          flex: '1 1 150px', 
+          minWidth: '150px', 
+          position: 'relative',
+          width: '100%'
+        }}>
           <select
             value={selectedCategory}
             onChange={handleCategoryChange}
@@ -118,7 +132,7 @@ const SearchFilters = ({
               padding: `${spacing[3]} ${spacing[4]}`,
               border: `1px solid ${colors.border.medium}`,
               borderRadius: borderRadius.xl,
-              fontSize: typography.fontSize.sm,
+              fontSize: '16px', // Prevent zoom on iOS
               background: colors.background.primary,
               color: colors.neutral[800],
               cursor: 'pointer',
@@ -129,6 +143,7 @@ const SearchFilters = ({
               backgroundRepeat: 'no-repeat',
               backgroundSize: '16px 12px',
               paddingRight: spacing[10],
+              minHeight: '44px', // Touch target optimization
             }}
             onFocus={(e) => {
               e.target.style.borderColor = colors.primary[500]
@@ -149,13 +164,22 @@ const SearchFilters = ({
       </div>
 
       {/* Count and Favorites button row */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: spacing[4],
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
+      <div 
+        className="responsive-button-group"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: spacing[4],
+          gap: spacing[3],
+        }}
+      >
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: spacing[3],
+          flex: '1 1 auto'
+        }}>
           {/* Title for count display */}
           <div style={{
             fontSize: typography.fontSize.sm,
@@ -195,6 +219,9 @@ const SearchFilters = ({
               transition: 'all 0.2s ease',
               boxSizing: 'border-box',
               boxShadow: shadows.sm,
+              minHeight: '44px', // Touch target optimization
+              minWidth: '44px',
+              whiteSpace: 'nowrap',
             }}
             onFocus={(e) => {
               e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
@@ -250,11 +277,13 @@ const SearchFilters = ({
                   fontSize: '14px',
                   lineHeight: 1,
                   borderRadius: '50%',
-                  width: '16px',
-                  height: '16px',
+                  width: '20px',
+                  height: '20px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  minWidth: '20px',
+                  minHeight: '20px',
                 }}
                 onFocus={(e) => {
                   e.target.style.background = colors.primary[200]
@@ -293,11 +322,13 @@ const SearchFilters = ({
                   fontSize: '14px',
                   lineHeight: 1,
                   borderRadius: '50%',
-                  width: '16px',
-                  height: '16px',
+                  width: '20px',
+                  height: '20px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  minWidth: '20px',
+                  minHeight: '20px',
                 }}
                 onFocus={(e) => {
                   e.target.style.background = colors.success[200]
@@ -312,6 +343,48 @@ const SearchFilters = ({
           )}
         </div>
       )}
+
+      {/* Mobile-specific responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-form {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          
+          .responsive-form > div {
+            flex: 1 1 auto !important;
+            min-width: auto !important;
+            width: 100% !important;
+          }
+          
+          .responsive-button-group {
+            flex-direction: column !important;
+            gap: 12px !important;
+            align-items: stretch !important;
+          }
+          
+          .responsive-button-group > div {
+            justify-content: center !important;
+            text-align: center !important;
+          }
+          
+          .responsive-button-group button {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-form {
+            gap: 8px !important;
+          }
+          
+          .responsive-button-group {
+            gap: 8px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

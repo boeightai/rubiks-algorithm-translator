@@ -87,24 +87,30 @@ const AlgorithmDetails = ({
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: spacing[6],
-    }}>
+    <div 
+      className="responsive-algorithm-details"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: spacing[6],
+      }}
+    >
       {/* Header Section */}
       <div style={{
         paddingBottom: spacing[4],
         borderBottom: `1px solid ${colors.border.light}`,
       }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: spacing[3],
-          marginBottom: spacing[3],
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
+        <div 
+          className="responsive-header-layout"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: spacing[3],
+            marginBottom: spacing[3],
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], flex: '1 1 auto' }}>
             <h2 style={{
               fontSize: typography.fontSize['2xl'],
               fontWeight: typography.fontWeight.bold,
@@ -122,14 +128,17 @@ const AlgorithmDetails = ({
           </div>
           {/* Alternative Names (Nicknames) right-justified */}
           {selectedAlgorithm.nicknames && selectedAlgorithm.nicknames.length > 0 && (
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: spacing[2],
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              maxWidth: '50%',
-            }}>
+            <div 
+              className="responsive-nicknames"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: spacing[2],
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                maxWidth: '50%',
+              }}
+            >
               <span style={{
                 fontSize: typography.fontSize.sm,
                 color: colors.primary[700],
@@ -178,14 +187,20 @@ const AlgorithmDetails = ({
       </div>
 
       {/* Images Section */}
-      <div style={{
-        display: 'flex',
-        gap: spacing[6],
-        flexWrap: 'wrap',
-      }}>
+      <div 
+        className="responsive-images-section"
+        style={{
+          display: 'flex',
+          gap: spacing[6],
+          flexWrap: 'wrap',
+        }}
+      >
         {/* Pattern Image Section */}
         {patternImageExists && (
-          <div style={{ flex: '1 1 250px', minWidth: '200px' }}>
+          <div 
+            className="responsive-image-container"
+            style={{ flex: '1 1 250px', minWidth: '200px' }}
+          >
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -219,6 +234,7 @@ const AlgorithmDetails = ({
               <img
                 src={patternImageSrc}
                 alt={`${selectedAlgorithm.name} pattern`}
+                className="responsive-pattern-image"
                 style={{
                   maxWidth: '100%',
                   maxHeight: '200px',
@@ -236,7 +252,10 @@ const AlgorithmDetails = ({
 
         {/* Tutorial Image Section */}
         {tutorialImageExists && (
-          <div style={{ flex: '1 1 250px', minWidth: '200px' }}>
+          <div 
+            className="responsive-image-container"
+            style={{ flex: '1 1 250px', minWidth: '200px' }}
+          >
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -287,6 +306,7 @@ const AlgorithmDetails = ({
                     display: 'flex',
                     alignItems: 'center',
                     gap: spacing[2],
+                    minHeight: '44px', // Touch target optimization
                   }}
                 >
                   <svg
@@ -326,6 +346,7 @@ const AlgorithmDetails = ({
                 <img
                   src={tutorialImageSrc}
                   alt={`${selectedAlgorithm.name} tutorial`}
+                  className="responsive-tutorial-image"
                   style={{
                     maxWidth: isImageZoomed ? '100%' : '80%',
                     maxHeight: isImageZoomed ? '600px' : '300px',
@@ -376,6 +397,72 @@ const AlgorithmDetails = ({
         imageAlt={`${selectedAlgorithm.name} tutorial`}
         algorithmName={selectedAlgorithm.name}
       />
+
+      {/* Mobile-responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-header-layout {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+          }
+          
+          .responsive-nicknames {
+            max-width: 100% !important;
+            justify-content: flex-start !important;
+          }
+          
+          .responsive-images-section {
+            flex-direction: column !important;
+            gap: 24px !important;
+          }
+          
+          .responsive-image-container {
+            flex: 1 1 auto !important;
+            min-width: auto !important;
+          }
+          
+          .responsive-pattern-image,
+          .responsive-tutorial-image {
+            max-height: 150px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-header-layout {
+            gap: 8px !important;
+          }
+          
+          .responsive-images-section {
+            gap: 16px !important;
+          }
+          
+          .responsive-pattern-image,
+          .responsive-tutorial-image {
+            max-height: 120px !important;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .responsive-pattern-image,
+          .responsive-tutorial-image {
+            max-height: 100px !important;
+          }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .responsive-images-section {
+            flex-direction: row !important;
+            gap: 16px !important;
+          }
+          
+          .responsive-pattern-image,
+          .responsive-tutorial-image {
+            max-height: 140px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

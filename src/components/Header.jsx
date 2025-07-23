@@ -26,26 +26,30 @@ const Header = ({
   style = {}
 }) => {
   return (
-    <div style={{
-      marginBottom: spacing[8],
-      padding: `${spacing[6]} 0`,
-      borderBottom: `1px solid ${colors.border.light}`,
-      textAlign: 'left',
-      ...style
-    }}>
+    <div 
+      className="responsive-header"
+      style={{
+        marginBottom: spacing[8],
+        padding: `${spacing[6]} 0`,
+        borderBottom: `1px solid ${colors.border.light}`,
+        textAlign: 'left',
+        ...style
+      }}
+    >
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: spacing[2],
       }}>
-                {/* Left side - Title and subtitle */}
+        {/* Left side - Title and subtitle */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: spacing[3],
+          flex: '1 1 auto',
         }}>
-          <div>
+          <div style={{ width: '100%' }}>
             <h1 style={{ 
               color: colors.neutral[900], 
               fontSize: typography.fontSize['3xl'], 
@@ -67,8 +71,76 @@ const Header = ({
             </p>
           </div>
         </div>
-
       </div>
+
+      {/* Mobile-responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-header {
+            margin-bottom: 24px !important;
+            padding: 20px 0 !important;
+          }
+          
+          .responsive-header h1 {
+            font-size: 1.5rem !important;
+            line-height: 1.3 !important;
+          }
+          
+          .responsive-header p {
+            font-size: 1rem !important;
+            margin-top: 8px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-header {
+            margin-bottom: 16px !important;
+            padding: 16px 0 !important;
+          }
+          
+          .responsive-header h1 {
+            font-size: 1.25rem !important;
+            line-height: 1.2 !important;
+          }
+          
+          .responsive-header p {
+            font-size: 0.875rem !important;
+            margin-top: 6px !important;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .responsive-header {
+            margin-bottom: 12px !important;
+            padding: 12px 0 !important;
+          }
+          
+          .responsive-header h1 {
+            font-size: 1.125rem !important;
+          }
+          
+          .responsive-header p {
+            font-size: 0.8rem !important;
+            margin-top: 4px !important;
+          }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .responsive-header {
+            margin-bottom: 16px !important;
+            padding: 12px 0 !important;
+          }
+          
+          .responsive-header h1 {
+            font-size: 1.375rem !important;
+          }
+          
+          .responsive-header p {
+            font-size: 0.9rem !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

@@ -1,3 +1,21 @@
+/*
+ * Rubik's Cube Algorithm Translator
+ * Copyright (C) 2025 Bo Nam
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -69,6 +87,172 @@ select:focus {
 ::selection {
   background-color: #dbeafe;
   color: #1e40af;
+}
+
+/* Mobile-responsive base styles */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch target optimization */
+button, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"],
+select,
+a {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input, select, textarea {
+  font-size: 16px;
+}
+
+/* Responsive typography */
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+  
+  body {
+    font-size: 13px;
+  }
+}
+
+/* Responsive spacing adjustments */
+@media screen and (max-width: 768px) {
+  .mobile-padding {
+    padding: 1rem !important;
+  }
+  
+  .mobile-margin {
+    margin: 1rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mobile-padding {
+    padding: 0.75rem !important;
+  }
+  
+  .mobile-margin {
+    margin: 0.75rem !important;
+  }
+}
+
+/* Responsive container widths */
+@media screen and (max-width: 768px) {
+  .responsive-container {
+    width: 95% !important;
+    max-width: none !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .responsive-container {
+    width: 98% !important;
+    padding: 0 0.5rem !important;
+  }
+}
+
+/* Responsive flex layouts */
+@media screen and (max-width: 768px) {
+  .responsive-flex {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .responsive-flex > * {
+    flex: 1 1 auto !important;
+    min-width: auto !important;
+  }
+}
+
+/* Responsive grid layouts */
+@media screen and (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Responsive text alignment */
+@media screen and (max-width: 480px) {
+  .mobile-text-center {
+    text-align: center !important;
+  }
+  
+  .mobile-text-left {
+    text-align: left !important;
+  }
+}
+
+/* Responsive button groups */
+@media screen and (max-width: 768px) {
+  .responsive-button-group {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .responsive-button-group > * {
+    width: 100% !important;
+  }
+}
+
+/* Responsive form layouts */
+@media screen and (max-width: 768px) {
+  .responsive-form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .responsive-form input,
+  .responsive-form select,
+  .responsive-form textarea {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Responsive image containers */
+@media screen and (max-width: 768px) {
+  .responsive-image {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  .responsive-image-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+}
+
+/* Responsive navigation */
+@media screen and (max-width: 768px) {
+  .responsive-nav {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .responsive-nav > * {
+    width: 100% !important;
+    text-align: center !important;
+  }
 }
 
 /* Print styles */

@@ -199,6 +199,7 @@ function VisualSequence({ notation }) {
         marginBottom: spacing[4],
         paddingBottom: spacing[3],
         borderBottom: `1px solid ${colors.border.light}`,
+        flexWrap: 'wrap',
       }}>
         <div style={{
           width: '24px',
@@ -208,6 +209,7 @@ function VisualSequence({ notation }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          flexShrink: 0,
         }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -218,6 +220,7 @@ function VisualSequence({ notation }) {
           margin: 0,
           fontWeight: typography.fontWeight.semibold,
           fontSize: typography.fontSize.lg,
+          flex: '1 1 auto',
         }}>
           Visual Sequence
         </h3>
@@ -228,6 +231,7 @@ function VisualSequence({ notation }) {
           borderRadius: borderRadius.full,
           fontSize: typography.fontSize.xs,
           fontWeight: typography.fontWeight.medium,
+          flexShrink: 0,
         }}>
           {moveList.length} moves
         </div>
@@ -245,6 +249,7 @@ function VisualSequence({ notation }) {
             display: 'flex',
             alignItems: 'center',
             gap: spacing[1],
+            flexShrink: 0,
           }}>
             <span style={{ fontSize: '10px' }}>🎯</span>
             Both Triggers
@@ -264,6 +269,7 @@ function VisualSequence({ notation }) {
             display: 'flex',
             alignItems: 'center',
             gap: spacing[1],
+            flexShrink: 0,
           }}>
             <span style={{ fontSize: '10px' }}>🎯</span>
             Right Trigger
@@ -283,6 +289,7 @@ function VisualSequence({ notation }) {
             display: 'flex',
             alignItems: 'center',
             gap: spacing[1],
+            flexShrink: 0,
           }}>
             <span style={{ fontSize: '10px' }}>🎯</span>
             Left Trigger
@@ -311,14 +318,17 @@ function VisualSequence({ notation }) {
           </div>
         </div>
       ) : (
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: spacing[3],
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-          minHeight: '120px',
-        }}>
+        <div 
+          className="responsive-cube-grid"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: spacing[3],
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            minHeight: '120px',
+          }}
+        >
           {(() => {
             const renderedMoves = []
             let i = 0
@@ -373,6 +383,7 @@ function VisualSequence({ notation }) {
                           <img
                             src={moves[moveList[j]]}
                             alt={moveList[j]}
+                            className="responsive-cube-image"
                             style={{
                               width: '64px',
                               height: '64px',
@@ -383,6 +394,7 @@ function VisualSequence({ notation }) {
                               boxShadow: shadows.sm,
                               transition: 'transform 0.2s ease',
                               transform: 'scale(1)',
+                              maxWidth: '100%',
                             }}
                             onError={(e) => {
                               e.target.style.display = 'none'
@@ -450,6 +462,8 @@ function VisualSequence({ notation }) {
                     border: `3px solid ${triggerColor}`,
                     borderRadius: borderRadius.lg,
                     boxShadow: shadows.md,
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
                   }}>
                     {triggerMoves}
                   </div>
@@ -492,6 +506,7 @@ function VisualSequence({ notation }) {
                         <img
                           src={moves[move]}
                           alt={move}
+                          className="responsive-cube-image"
                           style={{
                             width: '64px',
                             height: '64px',
@@ -502,6 +517,7 @@ function VisualSequence({ notation }) {
                             boxShadow: shadows.sm,
                             transition: 'transform 0.2s ease',
                             transform: 'scale(1)',
+                            maxWidth: '100%',
                           }}
                           onError={(e) => {
                             e.target.style.display = 'none'
@@ -565,6 +581,75 @@ function VisualSequence({ notation }) {
           })()}
         </div>
       )}
+
+      {/* Mobile-responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-cube-grid {
+            gap: 16px !important;
+            justify-content: center !important;
+          }
+          
+          .responsive-cube-image {
+            width: 48px !important;
+            height: 48px !important;
+          }
+          
+          .responsive-cube-grid > div > div {
+            gap: 8px !important;
+          }
+          
+          .responsive-cube-grid > div > div > div:last-child {
+            font-size: 0.875rem !important;
+            max-width: 60px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-cube-grid {
+            gap: 12px !important;
+          }
+          
+          .responsive-cube-image {
+            width: 40px !important;
+            height: 40px !important;
+          }
+          
+          .responsive-cube-grid > div > div > div:last-child {
+            font-size: 0.75rem !important;
+            max-width: 50px !important;
+          }
+          
+          .responsive-cube-grid > div > div > div:first-child {
+            width: 20px !important;
+            height: 20px !important;
+            font-size: 0.625rem !important;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .responsive-cube-grid {
+            gap: 8px !important;
+          }
+          
+          .responsive-cube-image {
+            width: 36px !important;
+            height: 36px !important;
+          }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .responsive-cube-grid {
+            gap: 12px !important;
+          }
+          
+          .responsive-cube-image {
+            width: 44px !important;
+            height: 44px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

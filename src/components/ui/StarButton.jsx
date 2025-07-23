@@ -32,6 +32,7 @@ const StarButton = ({
   return (
     <button
       onClick={onToggle}
+      className={`responsive-star-button ${className}`}
       style={{
         background: 'none',
         border: 'none',
@@ -40,13 +41,41 @@ const StarButton = ({
         outline: 'none',
         display: 'flex',
         alignItems: 'center',
-        height: '32px',
+        justifyContent: 'center',
+        minWidth: '44px',
+        minHeight: '44px',
+        borderRadius: '50%',
+        transition: 'background-color 0.2s ease',
       }}
-      className={className}
       aria-label={ariaLabel || defaultAriaLabel}
       title={title || defaultTitle}
     >
       <StarIcon filled={isFavorite} size={size} />
+      
+      {/* Mobile-responsive styles */}
+      <style>{`
+        .responsive-star-button:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .responsive-star-button:active {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+          .responsive-star-button {
+            min-width: 48px !important;
+            min-height: 48px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .responsive-star-button {
+            min-width: 44px !important;
+            min-height: 44px !important;
+          }
+        }
+      `}</style>
     </button>
   )
 }
