@@ -1,21 +1,4 @@
-# Bo and Hailey's Rubik's Cube Algorithm Translator
-
-Copyright (C) 2025 Bo Nam
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
----
+# Rubik's Cube Algorithm Translator
 
 A modern React application for learning and practicing Rubik's Cube algorithms with visual notation translation. The app translates standard cube notation (like "R U R' U'") into visual move sequences using custom move images.
 
@@ -24,9 +7,10 @@ A modern React application for learning and practicing Rubik's Cube algorithms w
 ### Core Functionality
 - **Visual Notation Translation**: Converts algorithm notation to step-by-step visual move sequences
 - **Pattern Recognition**: Automatically highlights Right Trigger (R U R' U') and Left Trigger (L' U' L U) patterns
-- **Algorithm Database**: 123+ algorithms across multiple categories (Beginner, F2L, OLL, PLL, etc.)
+- **Algorithm Database**: 127 algorithms across multiple categories (Beginner, F2L, OLL, PLL, etc.)
 - **Search & Filter**: Find algorithms by name, description, nickname, or category
 - **Favorites System**: Star and filter favorite algorithms with localStorage persistence
+- **Wired System**: Highlights algorithms from Wired Magazine's popular solving method for quick reference
 
 ### Visual Features
 - **Move Images**: Each notation move (R, U', F2, etc.) displays as a visual cube move image
@@ -41,11 +25,15 @@ A modern React application for learning and practicing Rubik's Cube algorithms w
 - **Error Handling**: Graceful fallbacks for missing images or data with ErrorBoundary
 - **Performance Optimized**: Memoized components and efficient filtering
 - **Accessibility**: Proper focus management, keyboard navigation, and screen reader support
+- **Mobile Tab Layout**: Optimized mobile experience with tabbed navigation
+
+### Wired Magazine Method Support
+The "Wired" tagging system highlights algorithms that are specifically used in Wired Magazine's popular YouTube video and blog post demonstrating one method of solving the Rubik's Cube. This feature serves as a quick reference for users who are learning through Wired Magazine's methodology, which is one of the most popular ways people learn to solve the cube. While this method is widely used, it's important to note that it's just one of many valid approaches to solving the Rubik's Cube. The Wired tag helps users quickly identify and filter algorithms that are part of this specific learning method.
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: React 19.1.0 with Vite
-- **Styling**: Custom design system with responsive CSS
+- **Styling**: Custom CSS with responsive design system
 - **State Management**: React hooks (useState, useMemo, useCallback)
 - **Data**: JSON-based algorithm and move mapping files
 - **Build Tool**: Vite with React plugin
@@ -56,7 +44,7 @@ A modern React application for learning and practicing Rubik's Cube algorithms w
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/boeightai/rubiks-algorithm-translator.git
+   git clone https://github.com/boeightai/rubiks-translator.git
    cd rubiks-translator
    ```
 
@@ -86,16 +74,20 @@ src/
 │       ├── ImageModal.jsx     # Image zoom modal
 │       ├── Logo.jsx           # Application logo
 │       ├── StarButton.jsx     # Favorite toggle button
-│       └── StarIcon.jsx       # Star icon component
+│       ├── StarIcon.jsx       # Star icon component
+│       ├── TabNavigation.jsx  # Mobile tab navigation
+│       └── WiredButton.jsx    # Wired method algorithm toggle
 ├── hooks/               # Custom React hooks
 │   ├── useAlgorithms.js       # Algorithm data management
 │   ├── useFavorites.js        # Favorites persistence
-│   └── useTutorialImage.js    # Image loading logic
+│   ├── useTutorialImage.js    # Image loading logic
+│   └── useWired.js           # Wired method algorithm management
 ├── data/                # Static data files
-│   ├── algorithms.json        # Algorithm database (123+ entries)
+│   ├── algorithms.json        # Algorithm database (127 entries)
 │   └── moves.json            # Move notation to image mapping
 ├── layouts/             # Layout components
-│   └── GridLayout.jsx        # Main application layout
+│   ├── GridLayout.jsx        # Main application layout
+│   └── MobileTabLayout.jsx   # Mobile-optimized layout
 ├── styles/              # Design system
 │   └── designSystem.js       # Colors, typography, spacing
 ├── utils/               # Utility functions
@@ -145,6 +137,7 @@ src/
 ### Custom Hooks
 - **useAlgorithms**: Manages algorithm data, filtering, and search with memoization
 - **useFavorites**: Handles favorite persistence in localStorage with error handling
+- **useWired**: Manages Wired Magazine method algorithm state and persistence
 - **useTutorialImage**: Loads and manages tutorial/pattern images with fallbacks
 
 ### ErrorBoundary.jsx
@@ -166,7 +159,7 @@ The application uses a comprehensive design system with:
 
 - **Desktop**: Two-column layout with sticky sidebar and optimized spacing
 - **Tablet**: Stacked layout with touch-friendly controls
-- **Mobile**: Single-column layout with optimized touch targets (44px minimum)
+- **Mobile**: Single-column layout with tabbed navigation and optimized touch targets (44px minimum)
 - **Accessibility**: Proper focus management and keyboard navigation
 
 ## 🔧 Development Commands
@@ -208,8 +201,8 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## 🔗 Links
 
-- [GitHub Repository](https://github.com/boeightai/rubiks-algorithm-translator)
-- [Issue Tracker](https://github.com/boeightai/rubiks-algorithm-translator/issues)
+- [GitHub Repository](https://github.com/boeightai/rubiks-translator)
+- [Issue Tracker](https://github.com/boeightai/rubiks-translator/issues)
 - [GNU GPL v3 License](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ---
