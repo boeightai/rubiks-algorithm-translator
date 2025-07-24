@@ -18,6 +18,7 @@
 
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
+import WiredButton from './ui/WiredButton'
 import ImageModal from './ui/ImageModal'
 import { useState } from 'react'
 
@@ -25,6 +26,8 @@ const AlgorithmDetails = ({
   selectedAlgorithm,
   isFavorite,
   onToggleFavorite,
+  isWired,
+  onToggleWired,
   tutorialImageExists,
   tutorialImageSrc,
   patternImageExists,
@@ -120,11 +123,18 @@ const AlgorithmDetails = ({
             }}>
               {selectedAlgorithm.name}
             </h2>
-            <StarButton
-              isFavorite={isFavorite(selectedAlgorithm.id)}
-              onToggle={() => onToggleFavorite(selectedAlgorithm.id)}
-              size={24}
-            />
+            <div style={{ display: 'flex', gap: spacing[2], alignItems: 'center' }}>
+              <WiredButton
+                isWired={isWired(selectedAlgorithm.id)}
+                onToggle={() => onToggleWired(selectedAlgorithm.id)}
+                size={20}
+              />
+              <StarButton
+                isFavorite={isFavorite(selectedAlgorithm.id)}
+                onToggle={() => onToggleFavorite(selectedAlgorithm.id)}
+                size={24}
+              />
+            </div>
           </div>
           {/* Alternative Names (Nicknames) right-justified */}
           {selectedAlgorithm.nicknames && selectedAlgorithm.nicknames.length > 0 && (

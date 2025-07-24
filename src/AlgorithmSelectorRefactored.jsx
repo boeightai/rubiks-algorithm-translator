@@ -18,6 +18,7 @@
 
 import { useAlgorithms } from './hooks/useAlgorithms'
 import { useFavorites } from './hooks/useFavorites'
+import { useWired } from './hooks/useWired'
 import { useTutorialImage } from './hooks/useTutorialImage'
 import SearchFilters from './components/SearchFilters'
 import AlgorithmList from './components/AlgorithmList'
@@ -28,6 +29,7 @@ import Header from './components/Header'
 
 function AlgorithmSelectorRefactored() {
   const { favoriteIds, toggleFavorite, isFavorite } = useFavorites()
+  const { wiredIds, toggleWired, isWired } = useWired()
   const {
     selectedAlgorithm,
     setSelectedAlgorithm,
@@ -71,6 +73,8 @@ function AlgorithmSelectorRefactored() {
         onSelectAlgorithm={setSelectedAlgorithm}
         isFavorite={isFavorite}
         onToggleFavorite={toggleFavorite}
+        isWired={isWired}
+        onToggleWired={toggleWired}
       />
     </>
   )
@@ -81,6 +85,8 @@ function AlgorithmSelectorRefactored() {
         selectedAlgorithm={selectedAlgorithm}
         isFavorite={isFavorite}
         onToggleFavorite={toggleFavorite}
+        isWired={isWired}
+        onToggleWired={toggleWired}
         tutorialImageExists={tutorialImageExists}
         tutorialImageSrc={tutorialImageSrc}
         patternImageExists={patternImageExists}
