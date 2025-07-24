@@ -24,13 +24,14 @@ export function useWired() {
       const stored = localStorage.getItem('wiredAlgorithmIds')
       if (stored) {
         const parsed = JSON.parse(stored)
-        // Ensure both Right Trigger and Left Trigger are included
-        const updated = [...new Set([...parsed, 'white-corners-1', 'white-corners-2'])]
+        // Ensure Right Trigger, Left Trigger, and Fish/Kite are included, but exclude OLL Case 7
+        const filtered = parsed.filter(id => id !== 'oll-case-7') // Remove OLL Case 7 from wired list
+        const updated = [...new Set([...filtered, 'white-corners-1', 'white-corners-2', 'fish-kite', 'sune', 't-perm-setup', 'pll-e-perm', 'pll-e-perm-inverse'])]
         return updated
       }
-      return ['white-corners-1', 'white-corners-2'] // Right Trigger and Left Trigger algorithms start as wired
+      return ['white-corners-1', 'white-corners-2', 'fish-kite', 'sune', 't-perm-setup', 'pll-e-perm', 'pll-e-perm-inverse'] // Right Trigger, Left Trigger, Fish/Kite, Sune, T-Perm Setup, E-Perm, and E-Perm Inverse algorithms start as wired
     } catch {
-      return ['white-corners-1', 'white-corners-2'] // Right Trigger and Left Trigger algorithms start as wired
+      return ['white-corners-1', 'white-corners-2', 'fish-kite', 'sune', 't-perm-setup', 'pll-e-perm', 'pll-e-perm-inverse'] // Right Trigger, Left Trigger, Fish/Kite, Sune, T-Perm Setup, E-Perm, and E-Perm Inverse algorithms start as wired
     }
   })
 

@@ -1026,6 +1026,24 @@
     "nicknames": ["Ab-Perm Alt"]
   },
   {
+    "id": "pll-e-perm",
+    "name": "E-Perm",
+    "notation": "F2 U R' L F2 L' R U F2",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "E-Perm algorithm for diagonal corner swap",
+    "nicknames": ["E-Perm"]
+  },
+  {
+    "id": "pll-e-perm-inverse",
+    "name": "E-Perm Inverse",
+    "notation": "F2 U' R' L F2 L' R U' F2",
+    "category": "PLL",
+    "difficulty": "advanced",
+    "description": "E-Perm inverse algorithm for diagonal corner swap",
+    "nicknames": ["E-Perm Inverse"]
+  },
+  {
     "id": "pll-e-perm-alt",
     "name": "E-Perm Alternative",
     "notation": "R U' R' D R U R' D' R U R' D R U' R' D'",
@@ -1105,5 +1123,23 @@
     "difficulty": "intermediate",
     "description": "Useful utility algorithm for edge swapping",
     "nicknames": ["T-Perm"]
+  },
+  {
+    "id": "fish-kite",
+    "name": "Fish",
+    "notation": "F U R U' R' F'",
+    "category": "OLL",
+    "difficulty": "intermediate",
+    "description": "OLL algorithm that creates a cross pattern on the top face",
+    "nicknames": ["Kite"]
+  },
+  {
+    "id": "t-perm-setup",
+    "name": "T-Perm Setup",
+    "notation": "L' U R U' L U R'",
+    "category": "Utility",
+    "difficulty": "intermediate",
+    "description": "Setup move for T-Perm algorithm",
+    "nicknames": ["T-Perm Setup"]
   }
 ]

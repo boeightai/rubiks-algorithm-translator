@@ -19,7 +19,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import algorithms from '../data/algorithms.json'
 
-export function useAlgorithms(favoriteIds = []) {
+export function useAlgorithms(favoriteIds = [], wiredIds = []) {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -27,7 +27,7 @@ export function useAlgorithms(favoriteIds = []) {
 
   // Get unique categories - memoized to prevent recalculation
   const categories = useMemo(() => {
-    return ['all', ...new Set(algorithms.map(alg => alg.category))]
+    return ['all', 'Wired', ...new Set(algorithms.map(alg => alg.category))]
   }, [])
 
   // Memoized search term for case-insensitive comparison
@@ -44,8 +44,15 @@ export function useAlgorithms(favoriteIds = []) {
       }
 
       // Early return for category filter
-      if (selectedCategory !== 'all' && alg.category !== selectedCategory) {
-        return false
+      if (selectedCategory !== 'all') {
+        if (selectedCategory === 'Wired') {
+          // Filter for algorithms with wired tag
+          if (!wiredIds.includes(alg.id)) {
+            return false
+          }
+        } else if (alg.category !== selectedCategory) {
+          return false
+        }
       }
 
       // Search filter - only run if there's a search term
@@ -64,7 +71,7 @@ export function useAlgorithms(favoriteIds = []) {
 
       return true
     })
-  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds])
+  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, wiredIds])
 
   // Memoized setters to prevent unnecessary re-renders
   const memoizedSetSearchTerm = useCallback((value) => {

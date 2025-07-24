@@ -42,7 +42,7 @@ function AlgorithmSelectorRefactored() {
     categories,
     filteredAlgorithms,
     algorithms
-  } = useAlgorithms(favoriteIds)
+  } = useAlgorithms(favoriteIds, wiredIds)
   
   const { tutorialImageExists, tutorialImageSrc, patternImageExists, patternImageSrc } = useTutorialImage(selectedAlgorithm)
 
