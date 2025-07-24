@@ -18,35 +18,20 @@
 
 const WiredButton = ({ 
   isWired, 
-  onToggle, 
   size = 16, 
-  className = '',
-  title,
-  ariaLabel 
+  className = ''
 }) => {
-  const defaultTitle = isWired ? 'Remove Wired tag' : 'Add Wired tag'
-  const defaultAriaLabel = isWired ? 'Remove Wired' : 'Add Wired'
-
   return (
-    <button
-      onClick={onToggle}
-      className={`responsive-wired-button ${className}`}
+    <div
+      className={`wired-indicator ${className}`}
       style={{
-        background: 'none',
-        border: 'none',
-        cursor: 'pointer',
-        padding: 0,
-        outline: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         minWidth: '44px',
         minHeight: '44px',
         borderRadius: '50%',
-        transition: 'background-color 0.2s ease',
       }}
-      aria-label={ariaLabel || defaultAriaLabel}
-      title={title || defaultTitle}
     >
       {isWired && (
         <div
@@ -62,29 +47,21 @@ const WiredButton = ({
       
       {/* Mobile-responsive styles */}
       <style>{`
-        .responsive-wired-button:hover {
-          background-color: rgba(0, 0, 0, 0.05);
-        }
-        
-        .responsive-wired-button:active {
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-        
         @media (max-width: 768px) {
-          .responsive-wired-button {
+          .wired-indicator {
             min-width: 48px !important;
             min-height: 48px !important;
           }
         }
         
         @media (max-width: 480px) {
-          .responsive-wired-button {
+          .wired-indicator {
             min-width: 44px !important;
             min-height: 44px !important;
           }
         }
       `}</style>
-    </button>
+    </div>
   )
 }
 

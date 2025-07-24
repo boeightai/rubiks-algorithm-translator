@@ -27,8 +27,7 @@ const AlgorithmList = ({
   onSelectAlgorithm,
   isFavorite,
   onToggleFavorite,
-  isWired,
-  onToggleWired
+  isWired
 }) => {
   // Track which algorithms have pattern images
   const [patternImageStatus, setPatternImageStatus] = useState({})
@@ -373,10 +372,6 @@ const AlgorithmList = ({
                   }}>
                     <WiredButton
                       isWired={isWired(algorithm.id)}
-                      onToggle={(e) => {
-                        e.stopPropagation()
-                        onToggleWired(algorithm.id)
-                      }}
                       size={16}
                     />
                     <StarButton

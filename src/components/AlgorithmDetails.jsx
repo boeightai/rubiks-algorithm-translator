@@ -27,7 +27,6 @@ const AlgorithmDetails = ({
   isFavorite,
   onToggleFavorite,
   isWired,
-  onToggleWired,
   tutorialImageExists,
   tutorialImageSrc,
   patternImageExists,
@@ -126,7 +125,6 @@ const AlgorithmDetails = ({
             <div style={{ display: 'flex', gap: spacing[2], alignItems: 'center' }}>
               <WiredButton
                 isWired={isWired(selectedAlgorithm.id)}
-                onToggle={() => onToggleWired(selectedAlgorithm.id)}
                 size={20}
               />
               <StarButton

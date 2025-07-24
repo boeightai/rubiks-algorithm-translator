@@ -29,7 +29,7 @@ import Header from './components/Header'
 
 function AlgorithmSelectorRefactored() {
   const { favoriteIds, toggleFavorite, isFavorite } = useFavorites()
-  const { wiredIds, toggleWired, isWired } = useWired()
+  const { wiredIds, isWired } = useWired()
   const {
     selectedAlgorithm,
     setSelectedAlgorithm,
@@ -74,7 +74,6 @@ function AlgorithmSelectorRefactored() {
         isFavorite={isFavorite}
         onToggleFavorite={toggleFavorite}
         isWired={isWired}
-        onToggleWired={toggleWired}
       />
     </>
   )
@@ -86,7 +85,6 @@ function AlgorithmSelectorRefactored() {
         isFavorite={isFavorite}
         onToggleFavorite={toggleFavorite}
         isWired={isWired}
-        onToggleWired={toggleWired}
         tutorialImageExists={tutorialImageExists}
         tutorialImageSrc={tutorialImageSrc}
         patternImageExists={patternImageExists}
