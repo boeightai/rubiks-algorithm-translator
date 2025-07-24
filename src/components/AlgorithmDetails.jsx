@@ -195,7 +195,7 @@ const AlgorithmDetails = ({
                 Alternative Names:
               </span>
               {selectedAlgorithm.nicknames.map((nickname, index) => (
-                <div key={index} style={{
+                <div key={`nickname-${selectedAlgorithm.id}-${index}`} style={{
                   background: colors.primary[50],
                   color: colors.primary[700],
                   padding: `${spacing[2]} ${spacing[3]}`,

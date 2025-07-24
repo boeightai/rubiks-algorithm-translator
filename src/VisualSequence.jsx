@@ -16,12 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
 
 function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768
+      setIsMobile(mobile)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+
 
   // Parse the notation string into individual moves
   const parseNotation = (notation) => {
@@ -41,7 +57,7 @@ function VisualSequence({ notation }) {
         triggerGroups: [] 
       }
     }
-    const moves = parseNotation(notation)
+    const parsedMoves = parseNotation(notation)
     const rightTriggerPattern = ['R', 'U', "R'", "U'"]  // Only the standard Right Trigger
     const leftTriggerPattern = ["L'", "U'", 'L', 'U']   // Only the standard Left Trigger
     const highlighted = new Set()
@@ -49,8 +65,8 @@ function VisualSequence({ notation }) {
     const groups = []
     
     // Find all Right Trigger patterns in the sequence
-    for (let i = 0; i <= moves.length - 4; i++) {
-      const sequence = moves.slice(i, i + 4)
+    for (let i = 0; i <= parsedMoves.length - 4; i++) {
+      const sequence = parsedMoves.slice(i, i + 4)
       
       // Check if the sequence matches the Right Trigger pattern
       const isRightTrigger = JSON.stringify(sequence) === JSON.stringify(rightTriggerPattern)
@@ -72,8 +88,8 @@ function VisualSequence({ notation }) {
     }
     
     // Find all Left Trigger patterns in the sequence
-    for (let i = 0; i <= moves.length - 4; i++) {
-      const sequence = moves.slice(i, i + 4)
+    for (let i = 0; i <= parsedMoves.length - 4; i++) {
+      const sequence = parsedMoves.slice(i, i + 4)
       
       // Check if the sequence matches the Left Trigger pattern
       const isLeftTrigger = JSON.stringify(sequence) === JSON.stringify(leftTriggerPattern)
@@ -94,7 +110,7 @@ function VisualSequence({ notation }) {
       }
     }
     
-    return { moveList: moves, highlightedMoves: highlighted, leftTriggerMoves: leftTrigger, triggerGroups: groups }
+    return { moveList: parsedMoves, highlightedMoves: highlighted, leftTriggerMoves: leftTrigger, triggerGroups: groups }
   }, [notation])
 
   // Function to check if a move is part of a Right Trigger sequence
@@ -200,12 +216,14 @@ function VisualSequence({ notation }) {
       setImageErrors(prev => new Set([...prev, move]))
     }
 
+    const handleLoad = () => {
+      // Image loaded successfully
+    }
+
     // Handle missing move in moves.json
     if (!move || !moves[move]) {
       return (
-        <div style={{
-          width: '64px',
-          height: '64px',
+        <div className="responsive-cube-image-fallback" style={{
           border: `2px solid ${colors.warning[300]}`,
           borderRadius: borderRadius.lg,
           backgroundColor: colors.warning[50],
@@ -223,9 +241,7 @@ function VisualSequence({ notation }) {
 
     if (!imageSrc || hasError) {
       return (
-        <div style={{
-          width: '64px',
-          height: '64px',
+        <div className="responsive-cube-image-fallback" style={{
           border: `2px solid ${colors.warning[300]}`,
           borderRadius: borderRadius.lg,
           backgroundColor: colors.warning[50],
@@ -247,8 +263,6 @@ function VisualSequence({ notation }) {
         alt={move}
         className="responsive-cube-image"
         style={{
-          width: '64px',
-          height: '64px',
           border: `2px solid ${getMoveImageBorder(index)}`,
           borderRadius: borderRadius.lg,
           backgroundColor: getMoveImageBackground(index),
@@ -258,6 +272,11 @@ function VisualSequence({ notation }) {
           maxWidth: '100%',
         }}
         onError={handleError}
+        onLoad={handleLoad}
+        loading={isMobile ? "eager" : "lazy"}
+        decoding="async"
+        crossOrigin="anonymous"
+        draggable="false"
       />
     )
   }
@@ -313,6 +332,8 @@ function VisualSequence({ notation }) {
         }}>
           {moveList.length} moves
         </div>
+        
+
         
         {/* Pattern indicators */}
         {highlightedMoves.size > 0 && leftTriggerMoves.size > 0 && (
@@ -405,6 +426,7 @@ function VisualSequence({ notation }) {
             justifyContent: 'center',
             alignItems: 'flex-end',
             minHeight: '120px',
+            width: '100%',
           }}
         >
           {(() => {
@@ -554,13 +576,44 @@ function VisualSequence({ notation }) {
 
       {/* Mobile-responsive styles */}
       <style>{`
+        /* Base styles for cube images */
+        .responsive-cube-image {
+          width: 64px;
+          height: 64px;
+          object-fit: contain;
+          display: block;
+          flex-shrink: 0;
+        }
+        
+        .responsive-cube-image-fallback {
+          width: 64px;
+          height: 64px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        
+        /* Base grid styles */
+        .responsive-cube-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 24px;
+          justify-content: center;
+          align-items: flex-end;
+          min-height: 120px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        
         @media (max-width: 768px) {
           .responsive-cube-grid {
             gap: 16px !important;
             justify-content: center !important;
           }
           
-          .responsive-cube-image {
+          .responsive-cube-image,
+          .responsive-cube-image-fallback {
             width: 48px !important;
             height: 48px !important;
           }
@@ -580,7 +633,8 @@ function VisualSequence({ notation }) {
             gap: 12px !important;
           }
           
-          .responsive-cube-image {
+          .responsive-cube-image,
+          .responsive-cube-image-fallback {
             width: 40px !important;
             height: 40px !important;
           }
@@ -602,7 +656,8 @@ function VisualSequence({ notation }) {
             gap: 8px !important;
           }
           
-          .responsive-cube-image {
+          .responsive-cube-image,
+          .responsive-cube-image-fallback {
             width: 36px !important;
             height: 36px !important;
           }
@@ -614,9 +669,55 @@ function VisualSequence({ notation }) {
             gap: 12px !important;
           }
           
-          .responsive-cube-image {
+          .responsive-cube-image,
+          .responsive-cube-image-fallback {
             width: 44px !important;
             height: 44px !important;
+          }
+        }
+        
+        /* Ensure images load properly on mobile */
+        .responsive-cube-image {
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          -webkit-touch-callout: none;
+          -webkit-tap-highlight-color: transparent;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+          will-change: transform;
+          contain: layout style paint;
+        }
+        
+        /* Mobile-specific image optimizations */
+        @media (max-width: 768px) {
+          .responsive-cube-image {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+          
+          .responsive-cube-grid {
+            touch-action: pan-x pan-y;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: auto;
+            overflow-y: hidden;
+          }
+          
+          .responsive-cube-image {
+            min-width: 0;
+            min-height: 0;
           }
         }
       `}</style>

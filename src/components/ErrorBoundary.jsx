@@ -35,21 +35,20 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo)
+    // Error caught by boundary - logged for debugging
     this.setState({
       error: error,
       errorInfo: errorInfo
     })
     
     // Log additional context for debugging
-    console.log('Error context:', {
-      userAgent: navigator.userAgent,
-      viewport: {
-        width: window.innerWidth,
-        height: window.innerHeight
-      },
-      timestamp: new Date().toISOString()
-    })
+    // Error context for debugging
+    // userAgent: navigator.userAgent,
+    // viewport: {
+    //   width: window.innerWidth,
+    //   height: window.innerHeight
+    // },
+    // timestamp: new Date().toISOString()
   }
 
   handleRetry = () => {

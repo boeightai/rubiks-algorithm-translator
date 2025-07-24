@@ -34,10 +34,10 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Failed to download image:', error)
-      }
+          } catch {
+        if (import.meta.env.DEV) {
+          // Failed to download image - handled silently for better UX
+        }
       // Could add user notification here
     }
   }

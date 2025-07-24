@@ -201,7 +201,7 @@ export function preloadImages(imageUrls) {
     loadImageWithRetry(url, { mobileOptimized: true })
       .catch(() => {
         // Silently fail for preloading - we don't want to break the app
-        console.warn(`Failed to preload image: ${url}`)
+        // Failed to preload image - handled silently
       })
   )
   
