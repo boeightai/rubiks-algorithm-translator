@@ -16,11 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
 
 function VisualSequence({ notation }) {
+  const [imageErrors, setImageErrors] = useState(new Set())
+
   // Parse the notation string into individual moves
   const parseNotation = (notation) => {
     if (!notation) return []
@@ -30,6 +32,15 @@ function VisualSequence({ notation }) {
 
   // Memoized move list and pattern detection
   const { moveList, highlightedMoves, leftTriggerMoves, triggerGroups } = useMemo(() => {
+    // Early return for invalid notation
+    if (!notation || typeof notation !== 'string') {
+      return { 
+        moveList: [], 
+        highlightedMoves: new Set(), 
+        leftTriggerMoves: new Set(), 
+        triggerGroups: [] 
+      }
+    }
     const moves = parseNotation(notation)
     const rightTriggerPattern = ['R', 'U', "R'", "U'"]  // Only the standard Right Trigger
     const leftTriggerPattern = ["L'", "U'", 'L', 'U']   // Only the standard Left Trigger
@@ -95,8 +106,6 @@ function VisualSequence({ notation }) {
   const isPartOfLeftTrigger = (index) => {
     return leftTriggerMoves.has(index)
   }
-
-
 
   // Function to get the move number background color
   const getMoveNumberBackground = (index) => {
@@ -182,7 +191,76 @@ function VisualSequence({ notation }) {
     return colors.neutral[900]
   }
 
+  // Simplified image component with error handling
+  const MoveImage = ({ move, index }) => {
+    const imageSrc = moves[move]
+    const hasError = imageErrors.has(move)
 
+    const handleError = () => {
+      setImageErrors(prev => new Set([...prev, move]))
+    }
+
+    // Handle missing move in moves.json
+    if (!move || !moves[move]) {
+      return (
+        <div style={{
+          width: '64px',
+          height: '64px',
+          border: `2px solid ${colors.warning[300]}`,
+          borderRadius: borderRadius.lg,
+          backgroundColor: colors.warning[50],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: typography.fontSize.sm,
+          color: colors.warning[700],
+          fontWeight: typography.fontWeight.medium,
+        }}>
+          {move || '?'}
+        </div>
+      )
+    }
+
+    if (!imageSrc || hasError) {
+      return (
+        <div style={{
+          width: '64px',
+          height: '64px',
+          border: `2px solid ${colors.warning[300]}`,
+          borderRadius: borderRadius.lg,
+          backgroundColor: colors.warning[50],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: typography.fontSize.sm,
+          color: colors.warning[700],
+          fontWeight: typography.fontWeight.medium,
+        }}>
+          {move}
+        </div>
+      )
+    }
+
+    return (
+      <img
+        src={imageSrc}
+        alt={move}
+        className="responsive-cube-image"
+        style={{
+          width: '64px',
+          height: '64px',
+          border: `2px solid ${getMoveImageBorder(index)}`,
+          borderRadius: borderRadius.lg,
+          backgroundColor: getMoveImageBackground(index),
+          boxShadow: shadows.sm,
+          transition: 'transform 0.2s ease',
+          transform: 'scale(1)',
+          maxWidth: '100%',
+        }}
+        onError={handleError}
+      />
+    )
+  }
 
   return (
     <div style={{
@@ -314,7 +392,7 @@ function VisualSequence({ notation }) {
             fontSize: typography.fontSize.sm,
             color: colors.neutral[500],
           }}>
-            No moves to display
+            {!notation || typeof notation !== 'string' ? 'No notation provided' : 'No moves to display'}
           </div>
         </div>
       ) : (
@@ -375,65 +453,11 @@ function VisualSequence({ notation }) {
                         {j + 1}
                       </div>
 
-                      {/* Move image */}
-                      {moves[moveList[j]] ? (
-                        <div style={{
-                          position: 'relative',
-                        }}>
-                          <img
-                            src={moves[moveList[j]]}
-                            alt={moveList[j]}
-                            className="responsive-cube-image"
-                            style={{
-                              width: '64px',
-                              height: '64px',
-                              border: `2px solid ${getMoveImageBorder(j)}`,
-                              borderRadius: borderRadius.lg,
-                              backgroundColor: getMoveImageBackground(j),
-                              display: 'block',
-                              boxShadow: shadows.sm,
-                              transition: 'transform 0.2s ease',
-                              transform: 'scale(1)',
-                              maxWidth: '100%',
-                            }}
-                            onError={(e) => {
-                              e.target.style.display = 'none'
-                              e.target.nextSibling.style.display = 'flex'
-                            }}
-                          />
-                          <div style={{
-                            display: 'none',
-                            width: '64px',
-                            height: '64px',
-                            border: `2px solid ${getMoveImageBorder(j)}`,
-                            borderRadius: borderRadius.lg,
-                            backgroundColor: getMoveImageBackground(j),
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: typography.fontSize.sm,
-                            color: getMoveLabelColor(j),
-                            fontWeight: typography.fontWeight.medium,
-                          }}>
-                            {moveList[j]}
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{
-                          width: '64px',
-                          height: '64px',
-                          border: `2px solid ${colors.warning[300]}`,
-                          borderRadius: borderRadius.lg,
-                          backgroundColor: colors.warning[50],
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: typography.fontSize.sm,
-                          color: colors.warning[700],
-                          fontWeight: typography.fontWeight.medium,
-                        }}>
-                          ?
-                        </div>
-                      )}
+                      {/* Move Image */}
+                      <MoveImage 
+                        move={moveList[j]} 
+                        index={j}
+                      />
 
                       {/* Move label */}
                       <div style={{
@@ -498,65 +522,11 @@ function VisualSequence({ notation }) {
                       {i + 1}
                     </div>
 
-                    {/* Move image */}
-                    {moves[move] ? (
-                      <div style={{
-                        position: 'relative',
-                      }}>
-                        <img
-                          src={moves[move]}
-                          alt={move}
-                          className="responsive-cube-image"
-                          style={{
-                            width: '64px',
-                            height: '64px',
-                            border: `2px solid ${getMoveImageBorder(i)}`,
-                            borderRadius: borderRadius.lg,
-                            backgroundColor: getMoveImageBackground(i),
-                            display: 'block',
-                            boxShadow: shadows.sm,
-                            transition: 'transform 0.2s ease',
-                            transform: 'scale(1)',
-                            maxWidth: '100%',
-                          }}
-                          onError={(e) => {
-                            e.target.style.display = 'none'
-                            e.target.nextSibling.style.display = 'flex'
-                          }}
-                        />
-                        <div style={{
-                          display: 'none',
-                          width: '64px',
-                          height: '64px',
-                          border: `2px solid ${getMoveImageBorder(i)}`,
-                          borderRadius: borderRadius.lg,
-                          backgroundColor: getMoveImageBackground(i),
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: typography.fontSize.sm,
-                          color: getMoveLabelColor(i),
-                          fontWeight: typography.fontWeight.medium,
-                        }}>
-                          {move}
-                        </div>
-                      </div>
-                    ) : (
-                      <div style={{
-                        width: '64px',
-                        height: '64px',
-                        border: `2px solid ${colors.warning[300]}`,
-                        borderRadius: borderRadius.lg,
-                        backgroundColor: colors.warning[50],
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: typography.fontSize.sm,
-                        color: colors.warning[700],
-                        fontWeight: typography.fontWeight.medium,
-                      }}>
-                        ?
-                      </div>
-                    )}
+                    {/* Move Image */}
+                    <MoveImage 
+                      move={move} 
+                      index={i}
+                    />
 
                     {/* Move label */}
                     <div style={{

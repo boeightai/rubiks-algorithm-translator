@@ -37,6 +37,11 @@ export function useAlgorithms(favoriteIds = [], wiredIds = []) {
 
   // Filter algorithms based on search and category - optimized with early returns
   const filteredAlgorithms = useMemo(() => {
+    // Early return if no algorithms
+    if (!algorithms || algorithms.length === 0) {
+      return []
+    }
+
     return algorithms.filter(alg => {
       // Early return for favorites filter
       if (showFavoritesOnly && !favoriteIds.includes(alg.id)) {
@@ -57,12 +62,15 @@ export function useAlgorithms(favoriteIds = [], wiredIds = []) {
 
       // Search filter - only run if there's a search term
       if (normalizedSearchTerm) {
-        const matchesSearch = 
-          alg.name.toLowerCase().includes(normalizedSearchTerm) ||
-          alg.description.toLowerCase().includes(normalizedSearchTerm) ||
-          (alg.nicknames && alg.nicknames.some(nick => 
-            nick.toLowerCase().includes(normalizedSearchTerm)
-          ))
+        const searchFields = [
+          alg.name,
+          alg.description,
+          ...(alg.nicknames || [])
+        ]
+        
+        const matchesSearch = searchFields.some(field => 
+          field.toLowerCase().includes(normalizedSearchTerm)
+        )
         
         if (!matchesSearch) {
           return false
@@ -70,8 +78,11 @@ export function useAlgorithms(favoriteIds = [], wiredIds = []) {
       }
 
       return true
-    })
-  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, wiredIds])
+    }).map(alg => ({
+      ...alg,
+      isSelected: selectedAlgorithm && selectedAlgorithm.id === alg.id
+    }))
+  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, wiredIds, selectedAlgorithm])
 
   // Memoized setters to prevent unnecessary re-renders
   const memoizedSetSearchTerm = useCallback((value) => {

@@ -37,6 +37,44 @@ const AlgorithmDetails = ({
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [isImageHovered, setIsImageHovered] = useState(false)
 
+  // Simplified tutorial image component
+  const TutorialImage = ({ imageSrc, algorithmName, isZoomed }) => {
+    if (!imageSrc) {
+      return (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: spacing[8],
+          color: colors.neutral[500],
+          fontSize: typography.fontSize.sm,
+        }}>
+          No tutorial image available
+        </div>
+      )
+    }
+
+    return (
+      <img
+        src={imageSrc}
+        alt={`${algorithmName} tutorial`}
+        className="responsive-tutorial-image"
+        style={{
+          maxWidth: isZoomed ? '100%' : '80%',
+          maxHeight: isZoomed ? '600px' : '300px',
+          width: 'auto',
+          height: 'auto',
+          borderRadius: borderRadius.lg,
+          boxShadow: shadows.md,
+          border: `1px solid ${colors.border.light}`,
+          background: colors.background.primary,
+          transition: transitions.normal,
+          transform: isZoomed ? 'scale(1.02)' : 'scale(1)',
+        }}
+      />
+    )
+  }
+
   // Check if this algorithm should show the "Sticker Image" link instead of direct image
   const shouldShowStickerLink = selectedAlgorithm && (
     selectedAlgorithm.id === '2look-oll-4' || 
@@ -351,22 +389,10 @@ const AlgorithmDetails = ({
                 onMouseEnter={() => setIsImageHovered(true)}
                 onMouseLeave={() => setIsImageHovered(false)}
               >
-                <img
-                  src={tutorialImageSrc}
-                  alt={`${selectedAlgorithm.name} tutorial`}
-                  className="responsive-tutorial-image"
-                  style={{
-                    maxWidth: isImageZoomed ? '100%' : '80%',
-                    maxHeight: isImageZoomed ? '600px' : '300px',
-                    width: 'auto',
-                    height: 'auto',
-                    borderRadius: borderRadius.lg,
-                    boxShadow: shadows.md,
-                    border: `1px solid ${colors.border.light}`,
-                    background: colors.background.primary,
-                    transition: transitions.normal,
-                    transform: isImageZoomed ? 'scale(1.02)' : 'scale(1)',
-                  }}
+                <TutorialImage
+                  imageSrc={tutorialImageSrc}
+                  algorithmName={selectedAlgorithm.name}
+                  isZoomed={isImageZoomed}
                 />
               </div>
             )}
@@ -408,6 +434,11 @@ const AlgorithmDetails = ({
 
       {/* Mobile-responsive styles */}
       <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 768px) {
           .responsive-header-layout {
             flex-direction: column !important;

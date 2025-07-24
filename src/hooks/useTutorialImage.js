@@ -21,40 +21,46 @@ import { useState, useEffect, useRef } from 'react'
 export function useTutorialImage(selectedAlgorithm) {
   const [tutorialImageExists, setTutorialImageExists] = useState(false)
   const [patternImageExists, setPatternImageExists] = useState(false)
-  const imageRefs = useRef({ tutorial: null, pattern: null })
+  const abortControllerRef = useRef(null)
 
   // Check if tutorial image exists for selected algorithm
   useEffect(() => {
-    const currentRefs = imageRefs.current
+    // Abort any ongoing requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
     
-    // Clean up previous images
-    if (currentRefs.tutorial) {
-      currentRefs.tutorial.onload = null
-      currentRefs.tutorial.onerror = null
-      currentRefs.tutorial.src = '' // Stop loading
-      currentRefs.tutorial = null
-    }
-    if (currentRefs.pattern) {
-      currentRefs.pattern.onload = null
-      currentRefs.pattern.onerror = null
-      currentRefs.pattern.src = '' // Stop loading
-      currentRefs.pattern = null
-    }
+    // Create new AbortController for this effect
+    abortControllerRef.current = new AbortController()
 
     if (selectedAlgorithm) {
       // Create tutorial image
       const tutorialImg = new Image()
-      tutorialImg.onload = () => setTutorialImageExists(true)
-      tutorialImg.onerror = () => setTutorialImageExists(false)
+      tutorialImg.onload = () => {
+        if (!abortControllerRef.current?.signal.aborted) {
+          setTutorialImageExists(true)
+        }
+      }
+      tutorialImg.onerror = () => {
+        if (!abortControllerRef.current?.signal.aborted) {
+          setTutorialImageExists(false)
+        }
+      }
       tutorialImg.src = `/images/moves/${selectedAlgorithm.id}-tutorial.png`
-      currentRefs.tutorial = tutorialImg
       
       // Create pattern image
       const patternImg = new Image()
-      patternImg.onload = () => setPatternImageExists(true)
-      patternImg.onerror = () => setPatternImageExists(false)
+      patternImg.onload = () => {
+        if (!abortControllerRef.current?.signal.aborted) {
+          setPatternImageExists(true)
+        }
+      }
+      patternImg.onerror = () => {
+        if (!abortControllerRef.current?.signal.aborted) {
+          setPatternImageExists(false)
+        }
+      }
       patternImg.src = `/images/patterns/${selectedAlgorithm.id}-pattern.png`
-      currentRefs.pattern = patternImg
     } else {
       setTutorialImageExists(false)
       setPatternImageExists(false)
@@ -62,17 +68,9 @@ export function useTutorialImage(selectedAlgorithm) {
 
     // Cleanup function to prevent memory leaks
     return () => {
-      if (currentRefs.tutorial) {
-        currentRefs.tutorial.onload = null
-        currentRefs.tutorial.onerror = null
-        currentRefs.tutorial.src = '' // Stop loading
-        currentRefs.tutorial = null
-      }
-      if (currentRefs.pattern) {
-        currentRefs.pattern.onload = null
-        currentRefs.pattern.onerror = null
-        currentRefs.pattern.src = '' // Stop loading
-        currentRefs.pattern = null
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+        abortControllerRef.current = null
       }
     }
   }, [selectedAlgorithm])

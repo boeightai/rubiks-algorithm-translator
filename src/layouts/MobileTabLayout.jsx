@@ -55,22 +55,30 @@ const MobileTabLayout = ({
   // Check if we're on mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
+      const mobile = window.innerWidth <= 768
+      setIsMobile(mobile)
+      
+      // Reset active tab to algorithms when switching from mobile to desktop
+      if (!mobile && activeTab === 'visual') {
+        setActiveTab('algorithms')
+      }
     }
     
     checkMobile()
     window.addEventListener('resize', checkMobile)
     
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }, [activeTab])
 
   // Auto-switch to visual sequence tab when an algorithm is selected on mobile
   // Only auto-switch if we're currently on the algorithms tab and haven't manually switched yet
   useEffect(() => {
+    // Only apply mobile-specific logic when actually on mobile
     if (isMobile && selectedAlgorithm && activeTab === 'algorithms') {
       // Clear any existing timeout
       if (autoSwitchTimeoutRef.current) {
         clearTimeout(autoSwitchTimeoutRef.current)
+        autoSwitchTimeoutRef.current = null
       }
       
       // Show notification
@@ -82,12 +90,13 @@ const MobileTabLayout = ({
         setShowNotification(false)
         autoSwitchTimeoutRef.current = null
       }, 1200) // Increased delay to give users more time to see the selection
-      
-      return () => {
-        if (autoSwitchTimeoutRef.current) {
-          clearTimeout(autoSwitchTimeoutRef.current)
-          autoSwitchTimeoutRef.current = null
-        }
+    }
+    
+    // Cleanup function to prevent memory leaks
+    return () => {
+      if (autoSwitchTimeoutRef.current) {
+        clearTimeout(autoSwitchTimeoutRef.current)
+        autoSwitchTimeoutRef.current = null
       }
     }
   }, [selectedAlgorithm, isMobile, activeTab])
@@ -138,7 +147,7 @@ const MobileTabLayout = ({
               left: '50%',
               transform: 'translateX(-50%)',
               background: colors.primary[500],
-              color: colors.white,
+              color: colors.background.primary,
               padding: `${spacing[3]} ${spacing[4]}`,
               borderRadius: borderRadius.lg,
               fontSize: typography.fontSize.sm,
@@ -163,7 +172,7 @@ const MobileTabLayout = ({
                 style={{
                   background: 'rgba(255, 255, 255, 0.2)',
                   border: 'none',
-                  color: colors.white,
+                  color: colors.background.primary,
                   borderRadius: borderRadius.sm,
                   padding: `${spacing[1]} ${spacing[2]}`,
                   fontSize: typography.fontSize.xs,
@@ -240,7 +249,7 @@ const MobileTabLayout = ({
                     style={{
                       padding: `${spacing[3]} ${spacing[4]}`,
                       background: colors.primary[500],
-                      color: colors.white,
+                      color: colors.background.primary,
                       border: 'none',
                       borderRadius: borderRadius.lg,
                       fontSize: typography.fontSize.sm,

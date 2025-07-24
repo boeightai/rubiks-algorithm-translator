@@ -20,6 +20,7 @@ import { colors, typography, spacing, borderRadius, shadows, transitions } from 
 import StarButton from './ui/StarButton'
 import WiredButton from './ui/WiredButton'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useImageLoader } from '../hooks/useImageLoader'
 
 const AlgorithmList = ({
   algorithms,
@@ -67,6 +68,87 @@ const AlgorithmList = ({
       setPatternImageStatus({})
     }
   }, [algorithms, checkPatternImages])
+
+  // Enhanced pattern image component with retry logic
+  const EnhancedPatternImage = ({ algorithmId, algorithmName }) => {
+    const imageSrc = `/images/patterns/${algorithmId}-pattern.png`
+    const { isLoading, isLoaded, hasError, retry } = useImageLoader(imageSrc, {
+      mobileOptimized: false, // Disable mobile optimizations for desktop
+      maxRetries: 2,
+      retryDelay: 500
+    })
+
+    const handleError = (e) => {
+      e.target.style.display = 'none'
+      if (e.target.nextSibling) {
+        e.target.nextSibling.style.display = 'block'
+      }
+    }
+
+    const handleRetry = () => {
+      retry()
+    }
+
+    return (
+      <div style={{ position: 'relative' }}>
+        {/* Loading state */}
+        {isLoading && (
+          <div style={{
+            width: '70px',
+            height: '70px',
+            border: `1px solid ${colors.border.light}`,
+            borderRadius: borderRadius.base,
+            background: colors.background.primary,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <div style={{
+              width: '16px',
+              height: '16px',
+              border: `2px solid ${colors.neutral[300]}`,
+              borderTop: `2px solid ${colors.primary[500]}`,
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+            }} />
+          </div>
+        )}
+
+        {/* Main image */}
+        <img
+          src={imageSrc}
+          alt={`${algorithmName} pattern`}
+          className="responsive-pattern-image"
+          style={{
+            width: '70px',
+            height: '70px',
+            border: `1px solid ${colors.border.light}`,
+            borderRadius: borderRadius.base,
+            background: colors.background.primary,
+            maxWidth: '100%',
+            display: isLoaded ? 'block' : 'none',
+            loading: 'eager',
+          }}
+          onError={handleError}
+        />
+
+        {/* Fallback for failed images */}
+        <div style={{
+          display: hasError ? 'block' : 'none',
+          fontSize: typography.fontSize.xs,
+          color: colors.neutral[500],
+          textAlign: 'center',
+          cursor: 'pointer',
+          padding: spacing[2],
+        }}
+        onClick={handleRetry}
+        title="Click to retry loading image"
+        >
+          Image unavailable
+        </div>
+      </div>
+    )
+  }
 
   // Memoized algorithm list to prevent unnecessary re-renders
   const algorithmItems = useMemo(() => {
@@ -272,31 +354,10 @@ const AlgorithmList = ({
                             }}>
                               Pattern
                             </div>
-                            <img
-                              src={`/images/patterns/${algorithm.id}-pattern.png`}
-                              alt={`${algorithm.name} pattern`}
-                              className="responsive-pattern-image"
-                              style={{
-                                width: '70px',
-                                height: '70px',
-                                border: `1px solid ${colors.border.light}`,
-                                borderRadius: borderRadius.base,
-                                background: colors.background.primary,
-                                maxWidth: '100%',
-                              }}
-                              onError={(e) => {
-                                e.target.style.display = 'none'
-                                e.target.nextSibling.style.display = 'block'
-                              }}
+                            <EnhancedPatternImage 
+                              algorithmId={algorithm.id}
+                              algorithmName={algorithm.name}
                             />
-                            <div style={{
-                              display: 'none',
-                              fontSize: typography.fontSize.xs,
-                              color: colors.neutral[500],
-                              textAlign: 'center',
-                            }}>
-                              Image unavailable
-                            </div>
                           </div>
                           
                           {/* Notation Section */}
@@ -392,6 +453,11 @@ const AlgorithmList = ({
 
       {/* Mobile-responsive styles */}
       <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 768px) {
           .responsive-algorithm-list {
             max-height: none !important;

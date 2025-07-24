@@ -19,8 +19,13 @@
 const WiredButton = ({ 
   isWired, 
   size = 16, 
-  className = ''
+  className = '',
+  title,
+  ariaLabel 
 }) => {
+  const defaultTitle = isWired ? 'Algorithm is wired (memorized)' : 'Algorithm is not wired'
+  const defaultAriaLabel = isWired ? 'Wired algorithm' : 'Not wired algorithm'
+
   return (
     <div
       className={`wired-indicator ${className}`}
@@ -32,6 +37,9 @@ const WiredButton = ({
         minHeight: '44px',
         borderRadius: '50%',
       }}
+      role="status"
+      aria-label={ariaLabel || defaultAriaLabel}
+      title={title || defaultTitle}
     >
       {isWired && (
         <div
@@ -42,6 +50,7 @@ const WiredButton = ({
             backgroundColor: '#000000',
             transition: 'all 0.2s ease',
           }}
+          aria-hidden="true"
         />
       )}
       

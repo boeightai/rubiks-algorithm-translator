@@ -46,11 +46,12 @@ function AlgorithmSelectorRefactored() {
   
   const { tutorialImageExists, tutorialImageSrc, patternImageExists, patternImageSrc } = useTutorialImage(selectedAlgorithm)
 
+  const handleAlgorithmSelect = (algorithm) => {
+    setSelectedAlgorithm(algorithm)
+  }
+
   const header = (
-    <Header 
-      showFavoritesOnly={showFavoritesOnly}
-      setShowFavoritesOnly={setShowFavoritesOnly}
-    />
+    <Header />
   )
 
   const algorithmsContent = (
@@ -70,7 +71,7 @@ function AlgorithmSelectorRefactored() {
       <AlgorithmList
         algorithms={filteredAlgorithms}
         selectedAlgorithm={selectedAlgorithm}
-        onSelectAlgorithm={setSelectedAlgorithm}
+        onSelectAlgorithm={handleAlgorithmSelect}
         isFavorite={isFavorite}
         onToggleFavorite={toggleFavorite}
         isWired={isWired}
@@ -106,7 +107,7 @@ function AlgorithmSelectorRefactored() {
       algorithmsContent={algorithmsContent}
       visualSequenceContent={visualSequenceContent}
       selectedAlgorithm={selectedAlgorithm}
-      setSelectedAlgorithm={setSelectedAlgorithm}
+      setSelectedAlgorithm={handleAlgorithmSelect}
     />
   )
 }
