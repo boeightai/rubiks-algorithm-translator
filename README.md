@@ -2,6 +2,152 @@
 
 A modern React application for learning and practicing Rubik's Cube algorithms with visual notation translation. The app translates standard cube notation (like "R U R' U'") into visual move sequences using custom move images.
 
+## 🧩 Rubik's Cube Notation System
+
+### Standard Notation Conventions
+
+The application uses the **WCA (World Cube Association) standard notation** for Rubik's Cube moves. This notation system is universally recognized by speedcubers and is essential for understanding algorithm documentation.
+
+#### Basic Face Moves
+- **R** = Right face clockwise (90°)
+- **R'** = Right face counter-clockwise (90°) - Note: The apostrophe (') indicates "Prime" or inverse
+- **R2** = Right face 180° rotation
+- **L** = Left face clockwise (90°)
+- **L'** = Left face counter-clockwise (90°)
+- **L2** = Left face 180° rotation
+- **U** = Up face clockwise (90°)
+- **U'** = Up face counter-clockwise (90°)
+- **U2** = Up face 180° rotation
+- **D** = Down face clockwise (90°)
+- **D'** = Down face counter-clockwise (90°)
+- **D2** = Down face 180° rotation
+- **F** = Front face clockwise (90°)
+- **F'** = Front face counter-clockwise (90°)
+- **F2** = Front face 180° rotation
+- **B** = Back face clockwise (90°) - Note: B moves are less common in algorithms
+
+#### Wide Moves (Slice Moves)
+- **Rw** = Right wide move (R + M slice together)
+- **Rw'** = Right wide move counter-clockwise
+- **Rw2** = Right wide move 180°
+- **Lw** = Left wide move (L + M slice together)
+- **Lw'** = Left wide move counter-clockwise
+- **Lw2** = Left wide move 180°
+- **Uw** = Up wide move (U + E slice together)
+- **Uw'** = Up wide move counter-clockwise
+- **Uw2** = Up wide move 180°
+- **Dw** = Down wide move (D + E slice together)
+- **Dw'** = Down wide move counter-clockwise
+- **Dw2** = Down wide move 180°
+- **Fw** = Front wide move (F + S slice together)
+- **Fw'** = Front wide move counter-clockwise
+- **Fw2** = Front wide move 180°
+
+#### Middle Layer Moves
+- **M** = Middle slice (between L and R faces) in the same direction as L
+- **M'** = Middle slice counter-clockwise
+- **M2** = Middle slice 180°
+
+#### Lowercase Notation Conversion
+The application automatically converts lowercase notation to wide moves for clarity:
+- **r** → **Rw** (Right wide move)
+- **r'** → **Rw'** (Right wide move prime)
+- **r2** → **Rw2** (Right wide move 180°)
+- **l** → **Lw** (Left wide move)
+- **l'** → **Lw'** (Left wide move prime)
+- **l2** → **Lw2** (Left wide move 180°)
+- **u** → **Uw** (Up wide move)
+- **u'** → **Uw'** (Up wide move prime)
+- **u2** → **Uw2** (Up wide move 180°)
+- **d** → **Dw** (Down wide move)
+- **d'** → **Dw'** (Down wide move prime)
+- **d2** → **Dw2** (Down wide move 180°)
+- **f** → **Fw** (Front wide move)
+- **f'** → **Fw'** (Front wide move prime)
+- **f2** → **Fw2** (Front wide move 180°)
+
+### Algorithm Categories and Examples
+
+#### Beginner Algorithms
+**White Cross Formation:**
+- `F D R F' D'` - Basic white cross edge placement
+- `R D' R' D` - Alternative white cross method
+
+**Corner Insertion (First Layer):**
+- `R U R' U'` - **Right Trigger** (also known as "Sexy Move")
+- `L' U' L U` - **Left Trigger** (left-handed version)
+
+**Second Layer (F2L):**
+- `U R U' R' U' F' U F` - Right edge insertion
+- `U' L' U L U F U' F'` - Left edge insertion
+
+#### Advanced Algorithms
+
+**OLL (Orientation of Last Layer):**
+- `F R U R' U' F'` - OLL Cross formation
+- `R U R' U R U2 R'` - **Sune** (corner orientation)
+- `R' U' R U' R' U2 R` - **Anti-Sune** (inverse Sune)
+
+**PLL (Permutation of Last Layer):**
+- `R' F R' B2 R F' R' B2 R2` - Corner permutation
+- `M2 U M2 U2 M2 U M2` - Edge permutation (U-perm)
+
+**F2L (First Two Layers):**
+- `R U' R'` - Basic F2L insertion
+- `F' U F` - Alternative F2L insertion
+- `R U R' U' R U R'` - F2L with setup moves
+
+### Pattern Recognition System
+
+The application automatically detects and highlights common algorithm patterns:
+
+#### Right Trigger Pattern: `R U R' U'`
+- **Visual Highlighting**: Moves are highlighted in green
+- **Purpose**: Corner insertion and orientation
+- **Variations**: Can be repeated multiple times in sequences
+
+#### Left Trigger Pattern: `L' U' L U`
+- **Visual Highlighting**: Moves are highlighted in blue
+- **Purpose**: Left-handed corner manipulation
+- **Usage**: Often used in mirror algorithms
+
+### Notation Parsing and Display
+
+The application processes algorithm notation through several steps:
+
+1. **String Parsing**: Notation strings are split by spaces into individual moves
+2. **Move Validation**: Each move is checked against the moves.json mapping
+3. **Visual Translation**: Each move is converted to its corresponding image
+4. **Pattern Detection**: Right and Left Trigger patterns are identified and highlighted
+5. **Fallback Handling**: Missing moves display as text with warning styling
+
+### Algorithm Database Structure
+
+The application contains **127 algorithms** across multiple categories:
+
+```json
+{
+  "id": "unique-identifier",
+  "name": "Algorithm Name",
+  "notation": "R U R' U'",
+  "category": "Beginner Corners",
+  "difficulty": "beginner",
+  "description": "What the algorithm does",
+  "nicknames": ["Right Trigger", "Sexy Move"]
+}
+```
+
+**Categories Include:**
+- Beginner Cross
+- Beginner Corners
+- Beginner F2L
+- Beginner OLL
+- Beginner PLL
+- F2L (First Two Layers)
+- OLL (Orientation of Last Layer)
+- PLL (Permutation of Last Layer)
+- Advanced Techniques
+
 ## 🚀 Features
 
 ### Core Functionality
@@ -117,7 +263,10 @@ src/
 {
   "R": "/images/moves/R.png",
   "R'": "/images/moves/R-prime.png",
-  "R2": "/images/moves/R2.png"
+  "R2": "/images/moves/R2.png",
+  "r": "/images/moves/Rw.png",
+  "r'": "/images/moves/Rw-prime.png",
+  "r2": "/images/moves/Rw2.png"
 }
 ```
 
