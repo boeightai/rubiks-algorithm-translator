@@ -27,6 +27,7 @@ const Header = ({
   selectedCategory,
   setSelectedCategory
 }) => {
+  const youtubeVideoUrl = 'https://youtu.be/R-R0KrXvWbc?feature=shared'
   const handleWiredButtonClick = () => {
     if (selectedCategory === 'Wired') {
       // If Wired is currently selected, switch back to All Categories
@@ -35,6 +36,10 @@ const Header = ({
       // If any other category is selected, switch to Wired
       setSelectedCategory('Wired')
     }
+  }
+
+  const handleYouTubeButtonClick = () => {
+    window.open(youtubeVideoUrl, '_blank')
   }
 
   const isWiredSelected = selectedCategory === 'Wired'
@@ -84,49 +89,107 @@ const Header = ({
               {subtitle}
             </p>
             
-            {/* Wired Magazine Button */}
-            <button
-              onClick={handleWiredButtonClick}
-              style={{
-                padding: `${spacing[3]} ${spacing[4]}`,
-                border: isWiredSelected ? `2px solid ${colors.neutral[500]}` : `1px solid ${colors.border.medium}`,
-                borderRadius: '12px',
-                background: isWiredSelected ? colors.neutral[50] : colors.background.primary,
-                color: isWiredSelected ? colors.neutral[700] : colors.neutral[700],
-                fontWeight: typography.fontWeight.medium,
-                fontSize: typography.fontSize.sm,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: spacing[2],
-                outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
-                boxShadow: shadows.sm,
-                minHeight: '44px',
-                minWidth: '44px',
-                whiteSpace: 'nowrap',
-                marginTop: spacing[4],
-              }}
-              onFocus={(e) => {
-                e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
-              }}
-              onBlur={(e) => {
-                e.target.style.boxShadow = shadows.sm
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = isWiredSelected ? colors.neutral[100] : colors.neutral[50]
-                e.target.style.borderColor = isWiredSelected ? colors.neutral[600] : colors.border.dark
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = isWiredSelected ? colors.neutral[50] : colors.background.primary
-                e.target.style.borderColor = isWiredSelected ? colors.neutral[500] : colors.border.medium
-              }}
-              aria-label={isWiredSelected ? "Switch back to all categories" : "Filter to Wired Magazine algorithms"}
-              aria-pressed={isWiredSelected}
-            >
-              Wired Magazine's How to Solve a Rubik's Cube
-            </button>
+            {/* Button Container */}
+            <div style={{
+              display: 'flex',
+              gap: spacing[3],
+              marginTop: spacing[4],
+              flexWrap: 'wrap',
+            }}>
+              {/* Wired Magazine Button */}
+              <button
+                onClick={handleWiredButtonClick}
+                style={{
+                  padding: `${spacing[3]} ${spacing[4]}`,
+                  border: isWiredSelected ? `2px solid ${colors.neutral[500]}` : `1px solid ${colors.border.medium}`,
+                  borderRadius: '12px',
+                  background: isWiredSelected ? colors.neutral[50] : colors.background.primary,
+                  color: isWiredSelected ? colors.neutral[700] : colors.neutral[700],
+                  fontWeight: typography.fontWeight.medium,
+                  fontSize: typography.fontSize.sm,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: spacing[2],
+                  outline: 'none',
+                  transition: 'all 0.2s ease',
+                  boxSizing: 'border-box',
+                  boxShadow: shadows.sm,
+                  minHeight: '44px',
+                  minWidth: '44px',
+                  whiteSpace: 'nowrap',
+                }}
+                onFocus={(e) => {
+                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+                }}
+                onBlur={(e) => {
+                  e.target.style.boxShadow = shadows.sm
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = isWiredSelected ? colors.neutral[100] : colors.neutral[50]
+                  e.target.style.borderColor = isWiredSelected ? colors.neutral[600] : colors.border.dark
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = isWiredSelected ? colors.neutral[50] : colors.background.primary
+                  e.target.style.borderColor = isWiredSelected ? colors.neutral[500] : colors.border.medium
+                }}
+                aria-label={isWiredSelected ? "Switch back to all categories" : "Filter to Wired Magazine algorithms"}
+                aria-pressed={isWiredSelected}
+              >
+                Wired Magazine's How to Solve a Rubik's Cube
+              </button>
+
+              {/* YouTube Button */}
+              <button
+                onClick={handleYouTubeButtonClick}
+                style={{
+                  padding: `${spacing[3]} ${spacing[4]}`,
+                  border: `1px solid ${colors.border.medium}`,
+                  borderRadius: '12px',
+                  background: colors.background.primary,
+                  color: colors.neutral[700],
+                  fontWeight: typography.fontWeight.medium,
+                  fontSize: typography.fontSize.sm,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: spacing[2],
+                  outline: 'none',
+                  transition: 'all 0.2s ease',
+                  boxSizing: 'border-box',
+                  boxShadow: shadows.sm,
+                  minHeight: '44px',
+                  minWidth: '44px',
+                  whiteSpace: 'nowrap',
+                }}
+                onFocus={(e) => {
+                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+                }}
+                onBlur={(e) => {
+                  e.target.style.boxShadow = shadows.sm
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = colors.neutral[50]
+                  e.target.style.borderColor = colors.border.dark
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = colors.background.primary
+                  e.target.style.borderColor = colors.border.medium
+                }}
+                aria-label="Open YouTube tutorial video"
+              >
+                <svg 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="currentColor"
+                  style={{ flexShrink: 0 }}
+                >
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                Click to Watch
+              </button>
+            </div>
           </div>
         </div>
       </div>
