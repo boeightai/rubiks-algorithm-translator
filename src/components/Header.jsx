@@ -16,15 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { colors, typography, spacing } from '../styles/designSystem'
+import { colors, typography, spacing, shadows } from '../styles/designSystem'
 import StarIcon from './ui/StarIcon'
 import Logo from './ui/Logo'
 
 const Header = ({ 
   title = "Bo and Hailey's Visual Notation System",
   subtitle = "An Alternate Visual Notation System for Solving Rubik's Cubes",
-  style = {}
+  style = {},
+  selectedCategory,
+  setSelectedCategory
 }) => {
+  const handleWiredButtonClick = () => {
+    if (selectedCategory === 'Wired') {
+      // If Wired is currently selected, switch back to All Categories
+      setSelectedCategory('all')
+    } else {
+      // If any other category is selected, switch to Wired
+      setSelectedCategory('Wired')
+    }
+  }
+
+  const isWiredSelected = selectedCategory === 'Wired'
+
   return (
     <div 
       className="responsive-header"
@@ -69,6 +83,50 @@ const Header = ({
             }}>
               {subtitle}
             </p>
+            
+            {/* Wired Magazine Button */}
+            <button
+              onClick={handleWiredButtonClick}
+              style={{
+                padding: `${spacing[3]} ${spacing[4]}`,
+                border: isWiredSelected ? `2px solid ${colors.neutral[500]}` : `1px solid ${colors.border.medium}`,
+                borderRadius: '12px',
+                background: isWiredSelected ? colors.neutral[50] : colors.background.primary,
+                color: isWiredSelected ? colors.neutral[700] : colors.neutral[700],
+                fontWeight: typography.fontWeight.medium,
+                fontSize: typography.fontSize.sm,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: spacing[2],
+                outline: 'none',
+                transition: 'all 0.2s ease',
+                boxSizing: 'border-box',
+                boxShadow: shadows.sm,
+                minHeight: '44px',
+                minWidth: '44px',
+                whiteSpace: 'nowrap',
+                marginTop: spacing[4],
+              }}
+              onFocus={(e) => {
+                e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+              }}
+              onBlur={(e) => {
+                e.target.style.boxShadow = shadows.sm
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = isWiredSelected ? colors.neutral[100] : colors.neutral[50]
+                e.target.style.borderColor = isWiredSelected ? colors.neutral[600] : colors.border.dark
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = isWiredSelected ? colors.neutral[50] : colors.background.primary
+                e.target.style.borderColor = isWiredSelected ? colors.neutral[500] : colors.border.medium
+              }}
+              aria-label={isWiredSelected ? "Switch back to all categories" : "Filter to Wired Magazine algorithms"}
+              aria-pressed={isWiredSelected}
+            >
+              Wired Magazine's How to Solve a Rubik's Cube
+            </button>
           </div>
         </div>
       </div>
@@ -90,6 +148,12 @@ const Header = ({
             font-size: 1rem !important;
             margin-top: 8px !important;
           }
+          
+          .responsive-header button {
+            font-size: 0.875rem !important;
+            padding: 0.75rem 1rem !important;
+            margin-top: 1rem !important;
+          }
         }
         
         @media (max-width: 480px) {
@@ -107,6 +171,12 @@ const Header = ({
             font-size: 0.875rem !important;
             margin-top: 6px !important;
           }
+          
+          .responsive-header button {
+            font-size: 0.8rem !important;
+            padding: 0.625rem 0.875rem !important;
+            margin-top: 0.875rem !important;
+          }
         }
         
         @media (max-width: 360px) {
@@ -123,6 +193,12 @@ const Header = ({
             font-size: 0.8rem !important;
             margin-top: 4px !important;
           }
+          
+          .responsive-header button {
+            font-size: 0.75rem !important;
+            padding: 0.5rem 0.75rem !important;
+            margin-top: 0.75rem !important;
+          }
         }
         
         /* Landscape orientation adjustments */
@@ -138,6 +214,12 @@ const Header = ({
           
           .responsive-header p {
             font-size: 0.9rem !important;
+          }
+          
+          .responsive-header button {
+            font-size: 0.825rem !important;
+            padding: 0.625rem 0.875rem !important;
+            margin-top: 0.875rem !important;
           }
         }
       `}</style>

@@ -16,26 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
+import { useMobileDetection } from './hooks/useMobileDetection'
 
 function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
-  const [isMobile, setIsMobile] = useState(false)
-
-  // Detect mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768
-      setIsMobile(mobile)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  const isMobile = useMobileDetection()
 
 
 
@@ -64,12 +52,21 @@ function VisualSequence({ notation }) {
     const leftTrigger = new Set()
     const groups = []
     
+    // Helper function to compare arrays
+    const arraysEqual = (a, b) => {
+      if (a.length !== b.length) return false
+      for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false
+      }
+      return true
+    }
+    
     // Find all Right Trigger patterns in the sequence
     for (let i = 0; i <= parsedMoves.length - 4; i++) {
       const sequence = parsedMoves.slice(i, i + 4)
       
       // Check if the sequence matches the Right Trigger pattern
-      const isRightTrigger = JSON.stringify(sequence) === JSON.stringify(rightTriggerPattern)
+      const isRightTrigger = arraysEqual(sequence, rightTriggerPattern)
       
       if (isRightTrigger) {
         // Mark these 4 moves as part of a Right Trigger pattern
@@ -92,7 +89,7 @@ function VisualSequence({ notation }) {
       const sequence = parsedMoves.slice(i, i + 4)
       
       // Check if the sequence matches the Left Trigger pattern
-      const isLeftTrigger = JSON.stringify(sequence) === JSON.stringify(leftTriggerPattern)
+      const isLeftTrigger = arraysEqual(sequence, leftTriggerPattern)
       
       if (isLeftTrigger) {
         // Mark these 4 moves as part of a Left Trigger pattern

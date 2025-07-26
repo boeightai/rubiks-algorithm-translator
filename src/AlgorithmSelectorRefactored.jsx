@@ -51,7 +51,10 @@ function AlgorithmSelectorRefactored() {
   }
 
   const header = (
-    <Header />
+    <Header 
+      selectedCategory={selectedCategory}
+      setSelectedCategory={setSelectedCategory}
+    />
   )
 
   const algorithmsContent = (

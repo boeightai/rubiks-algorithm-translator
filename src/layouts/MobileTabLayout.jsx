@@ -19,6 +19,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
 import TabNavigation from '../components/ui/TabNavigation'
+import { useMobileDetection } from '../hooks/useMobileDetection'
 
 const MobileTabLayout = ({ 
   header,
@@ -29,9 +30,9 @@ const MobileTabLayout = ({
   containerStyle = {}
 }) => {
   const [activeTab, setActiveTab] = useState('algorithms')
-  const [isMobile, setIsMobile] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
   const autoSwitchTimeoutRef = useRef(null)
+  const isMobile = useMobileDetection()
 
   // Handle tab changes and clear selection when switching to algorithms tab
   const handleTabChange = (newTab) => {
@@ -52,23 +53,12 @@ const MobileTabLayout = ({
     setActiveTab(newTab)
   }
 
-  // Check if we're on mobile
+  // Reset active tab to algorithms when switching from mobile to desktop
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768
-      setIsMobile(mobile)
-      
-      // Reset active tab to algorithms when switching from mobile to desktop
-      if (!mobile && activeTab === 'visual') {
-        setActiveTab('algorithms')
-      }
+    if (!isMobile && activeTab === 'visual') {
+      setActiveTab('algorithms')
     }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [activeTab])
+  }, [isMobile, activeTab])
 
   // Auto-switch to visual sequence tab when an algorithm is selected on mobile
   // Only auto-switch if we're currently on the algorithms tab and haven't manually switched yet
