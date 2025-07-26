@@ -27,7 +27,6 @@ const Header = ({
   selectedCategory,
   setSelectedCategory
 }) => {
-  const youtubeVideoUrl = 'https://youtu.be/R-R0KrXvWbc?feature=shared'
   const handleWiredButtonClick = () => {
     if (selectedCategory === 'Wired') {
       // If Wired is currently selected, switch back to All Categories
@@ -39,7 +38,43 @@ const Header = ({
   }
 
   const handleYouTubeButtonClick = () => {
-    window.open(youtubeVideoUrl, '_blank')
+    // Enhanced YouTube button click handler with mobile-friendly fallbacks
+    const youtubeVideoUrl = 'https://youtu.be/R-R0KrXvWbc?feature=shared'
+    
+    try {
+      // Method 1: Try window.open() first (works on most mobile browsers with user gesture)
+      const newWindow = window.open(youtubeVideoUrl, '_blank')
+      
+      if (newWindow) {
+        // Success - window opened
+        console.log('YouTube opened successfully in new window/tab')
+        return
+      }
+      
+      // Method 2: Fallback - create and click a link element (more reliable on mobile)
+      console.log('window.open() failed, trying link element method...')
+      const link = document.createElement('a')
+      link.href = youtubeVideoUrl
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+    } catch (error) {
+      console.error('YouTube button error:', error)
+      
+      // Method 3: Final fallback - redirect current tab
+      try {
+        console.log('Falling back to current tab redirect...')
+        window.location.href = youtubeVideoUrl
+      } catch (redirectError) {
+        console.error('All YouTube opening methods failed:', redirectError)
+        // Show user-friendly error message
+        alert('Unable to open YouTube video. Please copy this link and open it manually: ' + youtubeVideoUrl)
+      }
+    }
   }
 
   const isWiredSelected = selectedCategory === 'Wired'
@@ -142,6 +177,7 @@ const Header = ({
               {/* YouTube Button */}
               <button
                 onClick={handleYouTubeButtonClick}
+                className="youtube-button"
                 style={{
                   padding: `${spacing[3]} ${spacing[4]}`,
                   border: `1px solid ${colors.border.medium}`,
@@ -161,6 +197,11 @@ const Header = ({
                   minHeight: '44px',
                   minWidth: '44px',
                   whiteSpace: 'nowrap',
+                  // Mobile-specific improvements
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent',
+                  WebkitUserSelect: 'none',
+                  userSelect: 'none',
                 }}
                 onFocus={(e) => {
                   e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
@@ -176,7 +217,18 @@ const Header = ({
                   e.target.style.background = colors.background.primary
                   e.target.style.borderColor = colors.border.medium
                 }}
+                onTouchStart={(e) => {
+                  // Add touch feedback
+                  e.target.style.transform = 'scale(0.98)'
+                  e.target.style.background = colors.neutral[100]
+                }}
+                onTouchEnd={(e) => {
+                  // Remove touch feedback
+                  e.target.style.transform = 'scale(1)'
+                  e.target.style.background = colors.background.primary
+                }}
                 aria-label="Open YouTube tutorial video"
+                title="Watch the Wired Magazine Rubik's Cube tutorial"
               >
                 <svg 
                   width="20" 
@@ -184,10 +236,11 @@ const Header = ({
                   viewBox="0 0 24 24" 
                   fill="currentColor"
                   style={{ flexShrink: 0 }}
+                  aria-hidden="true"
                 >
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
-                Click to Watch
+                <span className="youtube-button-text">Click to Watch</span>
               </button>
             </div>
           </div>
@@ -196,6 +249,20 @@ const Header = ({
 
       {/* Mobile-responsive styles */}
       <style>{`
+        /* YouTube button specific styles */
+        .youtube-button {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .youtube-button:active {
+          transform: scale(0.98);
+        }
+        
+        .youtube-button-text {
+          transition: all 0.2s ease;
+        }
+        
         @media (max-width: 768px) {
           .responsive-header {
             margin-bottom: 24px !important;
@@ -216,6 +283,20 @@ const Header = ({
             font-size: 0.875rem !important;
             padding: 0.75rem 1rem !important;
             margin-top: 1rem !important;
+          }
+          
+          /* Enhanced mobile YouTube button */
+          .youtube-button {
+            min-height: 48px !important;
+            min-width: 48px !important;
+            padding: 12px 16px !important;
+            font-size: 0.875rem !important;
+            border-radius: 10px !important;
+          }
+          
+          .youtube-button svg {
+            width: 18px !important;
+            height: 18px !important;
           }
         }
         
