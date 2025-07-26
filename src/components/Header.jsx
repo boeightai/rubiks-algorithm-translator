@@ -18,7 +18,6 @@
 
 import { colors, typography, spacing, shadows } from '../styles/designSystem'
 import StarIcon from './ui/StarIcon'
-import Logo from './ui/Logo'
 
 const Header = ({ 
   title = "Bo and Hailey's Visual Notation System",

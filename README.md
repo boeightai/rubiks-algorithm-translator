@@ -184,6 +184,7 @@ The "Wired" tagging system highlights algorithms that are specifically used in W
 - **Data**: JSON-based algorithm and move mapping files
 - **Build Tool**: Vite with React plugin
 - **Linting**: ESLint with React-specific rules
+- **Analytics**: Vercel Analytics for usage insights
 - **License**: GNU General Public License v3.0
 
 ## 📦 Installation & Setup
@@ -218,7 +219,6 @@ src/
 │   ├── ErrorBoundary.jsx      # Error handling component
 │   └── ui/                    # Reusable UI components
 │       ├── ImageModal.jsx     # Image zoom modal
-│       ├── Logo.jsx           # Application logo
 │       ├── StarButton.jsx     # Favorite toggle button
 │       ├── StarIcon.jsx       # Star icon component
 │       ├── TabNavigation.jsx  # Mobile tab navigation
@@ -227,12 +227,13 @@ src/
 │   ├── useAlgorithms.js       # Algorithm data management
 │   ├── useFavorites.js        # Favorites persistence
 │   ├── useTutorialImage.js    # Image loading logic
-│   └── useWired.js           # Wired method algorithm management
+│   ├── useWired.js           # Wired method algorithm management
+│   ├── useMobileDetection.js  # Mobile device detection
+│   └── useImageLoader.js      # Image loading with retry logic
 ├── data/                # Static data files
 │   ├── algorithms.json        # Algorithm database (127 entries)
 │   └── moves.json            # Move notation to image mapping
 ├── layouts/             # Layout components
-│   ├── GridLayout.jsx        # Main application layout
 │   └── MobileTabLayout.jsx   # Mobile-optimized layout
 ├── styles/              # Design system
 │   └── designSystem.js       # Colors, typography, spacing
@@ -281,13 +282,15 @@ src/
 ### AlgorithmSelectorRefactored.jsx
 - **Main orchestrator** managing all application state
 - **Coordinates** search, filtering, selection, and display
-- **Responsive layout** with left sidebar and right detail panel
+- **Responsive layout** with mobile tab navigation
 
 ### Custom Hooks
 - **useAlgorithms**: Manages algorithm data, filtering, and search with memoization
 - **useFavorites**: Handles favorite persistence in localStorage with error handling
 - **useWired**: Manages Wired Magazine method algorithm state and persistence
 - **useTutorialImage**: Loads and manages tutorial/pattern images with fallbacks
+- **useMobileDetection**: Detects mobile devices for responsive behavior
+- **useImageLoader**: Handles image loading with retry logic and error handling
 
 ### ErrorBoundary.jsx
 - **Graceful error handling** for component failures
