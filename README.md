@@ -2,6 +2,8 @@
 
 A modern React application for learning and practicing Rubik's Cube algorithms with visual notation translation. The app translates standard cube notation (like "R U R' U'") into visual move sequences using custom move images.
 
+**🌐 Live Application**: [www.wayofthecube.com](https://www.wayofthecube.com)
+
 ## 🧩 Rubik's Cube Notation System
 
 ### Standard Notation Conventions
@@ -353,6 +355,7 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## 🔗 Links
 
+- [Live Application](https://www.wayofthecube.com)
 - [GitHub Repository](https://github.com/boeightai/rubiks-translator)
 - [Issue Tracker](https://github.com/boeightai/rubiks-translator/issues)
 - [GNU GPL v3 License](https://www.gnu.org/licenses/gpl-3.0.html)
