@@ -76,14 +76,41 @@ const Header = ({
     }
   }
 
-  const handleSignUpClick = () => {
-    // TODO: Implement sign up functionality
-    console.log('Sign Up clicked')
-  }
-
-  const handleLogInClick = () => {
-    // TODO: Implement log in functionality
-    console.log('Log In clicked')
+  const handleGitHubClick = () => {
+    const githubUrl = 'https://github.com/boeightai/rubiks-algorithm-translator'
+    
+    try {
+      // Method 1: Try window.open() first
+      const newWindow = window.open(githubUrl, '_blank')
+      
+      if (newWindow) {
+        console.log('GitHub opened successfully in new window/tab')
+        return
+      }
+      
+      // Method 2: Fallback - create and click a link element
+      console.log('window.open() failed, trying link element method...')
+      const link = document.createElement('a')
+      link.href = githubUrl
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+    } catch (error) {
+      console.error('GitHub button error:', error)
+      
+      // Method 3: Final fallback - redirect current tab
+      try {
+        console.log('Falling back to current tab redirect...')
+        window.location.href = githubUrl
+      } catch (redirectError) {
+        console.error('All GitHub opening methods failed:', redirectError)
+        alert('Unable to open GitHub repository. Please copy this link and open it manually: ' + githubUrl)
+      }
+    }
   }
 
   const isWiredSelected = selectedCategory === 'Wired'
@@ -255,7 +282,7 @@ const Header = ({
           </div>
         </div>
 
-        {/* Right side - Authentication buttons */}
+        {/* Right side - GitHub button */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -263,73 +290,15 @@ const Header = ({
           marginLeft: spacing[4],
           flexShrink: 0,
         }}>
-          {/* Sign Up Button */}
+          {/* GitHub Button */}
           <button
-            onClick={handleSignUpClick}
-            className="auth-button signup-button"
-            style={{
-              padding: `${spacing[2]} ${spacing[3]}`,
-              border: 'none',
-              borderRadius: '8px',
-              background: colors.primary[600],
-              color: 'white',
-              fontWeight: typography.fontWeight.medium,
-              fontSize: typography.fontSize.sm,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              outline: 'none',
-              transition: 'all 0.2s ease',
-              boxSizing: 'border-box',
-              boxShadow: shadows.sm,
-              minHeight: '36px',
-              minWidth: '36px',
-              whiteSpace: 'nowrap',
-              touchAction: 'manipulation',
-              WebkitTapHighlightColor: 'transparent',
-              WebkitUserSelect: 'none',
-              userSelect: 'none',
-            }}
-            onFocus={(e) => {
-              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
-            }}
-            onBlur={(e) => {
-              e.target.style.boxShadow = shadows.sm
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = colors.primary[700]
-              e.target.style.transform = 'translateY(-1px)'
-              e.target.style.boxShadow = shadows.md
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = colors.primary[600]
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = shadows.sm
-            }}
-            onTouchStart={(e) => {
-              e.target.style.transform = 'scale(0.98)'
-              e.target.style.background = colors.primary[700]
-            }}
-            onTouchEnd={(e) => {
-              e.target.style.transform = 'scale(1)'
-              e.target.style.background = colors.primary[600]
-            }}
-            aria-label="Sign up for a new account"
-            title="Sign Up"
-          >
-            Sign Up
-          </button>
-
-          {/* Log In Button */}
-          <button
-            onClick={handleLogInClick}
-            className="auth-button login-button"
+            onClick={handleGitHubClick}
+            className="github-button"
             style={{
               padding: `${spacing[2]} ${spacing[3]}`,
               border: `1px solid ${colors.border.medium}`,
               borderRadius: '8px',
-              background: colors.background.primary,
+              background: colors.neutral[100],
               color: colors.neutral[700],
               fontWeight: typography.fontWeight.medium,
               fontSize: typography.fontSize.sm,
@@ -337,6 +306,7 @@ const Header = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              gap: spacing[2],
               outline: 'none',
               transition: 'all 0.2s ease',
               boxSizing: 'border-box',
@@ -358,10 +328,14 @@ const Header = ({
             onMouseEnter={(e) => {
               e.target.style.background = colors.neutral[50]
               e.target.style.borderColor = colors.border.dark
+              e.target.style.transform = 'translateY(-1px)'
+              e.target.style.boxShadow = shadows.md
             }}
             onMouseLeave={(e) => {
               e.target.style.background = colors.background.primary
               e.target.style.borderColor = colors.border.medium
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = shadows.sm
             }}
             onTouchStart={(e) => {
               e.target.style.transform = 'scale(0.98)'
@@ -371,10 +345,20 @@ const Header = ({
               e.target.style.transform = 'scale(1)'
               e.target.style.background = colors.background.primary
             }}
-            aria-label="Log in to your account"
-            title="Log In"
+            aria-label="View source code on GitHub"
+            title="View on GitHub"
           >
-            Log In
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="currentColor"
+              style={{ flexShrink: 0 }}
+              aria-hidden="true"
+            >
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            <span>GitHub</span>
           </button>
         </div>
       </div>
@@ -395,13 +379,13 @@ const Header = ({
           transition: all 0.2s ease;
         }
 
-        /* Auth button styles */
-        .auth-button {
+        /* GitHub button styles */
+        .github-button {
           position: relative;
           overflow: hidden;
         }
         
-        .auth-button:active {
+        .github-button:active {
           transform: scale(0.98);
         }
         
@@ -441,8 +425,8 @@ const Header = ({
             height: 18px !important;
           }
 
-          /* Mobile auth buttons */
-          .auth-button {
+          /* Mobile GitHub button */
+          .github-button {
             min-height: 40px !important;
             min-width: 40px !important;
             padding: 8px 12px !important;
@@ -473,8 +457,8 @@ const Header = ({
             margin-top: 0.875rem !important;
           }
 
-          /* Smaller auth buttons on very small screens */
-          .auth-button {
+          /* Smaller GitHub button on very small screens */
+          .github-button {
             min-height: 36px !important;
             min-width: 36px !important;
             padding: 6px 10px !important;
@@ -504,8 +488,8 @@ const Header = ({
             margin-top: 0.75rem !important;
           }
 
-          /* Compact auth buttons on very small screens */
-          .auth-button {
+          /* Compact GitHub button on very small screens */
+          .github-button {
             min-height: 32px !important;
             min-width: 32px !important;
             padding: 4px 8px !important;
@@ -535,8 +519,8 @@ const Header = ({
             margin-top: 0.875rem !important;
           }
 
-          /* Landscape auth buttons */
-          .auth-button {
+          /* Landscape GitHub button */
+          .github-button {
             min-height: 36px !important;
             min-width: 36px !important;
             padding: 6px 10px !important;
@@ -545,7 +529,7 @@ const Header = ({
           }
         }
 
-        /* Hide auth buttons on very small screens and show them below the title */
+        /* Mobile layout adjustments for GitHub button */
         @media (max-width: 640px) {
           .responsive-header > div {
             flex-direction: column !important;
@@ -556,7 +540,15 @@ const Header = ({
           .responsive-header > div > div:last-child {
             margin-left: 0 !important;
             justify-content: center !important;
-            order: -1 !important;
+            order: 1 !important;
+          }
+          
+          .github-button {
+            min-height: 40px !important;
+            min-width: 40px !important;
+            padding: 8px 16px !important;
+            font-size: 0.875rem !important;
+            border-radius: 8px !important;
           }
         }
       `}</style>
