@@ -76,6 +76,16 @@ const Header = ({
     }
   }
 
+  const handleSignUpClick = () => {
+    // TODO: Implement sign up functionality
+    console.log('Sign Up clicked')
+  }
+
+  const handleLogInClick = () => {
+    // TODO: Implement log in functionality
+    console.log('Log In clicked')
+  }
+
   const isWiredSelected = selectedCategory === 'Wired'
 
   return (
@@ -91,7 +101,7 @@ const Header = ({
     >
       <div style={{
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
         marginBottom: spacing[2],
       }}>
@@ -244,6 +254,129 @@ const Header = ({
             </div>
           </div>
         </div>
+
+        {/* Right side - Authentication buttons */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: spacing[2],
+          marginLeft: spacing[4],
+          flexShrink: 0,
+        }}>
+          {/* Sign Up Button */}
+          <button
+            onClick={handleSignUpClick}
+            className="auth-button signup-button"
+            style={{
+              padding: `${spacing[2]} ${spacing[3]}`,
+              border: 'none',
+              borderRadius: '8px',
+              background: colors.primary[600],
+              color: 'white',
+              fontWeight: typography.fontWeight.medium,
+              fontSize: typography.fontSize.sm,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              transition: 'all 0.2s ease',
+              boxSizing: 'border-box',
+              boxShadow: shadows.sm,
+              minHeight: '36px',
+              minWidth: '36px',
+              whiteSpace: 'nowrap',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = shadows.sm
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = colors.primary[700]
+              e.target.style.transform = 'translateY(-1px)'
+              e.target.style.boxShadow = shadows.md
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = colors.primary[600]
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = shadows.sm
+            }}
+            onTouchStart={(e) => {
+              e.target.style.transform = 'scale(0.98)'
+              e.target.style.background = colors.primary[700]
+            }}
+            onTouchEnd={(e) => {
+              e.target.style.transform = 'scale(1)'
+              e.target.style.background = colors.primary[600]
+            }}
+            aria-label="Sign up for a new account"
+            title="Sign Up"
+          >
+            Sign Up
+          </button>
+
+          {/* Log In Button */}
+          <button
+            onClick={handleLogInClick}
+            className="auth-button login-button"
+            style={{
+              padding: `${spacing[2]} ${spacing[3]}`,
+              border: `1px solid ${colors.border.medium}`,
+              borderRadius: '8px',
+              background: colors.background.primary,
+              color: colors.neutral[700],
+              fontWeight: typography.fontWeight.medium,
+              fontSize: typography.fontSize.sm,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              transition: 'all 0.2s ease',
+              boxSizing: 'border-box',
+              boxShadow: shadows.sm,
+              minHeight: '36px',
+              minWidth: '36px',
+              whiteSpace: 'nowrap',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = shadows.sm
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = colors.neutral[50]
+              e.target.style.borderColor = colors.border.dark
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = colors.background.primary
+              e.target.style.borderColor = colors.border.medium
+            }}
+            onTouchStart={(e) => {
+              e.target.style.transform = 'scale(0.98)'
+              e.target.style.background = colors.neutral[100]
+            }}
+            onTouchEnd={(e) => {
+              e.target.style.transform = 'scale(1)'
+              e.target.style.background = colors.background.primary
+            }}
+            aria-label="Log in to your account"
+            title="Log In"
+          >
+            Log In
+          </button>
+        </div>
       </div>
 
       {/* Mobile-responsive styles */}
@@ -260,6 +393,16 @@ const Header = ({
         
         .youtube-button-text {
           transition: all 0.2s ease;
+        }
+
+        /* Auth button styles */
+        .auth-button {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .auth-button:active {
+          transform: scale(0.98);
         }
         
         @media (max-width: 768px) {
@@ -297,6 +440,15 @@ const Header = ({
             width: 18px !important;
             height: 18px !important;
           }
+
+          /* Mobile auth buttons */
+          .auth-button {
+            min-height: 40px !important;
+            min-width: 40px !important;
+            padding: 8px 12px !important;
+            font-size: 0.8rem !important;
+            border-radius: 6px !important;
+          }
         }
         
         @media (max-width: 480px) {
@@ -320,6 +472,15 @@ const Header = ({
             padding: 0.625rem 0.875rem !important;
             margin-top: 0.875rem !important;
           }
+
+          /* Smaller auth buttons on very small screens */
+          .auth-button {
+            min-height: 36px !important;
+            min-width: 36px !important;
+            padding: 6px 10px !important;
+            font-size: 0.75rem !important;
+            border-radius: 6px !important;
+          }
         }
         
         @media (max-width: 360px) {
@@ -342,6 +503,15 @@ const Header = ({
             padding: 0.5rem 0.75rem !important;
             margin-top: 0.75rem !important;
           }
+
+          /* Compact auth buttons on very small screens */
+          .auth-button {
+            min-height: 32px !important;
+            min-width: 32px !important;
+            padding: 4px 8px !important;
+            font-size: 0.7rem !important;
+            border-radius: 4px !important;
+          }
         }
         
         /* Landscape orientation adjustments */
@@ -363,6 +533,30 @@ const Header = ({
             font-size: 0.825rem !important;
             padding: 0.625rem 0.875rem !important;
             margin-top: 0.875rem !important;
+          }
+
+          /* Landscape auth buttons */
+          .auth-button {
+            min-height: 36px !important;
+            min-width: 36px !important;
+            padding: 6px 10px !important;
+            font-size: 0.75rem !important;
+            border-radius: 6px !important;
+          }
+        }
+
+        /* Hide auth buttons on very small screens and show them below the title */
+        @media (max-width: 640px) {
+          .responsive-header > div {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 16px !important;
+          }
+          
+          .responsive-header > div > div:last-child {
+            margin-left: 0 !important;
+            justify-content: center !important;
+            order: -1 !important;
           }
         }
       `}</style>
