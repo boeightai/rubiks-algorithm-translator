@@ -156,7 +156,7 @@ The application processes algorithm notation through several steps:
 
 ### Algorithm Database Structure
 
-The application contains **127 algorithms** across multiple categories:
+The application contains **126 algorithms** across multiple categories:
 
 ```json
 {
@@ -186,10 +186,12 @@ The application contains **127 algorithms** across multiple categories:
 ### Core Functionality
 - **Visual Notation Translation**: Converts algorithm notation to step-by-step visual move sequences
 - **Pattern Recognition**: Automatically highlights Right Trigger (R U R' U') and Left Trigger (L' U' L U) patterns
-- **Algorithm Database**: 127 algorithms across multiple categories (Beginner, F2L, OLL, PLL, etc.)
+- **Algorithm Database**: 126 algorithms across multiple categories (Beginner, F2L, OLL, PLL, etc.)
 - **Search & Filter**: Find algorithms by name, description, nickname, or category
 - **Favorites System**: Star and filter favorite algorithms with localStorage persistence
 - **Wired System**: Highlights algorithms from Wired Magazine's popular solving method for quick reference
+- **About Modal**: Comprehensive information about the project and notation system
+- **YouTube Integration**: Direct link to Wired Magazine's popular Rubik's Cube tutorial video
 
 ### Visual Features
 - **Move Images**: Each notation move (R, U', F2, etc.) displays as a visual cube move image
@@ -205,18 +207,20 @@ The application contains **127 algorithms** across multiple categories:
 - **Performance Optimized**: Memoized components and efficient filtering
 - **Accessibility**: Proper focus management, keyboard navigation, and screen reader support
 - **Mobile Tab Layout**: Optimized mobile experience with tabbed navigation
+- **Content Security Policy**: XSS protection and security headers
+- **Analytics Integration**: Vercel Analytics for usage insights
 
 ### Wired Magazine Method Support
 The "Wired" tagging system highlights algorithms that are specifically used in Wired Magazine's popular YouTube video and blog post demonstrating one method of solving the Rubik's Cube. This feature serves as a quick reference for users who are learning through Wired Magazine's methodology, which is one of the most popular ways people learn to solve the cube. While this method is widely used, it's important to note that it's just one of many valid approaches to solving the Rubik's Cube. The Wired tag helps users quickly identify and filter algorithms that are part of this specific learning method.
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React 19.1.0 with Vite
+- **Frontend**: React 19.1.0 with Vite 7.0.4
 - **Styling**: Custom CSS with responsive design system
 - **State Management**: React hooks (useState, useMemo, useCallback)
 - **Data**: JSON-based algorithm and move mapping files
 - **Build Tool**: Vite with React plugin
-- **Linting**: ESLint with React-specific rules
+- **Linting**: ESLint 9.30.1 with React-specific rules
 - **Analytics**: Vercel Analytics for usage insights
 - **License**: GNU General Public License v3.0 (Open Source with Copyleft Protection)
 
@@ -248,7 +252,8 @@ src/
 │   ├── AlgorithmDetails.jsx    # Algorithm information display
 │   ├── AlgorithmList.jsx       # Algorithm selection list
 │   ├── SearchFilters.jsx       # Search and filter controls
-│   ├── Header.jsx             # Application header
+│   ├── Header.jsx             # Application header with YouTube integration
+│   ├── AboutModal.jsx         # About modal with project information
 │   ├── ErrorBoundary.jsx      # Error handling component
 │   └── ui/                    # Reusable UI components
 │       ├── ImageModal.jsx     # Image zoom modal
@@ -264,7 +269,7 @@ src/
 │   ├── useMobileDetection.js  # Mobile device detection
 │   └── useImageLoader.js      # Image loading with retry logic
 ├── data/                # Static data files
-│   ├── algorithms.json        # Algorithm database (127 entries)
+│   ├── algorithms.json        # Algorithm database (126 entries)
 │   └── moves.json            # Move notation to image mapping
 ├── layouts/             # Layout components
 │   └── MobileTabLayout.jsx   # Mobile-optimized layout
@@ -330,6 +335,11 @@ src/
 - **User-friendly error messages** with recovery options
 - **Prevents app crashes** and maintains user experience
 
+### AboutModal.jsx
+- **Comprehensive project information** and notation system explanation
+- **Mobile-optimized modal** with swipe-to-dismiss functionality
+- **Accessibility features** with keyboard navigation and focus management
+
 ## 🎨 Design System
 
 The application uses a comprehensive design system with:
@@ -345,6 +355,7 @@ The application uses a comprehensive design system with:
 - **Desktop**: Two-column layout with sticky sidebar and optimized spacing
 - **Tablet**: Stacked layout with touch-friendly controls
 - **Mobile**: Single-column layout with tabbed navigation and optimized touch targets (44px minimum)
+- **iPad Portrait**: Special handling for iPad portrait mode using mobile layout
 - **Accessibility**: Proper focus management and keyboard navigation
 
 ## 🔧 Development Commands
@@ -358,7 +369,7 @@ npm run lint     # Run ESLint for code quality
 
 ## 📁 Public Assets
 
-- **Move Images**: `/public/images/moves/` - Visual representations of cube moves
+- **Move Images**: `/public/images/moves/` - Visual representations of cube moves (38 images)
 - **Pattern Images**: `/public/images/patterns/` - Recognition patterns for algorithms
 - **Tutorial Images**: `/public/images/moves/` - Step-by-step tutorials
 
