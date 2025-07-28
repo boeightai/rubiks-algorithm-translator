@@ -167,7 +167,7 @@ const Header = ({
                 aria-label={isWiredSelected ? "Switch back to all categories" : "Filter to Wired Magazine algorithms"}
                 aria-pressed={isWiredSelected}
               >
-                Wired Magazine's How to Solve a Rubik's Cube
+                Algorithms Used in the Wired Magazine's YouTube Video
               </button>
 
               {/* YouTube Button */}

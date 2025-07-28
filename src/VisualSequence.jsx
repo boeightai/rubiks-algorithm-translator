@@ -16,14 +16,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useState, useCallback, useEffect } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
 import { useMobileDetection } from './hooks/useMobileDetection'
 
 function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
+  const [forceReload, setForceReload] = useState(0)
   const { isMobile } = useMobileDetection()
+
+  // Handle visibility change to reload images when returning to the app
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isMobile) {
+        // Clear image errors and force reload when becoming visible
+        setImageErrors(new Set())
+        setForceReload(prev => prev + 1)
+      }
+    }
+
+    // Also handle page show event for iOS Safari
+    const handlePageShow = (event) => {
+      if (event.persisted && isMobile) {
+        // Page was restored from bfcache
+        setImageErrors(new Set())
+        setForceReload(prev => prev + 1)
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('pageshow', handlePageShow)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('pageshow', handlePageShow)
+    }
+  }, [isMobile])
 
   // Parse the notation string into individual moves
   const parseNotation = useCallback((notation) => {
@@ -252,9 +281,15 @@ function VisualSequence({ notation }) {
       )
     }
 
+    // Add cache busting for mobile to force reload
+    const imageUrl = isMobile && forceReload > 0 
+      ? `${imageSrc}?reload=${forceReload}` 
+      : imageSrc
+
     return (
       <img
-        src={imageSrc}
+        key={`${move}-${forceReload}`} // Force remount on reload
+        src={imageUrl}
         alt={move}
         className="responsive-cube-image"
         style={{
@@ -268,13 +303,13 @@ function VisualSequence({ notation }) {
         }}
         onError={handleError}
         onLoad={handleLoad}
-        loading={isMobile ? "eager" : "lazy"}
+        loading="eager" // Always eager on mobile to ensure loading
         decoding="async"
         crossOrigin="anonymous"
         draggable="false"
       />
     )
-  }, [imageErrors, getMoveImageBorder, getMoveImageBackground, isMobile])
+  }, [imageErrors, getMoveImageBorder, getMoveImageBackground, isMobile, forceReload])
 
   return (
     <div style={{
