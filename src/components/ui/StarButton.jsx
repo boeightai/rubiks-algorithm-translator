@@ -81,6 +81,22 @@ const StarButton = ({
             min-height: 44px !important;
           }
         }
+        
+        /* iPad-specific touch targets */
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .responsive-star-button {
+            min-width: 52px !important;
+            min-height: 52px !important;
+          }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+          .responsive-star-button {
+            min-width: 48px !important;
+            min-height: 48px !important;
+          }
+        }
       `}</style>
     </button>
   )

@@ -166,6 +166,36 @@ const AlgorithmList = ({
     })
   }, [algorithms, selectedAlgorithm, isFavorite, patternImageStatus])
 
+  // Memoized empty state to prevent re-renders
+  const emptyState = useMemo(() => (
+    <div style={{
+      textAlign: 'center',
+      padding: spacing[8],
+      color: colors.neutral[500],
+    }}>
+      <div style={{
+        fontSize: typography.fontSize.xl,
+        marginBottom: spacing[2],
+        color: colors.neutral[400],
+      }}>
+        🔍
+      </div>
+      <div style={{
+        fontSize: typography.fontSize.lg,
+        fontWeight: typography.fontWeight.medium,
+        marginBottom: spacing[1],
+      }}>
+        No algorithms found
+      </div>
+      <div style={{
+        fontSize: typography.fontSize.sm,
+        color: colors.neutral[500],
+      }}>
+        Try adjusting your search or filters
+      </div>
+    </div>
+  ), [])
+
   return (
     <div 
       className="responsive-algorithm-list"
@@ -177,34 +207,7 @@ const AlgorithmList = ({
         scrollbarColor: `${colors.neutral[300]} transparent`,
       }}
     >
-      {algorithms.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: spacing[8],
-          color: colors.neutral[500],
-        }}>
-          <div style={{
-            fontSize: typography.fontSize.xl,
-            marginBottom: spacing[2],
-            color: colors.neutral[400],
-          }}>
-            🔍
-          </div>
-          <div style={{
-            fontSize: typography.fontSize.lg,
-            fontWeight: typography.fontWeight.medium,
-            marginBottom: spacing[1],
-          }}>
-            No algorithms found
-          </div>
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.neutral[500],
-          }}>
-            Try adjusting your search or filters
-          </div>
-        </div>
-      ) : (
+      {algorithms.length === 0 ? emptyState : (
         <div style={{
           display: 'flex',
           flexDirection: 'column',
@@ -228,6 +231,7 @@ const AlgorithmList = ({
                 tabIndex={0}
                 role="button"
                 aria-label={`Select ${algorithm.name} algorithm`}
+                aria-describedby={`algorithm-${algorithm.id}-description`}
                 style={{
                   background: algorithm.isSelected ? colors.primary[50] : colors.background.primary,
                   border: algorithm.isSelected ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.light}`,
@@ -280,12 +284,15 @@ const AlgorithmList = ({
                     </div>
 
                     {/* Description */}
-                    <div style={{
-                      fontSize: typography.fontSize.sm,
-                      color: colors.neutral[700],
-                      marginBottom: spacing[2],
-                      lineHeight: typography.lineHeight.normal,
-                    }}>
+                    <div 
+                      id={`algorithm-${algorithm.id}-description`}
+                      style={{
+                        fontSize: typography.fontSize.sm,
+                        color: colors.neutral[700],
+                        marginBottom: spacing[2],
+                        lineHeight: typography.lineHeight.normal,
+                      }}
+                    >
                       {algorithm.description}
                     </div>
 

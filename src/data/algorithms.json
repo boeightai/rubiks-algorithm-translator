@@ -71,15 +71,7 @@
     "description": "Orient yellow corners",
     "nicknames": ["Sune"]
   },
-  {
-    "id": "beginner-pll-corners",
-    "name": "Beginner Corner Permutation",
-    "notation": "R' F R' B2 R F' R' B2 R2",
-    "category": "Beginner PLL",
-    "difficulty": "beginner", 
-    "description": "Permute corners",
-    "nicknames": []
-  },
+
   {
     "id": "beginner-pll-edges",
     "name": "Beginner Edge Permutation",

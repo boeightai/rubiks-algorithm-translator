@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
 import TabNavigation from '../components/ui/TabNavigation'
 import { useMobileDetection } from '../hooks/useMobileDetection'
@@ -32,10 +32,27 @@ const MobileTabLayout = ({
   const [activeTab, setActiveTab] = useState('algorithms')
   const [showNotification, setShowNotification] = useState(false)
   const autoSwitchTimeoutRef = useRef(null)
-  const isMobile = useMobileDetection()
+  const { isMobile, isTablet, deviceType } = useMobileDetection()
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
+  
+  // Update window width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+  
+  // Determine if we should use mobile layout
+  // Include iPads in portrait mode (width <= 1024px)
+  const shouldUseMobileLayout = isMobile || (isTablet && windowWidth <= 1024)
 
   // Handle tab changes and clear selection when switching to algorithms tab
-  const handleTabChange = (newTab) => {
+  const handleTabChange = useCallback((newTab) => {
     // Clear any existing auto-switch timeout
     if (autoSwitchTimeoutRef.current) {
       clearTimeout(autoSwitchTimeoutRef.current)
@@ -51,20 +68,20 @@ const MobileTabLayout = ({
     }
     
     setActiveTab(newTab)
-  }
+  }, [selectedAlgorithm, setSelectedAlgorithm])
 
   // Reset active tab to algorithms when switching from mobile to desktop
   useEffect(() => {
-    if (!isMobile && activeTab === 'visual') {
+    if (!shouldUseMobileLayout && activeTab === 'visual') {
       setActiveTab('algorithms')
     }
-  }, [isMobile, activeTab])
+  }, [shouldUseMobileLayout, activeTab])
 
   // Auto-switch to visual sequence tab when an algorithm is selected on mobile
   // Only auto-switch if we're currently on the algorithms tab and haven't manually switched yet
   useEffect(() => {
     // Only apply mobile-specific logic when actually on mobile
-    if (isMobile && selectedAlgorithm && activeTab === 'algorithms') {
+    if (shouldUseMobileLayout && selectedAlgorithm && activeTab === 'algorithms') {
       // Clear any existing timeout
       if (autoSwitchTimeoutRef.current) {
         clearTimeout(autoSwitchTimeoutRef.current)
@@ -89,7 +106,10 @@ const MobileTabLayout = ({
         autoSwitchTimeoutRef.current = null
       }
     }
-  }, [selectedAlgorithm, isMobile, activeTab])
+  }, [selectedAlgorithm, shouldUseMobileLayout, activeTab])
+
+  // Prevent potential crashes by ensuring selectedAlgorithm is valid
+  const safeSelectedAlgorithm = selectedAlgorithm && typeof selectedAlgorithm === 'object' ? selectedAlgorithm : null
 
   const tabs = [
     {
@@ -119,14 +139,14 @@ const MobileTabLayout = ({
     >
       {header}
       
-      {/* Tab Navigation - only show on mobile */}
-      {isMobile && (
+      {/* Tab Navigation - only show on mobile/tablet */}
+      {shouldUseMobileLayout && (
         <>
           <TabNavigation
             activeTab={activeTab}
             onTabChange={handleTabChange}
             tabs={tabs}
-            selectedAlgorithm={selectedAlgorithm}
+            selectedAlgorithm={safeSelectedAlgorithm}
           />
           
           {/* Notification when switching tabs */}
@@ -168,6 +188,8 @@ const MobileTabLayout = ({
                   fontSize: typography.fontSize.xs,
                   cursor: 'pointer',
                   transition: 'background-color 0.2s ease',
+                  minWidth: '44px',
+                  minHeight: '44px',
                 }}
                 onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
                 onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
@@ -179,8 +201,8 @@ const MobileTabLayout = ({
         </>
       )}
 
-      {/* Mobile Tab Content */}
-      {isMobile ? (
+      {/* Mobile/Tablet Tab Content */}
+      {shouldUseMobileLayout ? (
         <div 
           className="mobile-tab-content"
           style={{
@@ -201,7 +223,7 @@ const MobileTabLayout = ({
           
           {activeTab === 'visual' && (
             <div className="mobile-visual-tab">
-              {selectedAlgorithm ? (
+              {safeSelectedAlgorithm ? (
                 visualSequenceContent
               ) : (
                 <div style={{
@@ -246,6 +268,8 @@ const MobileTabLayout = ({
                       fontWeight: typography.fontWeight.medium,
                       cursor: 'pointer',
                       transition: 'background-color 0.2s ease',
+                      minWidth: '44px',
+                      minHeight: '44px',
                     }}
                     onMouseEnter={(e) => e.target.style.background = colors.primary[600]}
                     onMouseLeave={(e) => e.target.style.background = colors.primary[500]}
@@ -408,6 +432,62 @@ const MobileTabLayout = ({
         @media (prefers-reduced-motion: reduce) {
           .left-column, .right-column {
             transition: none !important;
+          }
+          
+          .mobile-tab-content {
+            animation: none !important;
+          }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+          .mobile-container button {
+            min-width: 44px !important;
+            min-height: 44px !important;
+          }
+          
+          .mobile-container input,
+          .mobile-container select {
+            font-size: 16px !important;
+          }
+        }
+        
+        /* iPad specific - portrait mode */
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+          .mobile-container {
+            padding: 20px !important;
+            width: 94% !important;
+          }
+          
+          .mobile-tab-content {
+            padding: 24px !important;
+            min-height: 700px !important;
+          }
+          
+          .mobile-algorithms-tab,
+          .mobile-visual-tab {
+            padding: 0 !important;
+          }
+          
+          /* Ensure visual sequence is visible on iPad */
+          .mobile-visual-tab {
+            min-height: 600px !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+          }
+        }
+        
+        /* iPad Pro specific */
+        @media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+          .mobile-container {
+            padding: 24px !important;
+            width: 92% !important;
+            max-width: 1000px !important;
+          }
+          
+          .mobile-tab-content {
+            padding: 32px !important;
+            min-height: 800px !important;
           }
         }
       `}</style>

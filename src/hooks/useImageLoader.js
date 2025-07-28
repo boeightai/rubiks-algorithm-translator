@@ -144,6 +144,13 @@ export function useImageLoader(imageSrc, options = {}) {
     }
   }, [loadingState.hasError, loadingState.retryCount, maxRetries, retry])
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanup()
+    }
+  }, [cleanup])
+
   // Load image when src changes
   useEffect(() => {
     if (preload || imageSrc) {

@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component {
       hasError: false, 
       error: null, 
       errorInfo: null,
-      isDesktop: window.innerWidth > 768
+      isDesktop: typeof window !== 'undefined' ? window.innerWidth > 768 : true
     }
   }
 
@@ -41,14 +41,27 @@ class ErrorBoundary extends React.Component {
       errorInfo: errorInfo
     })
     
-    // Log additional context for debugging
-    // Error context for debugging
-    // userAgent: navigator.userAgent,
-    // viewport: {
-    //   width: window.innerWidth,
-    //   height: window.innerHeight
-    // },
-    // timestamp: new Date().toISOString()
+    // Log error to console in development
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      console.error('ErrorBoundary caught an error:', error, errorInfo)
+    }
+  }
+
+  componentDidMount() {
+    // Add resize listener for responsive error messages
+    if (typeof window !== 'undefined') {
+      this.handleResize = () => {
+        this.setState({ isDesktop: window.innerWidth > 768 })
+      }
+      window.addEventListener('resize', this.handleResize)
+    }
+  }
+
+  componentWillUnmount() {
+    // Clean up resize listener
+    if (typeof window !== 'undefined' && this.handleResize) {
+      window.removeEventListener('resize', this.handleResize)
+    }
   }
 
   handleRetry = () => {
@@ -101,7 +114,7 @@ class ErrorBoundary extends React.Component {
             }
           </p>
           
-          {this.state.error && (
+          {this.state.error && typeof window !== 'undefined' && window.location.hostname === 'localhost' && (
             <details style={{
               marginBottom: spacing[4],
               textAlign: 'left',
@@ -116,7 +129,7 @@ class ErrorBoundary extends React.Component {
                 color: colors.neutral[700],
                 marginBottom: spacing[2],
               }}>
-                Error Details
+                Error Details (Development Only)
               </summary>
               <div style={{
                 fontSize: typography.fontSize.sm,

@@ -16,30 +16,89 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 /**
- * Custom hook for centralized mobile detection
+ * Custom hook for centralized mobile detection with iPad support
  * @param {number} breakpoint - The breakpoint width in pixels (default: 768)
- * @returns {boolean} - Whether the current screen is mobile
+ * @returns {Object} - Mobile detection state including device type
  */
 export function useMobileDetection(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false)
+  const [isTablet, setIsTablet] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+  const [deviceType, setDeviceType] = useState('desktop')
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= breakpoint)
+  const checkDevice = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const width = window.innerWidth
+        const userAgent = navigator.userAgent.toLowerCase()
+        
+        // Check for iPad specifically
+        const isIPad = /ipad/.test(userAgent) || 
+                      (userAgent.includes('macintosh') && 'ontouchend' in document)
+        
+        // Check for other tablets
+        const isTabletDevice = /tablet|ipad|playbook|silk/i.test(userAgent) ||
+                              (width >= 768 && width <= 1024)
+        
+        // Mobile detection
+        const isMobileDevice = width <= breakpoint || 
+                              /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent)
+        
+        setIsMobile(isMobileDevice)
+        setIsTablet(isTabletDevice || isIPad)
+        
+        // Set device type for more specific targeting
+        if (isIPad) {
+          setDeviceType('ipad')
+        } else if (isTabletDevice) {
+          setDeviceType('tablet')
+        } else if (isMobileDevice) {
+          setDeviceType('mobile')
+        } else {
+          setDeviceType('desktop')
+        }
+      } catch (error) {
+        // Fallback to desktop if detection fails
+        setIsMobile(false)
+        setIsTablet(false)
+        setDeviceType('desktop')
+      }
     }
-    
-    // Check immediately
-    checkMobile()
-    
-    // Add event listener
-    window.addEventListener('resize', checkMobile)
-    
-    // Cleanup
-    return () => window.removeEventListener('resize', checkMobile)
   }, [breakpoint])
 
-  return isMobile
+  useEffect(() => {
+    // Mark as client-side rendered
+    setIsClient(true)
+    
+    // Check immediately
+    checkDevice()
+    
+    // Add event listener with debouncing
+    let timeoutId
+    const handleResize = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(checkDevice, 100) // Debounce resize events
+    }
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize)
+      
+      // Cleanup
+      return () => {
+        window.removeEventListener('resize', handleResize)
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [checkDevice])
+
+  // Return false during SSR to prevent hydration mismatch
+  return {
+    isMobile: isClient ? isMobile : false,
+    isTablet: isClient ? isTablet : false,
+    isClient,
+    deviceType: isClient ? deviceType : 'desktop'
+  }
 } 

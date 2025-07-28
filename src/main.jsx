@@ -18,13 +18,24 @@
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Analytics } from '@vercel/analytics/react'
-import './index.css'
 import App from './App.jsx'
+import './index.css'
+
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        // Service worker registered successfully
+      })
+      .catch((registrationError) => {
+        // Service worker registration failed - handled silently in production
+      })
+  })
+}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-    <Analytics />
   </StrictMode>,
 )

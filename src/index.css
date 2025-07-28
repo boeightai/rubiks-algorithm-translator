@@ -95,6 +95,33 @@ img {
   height: auto;
 }
 
+/* iPad-specific optimizations */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .responsive-container {
+    width: 90% !important;
+    max-width: 800px !important;
+  }
+  
+  .responsive-flex {
+    gap: 1.5rem !important;
+  }
+  
+  .responsive-button-group {
+    gap: 0.75rem !important;
+  }
+  
+  /* iPad touch targets */
+  button, 
+  input[type="button"], 
+  input[type="submit"], 
+  input[type="reset"],
+  select,
+  a {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
 /* Touch target optimization */
 button, 
 input[type="button"], 

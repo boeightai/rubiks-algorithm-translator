@@ -384,6 +384,31 @@ const SearchFilters = ({
             gap: 8px !important;
           }
         }
+        
+        /* iPad-specific optimizations */
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .responsive-form {
+            gap: 16px !important;
+          }
+          
+          .responsive-button-group {
+            gap: 12px !important;
+          }
+          
+          .responsive-form input,
+          .responsive-form select {
+            font-size: 16px !important;
+            min-height: 48px !important;
+          }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+          .responsive-form input,
+          .responsive-form select {
+            font-size: 16px !important;
+          }
+        }
       `}</style>
     </div>
   )

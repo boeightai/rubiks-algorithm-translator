@@ -4,6 +4,37 @@ A modern React application for learning and practicing Rubik's Cube algorithms w
 
 **🌐 Live Application**: [www.wayofthecube.com](https://www.wayofthecube.com)
 
+## 👨‍👧 Our Story
+
+This project was born from a shared passion between father and daughter - **Bo and Hailey's** love for solving Rubik's cubes and learning to code together. We created this application because we found the standard Rubik's cube notation system challenging to memorize, so we developed a custom visual notation system that makes learning algorithms more intuitive and accessible for beginners and advanced cubers alike.
+
+This project serves dual purposes: it helps cubers master algorithms through our visual system, while also serving as our coding learning journey. We're exploring modern development tools like Cursor and Claude Code, making this a perfect blend of our interests.
+
+## 🤝 Community & Future Vision
+
+We're excited to share our work with the broader community and welcome contributions from both the **programming community** and the **Rubik's cube community**! Whether you're a developer who wants to help improve the codebase or a cuber who wants to suggest new features or algorithms, we'd love to hear from you.
+
+Our longer-term vision is to keep creating and adding more features, with the goal of one day developing this into a **freemium business model**. We plan to offer premium features while ensuring that beginners can always access our visual notational system and core learning tools for free. This way, we can support the community while building something sustainable.
+
+**We believe in making Rubik's cube learning accessible to everyone!** 🧩
+
+### 📈 Freemium Business Model
+
+This project is designed with a **freemium business model** in mind:
+
+- **Free Tier**: Core algorithm translation, basic search, and fundamental learning tools
+- **Premium Features**: Advanced analytics, personalized learning paths, exclusive algorithms, and priority support
+- **Open Source Foundation**: The core application remains open source under GPL-3.0 License, ensuring transparency and community collaboration while protecting against proprietary competition
+- **Commercial Licensing**: Available for commercial use, enterprise deployments, and integration into other products
+
+This approach allows us to:
+- ✅ Keep the core learning tools free and accessible
+- ✅ Build sustainable revenue through premium features
+- ✅ Maintain open source transparency and community involvement
+- ✅ Protect against proprietary copycats through copyleft licensing
+- ✅ Enable commercial partnerships and integrations
+- ✅ Support continued development and innovation
+
 ## 🧩 Rubik's Cube Notation System
 
 ### Standard Notation Conventions
@@ -187,7 +218,7 @@ The "Wired" tagging system highlights algorithms that are specifically used in W
 - **Build Tool**: Vite with React plugin
 - **Linting**: ESLint with React-specific rules
 - **Analytics**: Vercel Analytics for usage insights
-- **License**: GNU General Public License v3.0
+- **License**: GNU General Public License v3.0 (Open Source with Copyleft Protection)
 
 ## 📦 Installation & Setup
 
@@ -331,27 +362,65 @@ npm run lint     # Run ESLint for code quality
 - **Pattern Images**: `/public/images/patterns/` - Recognition patterns for algorithms
 - **Tutorial Images**: `/public/images/moves/` - Step-by-step tutorials
 
-## 🔒 License Compliance
+## 🔒 License & Commercial Use
 
-This project is fully compliant with the GNU General Public License v3.0:
-- All source files include proper GPL v3 headers
+This project is licensed under the **GNU General Public License v3.0**, which provides:
+
+### Open Source Benefits
+- ✅ **Copyleft Protection**: Prevents proprietary derivatives while maintaining openness
+- ✅ **Community Collaboration**: Encourages contributions and sharing of improvements
+- ✅ **Commercial Use Allowed**: Can be used commercially with proper licensing
+- ✅ **Network Use Protection**: Prevents SaaS loopholes through source code requirements
+
+### Commercial Licensing
+For enterprise use, commercial integrations, or advanced features, we offer:
+- **Commercial Licenses**: For proprietary integrations and enterprise deployments
+- **Premium Features**: Advanced analytics, personalized learning, and exclusive content
+- **Support Services**: Technical support, customization, and training
+- **White-Label Solutions**: Custom branding and deployment options
+
+### License Compliance
+- All source files include proper GPL-3.0 license headers
 - Copyright notices are present in all components
 - License terms are clearly stated in the LICENSE file
-- No proprietary dependencies are included
+- Copyleft protection ensures derivative works remain open source
 
 ## 🤝 Contributing
 
+We welcome contributions from both the **programming community** and the **Rubik's cube community**! Here's how you can help:
+
+### For Developers
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes with proper GPL v3 headers
+3. Make your changes with proper GPL-3.0 license headers
 4. Test thoroughly with `npm run lint` and `npm run build`
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Submit a pull request
 
+### For Rubik's Cube Enthusiasts
+- **Suggest new algorithms** that should be included
+- **Report bugs** or issues with algorithm translations
+- **Request new features** that would help with learning
+- **Share feedback** on the visual notation system
+- **Contribute tutorial content** or algorithm descriptions
+
+### Areas We'd Love Help With
+- **Algorithm Database**: Adding more algorithms and improving descriptions
+- **Visual Improvements**: Better move images or tutorial graphics
+- **Mobile Experience**: Enhancing the mobile interface
+- **Accessibility**: Making the app more accessible to all users
+- **Performance**: Optimizing the app for better performance
+- **Documentation**: Improving guides and tutorials
+
+**Every contribution, big or small, helps make this project better for the entire Rubik's cube community!** 🧩
+
 ## 📄 License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **GNU General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
+
+### Commercial Licensing
+For commercial use, enterprise deployments, or advanced features, please contact us for commercial licensing options.
 
 ## 🔗 Links
 

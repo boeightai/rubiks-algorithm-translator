@@ -35,11 +35,29 @@ export default defineConfig({
           return `assets/[name]-[hash][extname]`
         }
       }
+    },
+    // Security optimizations
+    target: 'es2015',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
     }
   },
   server: {
     headers: {
-      'Cache-Control': 'public, max-age=31536000, immutable'
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block',
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     }
+  },
+  // Security optimizations
+  define: {
+    __VUE_OPTIONS_API__: false,
+    __VUE_PROD_DEVTOOLS__: false
   }
 })

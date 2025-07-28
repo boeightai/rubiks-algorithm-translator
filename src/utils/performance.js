@@ -60,40 +60,59 @@ export function throttle(func, limit) {
  * @param {number} options.maxRetries - Maximum number of retry attempts (default: 3)
  * @param {number} options.retryDelay - Delay between retries in ms (default: 1000)
  * @param {boolean} options.mobileOptimized - Whether to use mobile-specific optimizations
+ * @param {boolean} options.preload - Whether to preload the image
  * @returns {Promise<HTMLImageElement>} - Promise that resolves with the loaded image
  */
 export function loadImageWithRetry(src, options = {}) {
   const {
     maxRetries = 3,
     retryDelay = 1000,
-    mobileOptimized = true
+    mobileOptimized = true,
+    preload = false
   } = options
 
   return new Promise((resolve, reject) => {
     let retryCount = 0
     let timeoutId = null
+    let abortController = null
 
     const attemptLoad = () => {
+      // Create abort controller for cleanup
+      abortController = new AbortController()
+      
       const img = new Image()
       
       // Mobile-specific optimizations
       if (mobileOptimized) {
         // Set loading priority for mobile
-        img.loading = 'eager'
+        img.loading = preload ? 'eager' : 'lazy'
         // Add crossOrigin for better mobile compatibility
         img.crossOrigin = 'anonymous'
+        // Add decoding hint for better performance
+        img.decoding = 'async'
+      }
+
+      const cleanup = () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
+        img.onload = null
+        img.onerror = null
       }
 
       img.onload = () => {
-        if (timeoutId) {
-          clearTimeout(timeoutId)
+        cleanup()
+        if (!abortController.signal.aborted) {
+          resolve(img)
         }
-        resolve(img)
       }
 
       img.onerror = () => {
-        if (timeoutId) {
-          clearTimeout(timeoutId)
+        cleanup()
+        
+        if (abortController.signal.aborted) {
+          return
         }
         
         retryCount++
@@ -109,8 +128,8 @@ export function loadImageWithRetry(src, options = {}) {
 
       // Set a timeout for the entire loading process
       timeoutId = setTimeout(() => {
-        img.onload = null
-        img.onerror = null
+        abortController.abort()
+        cleanup()
         reject(new Error(`Image loading timeout: ${src}`))
       }, 10000) // 10 second timeout
 
@@ -118,6 +137,16 @@ export function loadImageWithRetry(src, options = {}) {
     }
 
     attemptLoad()
+
+    // Return abort function for cleanup
+    return () => {
+      if (abortController) {
+        abortController.abort()
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+    }
   })
 }
 
@@ -131,47 +160,50 @@ export function checkImageExists(url, options = {}) {
   const { mobileOptimized = true } = options
   
   return new Promise((resolve) => {
+    if (!url) {
+      resolve(false)
+      return
+    }
+
     const img = new Image()
+    let timeoutId = null
     
     if (mobileOptimized) {
       img.loading = 'eager'
       img.crossOrigin = 'anonymous'
     }
     
-    img.onload = () => {
+    const cleanup = () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+        timeoutId = null
+      }
       img.onload = null
       img.onerror = null
+    }
+    
+    img.onload = () => {
+      cleanup()
       resolve(true)
     }
     
     img.onerror = () => {
-      img.onload = null
-      img.onerror = null
+      cleanup()
       resolve(false)
     }
     
     // Add timeout for mobile browsers
-    const timeoutId = setTimeout(() => {
-      img.onload = null
-      img.onerror = null
+    timeoutId = setTimeout(() => {
+      cleanup()
       resolve(false)
     }, 5000) // 5 second timeout for mobile
     
-    img.onload = () => {
-      clearTimeout(timeoutId)
-      img.onload = null
-      img.onerror = null
-      resolve(true)
-    }
-    
-    img.onerror = () => {
-      clearTimeout(timeoutId)
-      img.onload = null
-      img.onerror = null
+    try {
+      img.src = url
+    } catch {
+      cleanup()
       resolve(false)
     }
-    
-    img.src = url
   })
 }
 
@@ -181,10 +213,18 @@ export function checkImageExists(url, options = {}) {
  * @returns {Promise<Object>} - Object with URL as key and boolean as value
  */
 export async function batchCheckImages(urls) {
+  if (!Array.isArray(urls) || urls.length === 0) {
+    return {}
+  }
+
   const results = {}
   const promises = urls.map(async (url) => {
-    const exists = await checkImageExists(url)
-    results[url] = exists
+    try {
+      const exists = await checkImageExists(url)
+      results[url] = exists
+    } catch {
+      results[url] = false
+    }
   })
   
   await Promise.all(promises)
@@ -197,6 +237,10 @@ export async function batchCheckImages(urls) {
  * @returns {Promise<void>} - Promise that resolves when all images are preloaded
  */
 export function preloadImages(imageUrls) {
+  if (!Array.isArray(imageUrls) || imageUrls.length === 0) {
+    return Promise.resolve()
+  }
+
   const preloadPromises = imageUrls.map(url => 
     loadImageWithRetry(url, { mobileOptimized: true })
       .catch(() => {
@@ -215,14 +259,13 @@ export function preloadImages(imageUrls) {
  * @returns {string} - Optimized image URL
  */
 export function getOptimizedImageUrl(originalUrl, options = {}) {
-  const { mobileOptimized = true } = options
+  const { mobileOptimized = true, version = '1.0.0' } = options
   
-  if (!mobileOptimized) {
+  if (!originalUrl || !mobileOptimized) {
     return originalUrl
   }
   
-  // Add cache busting for mobile browsers
-  const timestamp = Date.now()
+  // Add version-based cache busting for mobile browsers
   const separator = originalUrl.includes('?') ? '&' : '?'
-  return `${originalUrl}${separator}v=${timestamp}`
+  return `${originalUrl}${separator}v=${version}`
 } 

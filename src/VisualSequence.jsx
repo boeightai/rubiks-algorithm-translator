@@ -16,23 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
 import { useMobileDetection } from './hooks/useMobileDetection'
 
 function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
-  const isMobile = useMobileDetection()
-
-
+  const { isMobile } = useMobileDetection()
 
   // Parse the notation string into individual moves
-  const parseNotation = (notation) => {
+  const parseNotation = useCallback((notation) => {
     if (!notation) return []
     // Split by spaces and filter out empty strings
     return notation.split(' ').filter(move => move.trim() !== '')
-  }
+  }, [])
 
   // Memoized move list and pattern detection
   const { moveList, highlightedMoves, leftTriggerMoves, triggerGroups } = useMemo(() => {
@@ -108,20 +106,20 @@ function VisualSequence({ notation }) {
     }
     
     return { moveList: parsedMoves, highlightedMoves: highlighted, leftTriggerMoves: leftTrigger, triggerGroups: groups }
-  }, [notation])
+  }, [notation, parseNotation])
 
   // Function to check if a move is part of a Right Trigger sequence
-  const isPartOfRightTrigger = (index) => {
+  const isPartOfRightTrigger = useCallback((index) => {
     return highlightedMoves.has(index)
-  }
+  }, [highlightedMoves])
 
   // Function to check if a move is part of a Left Trigger sequence
-  const isPartOfLeftTrigger = (index) => {
+  const isPartOfLeftTrigger = useCallback((index) => {
     return leftTriggerMoves.has(index)
-  }
+  }, [leftTriggerMoves])
 
   // Function to get the move number background color
-  const getMoveNumberBackground = (index) => {
+  const getMoveNumberBackground = useCallback((index) => {
     const isRightHighlighted = isPartOfRightTrigger(index)
     const isLeftHighlighted = isPartOfLeftTrigger(index)
     
@@ -132,10 +130,10 @@ function VisualSequence({ notation }) {
     if (isRightHighlighted) return colors.success[100]
     if (isLeftHighlighted) return colors.info[100]
     return colors.neutral[100]
-  }
+  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Function to get the move number text color
-  const getMoveNumberColor = (index) => {
+  const getMoveNumberColor = useCallback((index) => {
     const isRightHighlighted = isPartOfRightTrigger(index)
     const isLeftHighlighted = isPartOfLeftTrigger(index)
     
@@ -146,10 +144,10 @@ function VisualSequence({ notation }) {
     if (isRightHighlighted) return colors.success[700]
     if (isLeftHighlighted) return colors.info[700]
     return colors.neutral[600]
-  }
+  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Function to get the move number border color
-  const getMoveNumberBorder = (index) => {
+  const getMoveNumberBorder = useCallback((index) => {
     const isRightHighlighted = isPartOfRightTrigger(index)
     const isLeftHighlighted = isPartOfLeftTrigger(index)
     
@@ -160,10 +158,10 @@ function VisualSequence({ notation }) {
     if (isRightHighlighted) return colors.success[300]
     if (isLeftHighlighted) return colors.info[300]
     return colors.border.light
-  }
+  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Function to get the move image border color
-  const getMoveImageBorder = (index) => {
+  const getMoveImageBorder = useCallback((index) => {
     const isRightHighlighted = isPartOfRightTrigger(index)
     const isLeftHighlighted = isPartOfLeftTrigger(index)
     
@@ -174,10 +172,10 @@ function VisualSequence({ notation }) {
     if (isRightHighlighted) return colors.success[400]
     if (isLeftHighlighted) return colors.info[400]
     return colors.border.light
-  }
+  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Function to get the move image background color
-  const getMoveImageBackground = (index) => {
+  const getMoveImageBackground = useCallback((index) => {
     const isRightHighlighted = isPartOfRightTrigger(index)
     const isLeftHighlighted = isPartOfLeftTrigger(index)
     
@@ -188,10 +186,10 @@ function VisualSequence({ notation }) {
     if (isRightHighlighted) return colors.success[50]
     if (isLeftHighlighted) return colors.info[50]
     return colors.background.primary
-  }
+  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Function to get the move label color
-  const getMoveLabelColor = (index) => {
+  const getMoveLabelColor = useCallback((index) => {
     const isRightHighlighted = isPartOfRightTrigger(index)
     const isLeftHighlighted = isPartOfLeftTrigger(index)
     
@@ -202,10 +200,10 @@ function VisualSequence({ notation }) {
     if (isRightHighlighted) return colors.success[700]
     if (isLeftHighlighted) return colors.info[700]
     return colors.neutral[900]
-  }
+  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Simplified image component with error handling
-  const MoveImage = ({ move, index }) => {
+  const MoveImage = useCallback(({ move, index }) => {
     const imageSrc = moves[move]
     const hasError = imageErrors.has(move)
 
@@ -276,7 +274,7 @@ function VisualSequence({ notation }) {
         draggable="false"
       />
     )
-  }
+  }, [imageErrors, getMoveImageBorder, getMoveImageBackground, isMobile])
 
   return (
     <div style={{
@@ -670,6 +668,24 @@ function VisualSequence({ notation }) {
           .responsive-cube-image-fallback {
             width: 44px !important;
             height: 44px !important;
+          }
+        }
+        
+        /* iPad-specific optimizations */
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .responsive-cube-grid {
+            gap: 20px !important;
+          }
+          
+          .responsive-cube-image,
+          .responsive-cube-image-fallback {
+            width: 56px !important;
+            height: 56px !important;
+          }
+          
+          .responsive-cube-grid > div > div > div:last-child {
+            font-size: 1rem !important;
+            max-width: 70px !important;
           }
         }
         
