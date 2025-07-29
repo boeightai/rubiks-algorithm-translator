@@ -23,8 +23,8 @@ import './index.css'
 
 // Initialize theme before app renders
 const savedTheme = localStorage.getItem('theme')
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light')
+// Default to light mode unless user has explicitly chosen dark mode
+const initialTheme = savedTheme || 'light'
 document.documentElement.setAttribute('data-theme', initialTheme)
 
 // Register service worker for offline support
