@@ -108,7 +108,83 @@ const Header = ({
               letterSpacing: '-0.025em',
               lineHeight: typography.lineHeight.tight,
             }}>
-              {title}
+              <span>{title}</span>
+              {/* Mobile About button - only visible on mobile portrait */}
+              <button
+                className="mobile-about-button"
+                onClick={() => setIsAboutModalOpen(true)}
+                style={{
+                  display: 'none', // Hidden by default, shown via CSS media query
+                  padding: `${spacing[2]} ${spacing[3]}`,
+                  border: `1px solid ${colors.border.medium}`,
+                  borderRadius: '8px',
+                  background: colors.neutral[100],
+                  color: colors.neutral[700],
+                  fontWeight: typography.fontWeight.medium,
+                  fontSize: typography.fontSize.sm,
+                  cursor: 'pointer',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: spacing[2],
+                  outline: 'none',
+                  transition: 'all 0.2s ease',
+                  boxSizing: 'border-box',
+                  boxShadow: shadows.sm,
+                  minHeight: '36px',
+                  minWidth: '36px',
+                  whiteSpace: 'nowrap',
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent',
+                  WebkitUserSelect: 'none',
+                  userSelect: 'none',
+                }}
+                onFocus={(e) => {
+                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+                }}
+                onBlur={(e) => {
+                  e.target.style.boxShadow = shadows.sm
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = colors.neutral[50]
+                  e.target.style.borderColor = colors.border.dark
+                  e.target.style.transform = 'translateY(-1px)'
+                  e.target.style.boxShadow = shadows.md
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = colors.neutral[100]
+                  e.target.style.borderColor = colors.border.medium
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.boxShadow = shadows.sm
+                }}
+                onTouchStart={(e) => {
+                  e.target.style.transform = 'scale(0.98)'
+                  e.target.style.background = colors.neutral[100]
+                }}
+                onTouchEnd={(e) => {
+                  e.target.style.transform = 'scale(1)'
+                  e.target.style.background = colors.neutral[100]
+                }}
+                aria-label="Learn more about this project"
+                title="About this project"
+              >
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  style={{ flexShrink: 0 }}
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                  <path d="M12 17h.01"/>
+                </svg>
+                <span>About</span>
+              </button>
             </h1>
             <p style={{ 
               color: colors.neutral[600], 
@@ -341,6 +417,76 @@ const Header = ({
         
         .youtube-button-text {
           transition: all 0.2s ease;
+        }
+        
+        /* iPhone vertical orientation specific styles */
+        @media (max-width: 768px) and (orientation: portrait) {
+          .responsive-header {
+            margin-bottom: 16px !important;
+            padding: 16px 0 !important;
+          }
+          
+          .responsive-header h1 {
+            font-size: 1.5rem !important;
+            line-height: 1.3 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+          }
+          
+          .responsive-header p {
+            font-size: 1rem !important;
+            margin-top: 8px !important;
+          }
+          
+          .responsive-header button {
+            font-size: 0.875rem !important;
+            padding: 0.75rem 1rem !important;
+            margin-top: 0.75rem !important;
+          }
+          
+          /* Move About button to title area on mobile portrait */
+          .responsive-header > div > div:last-child {
+            display: none !important;
+          }
+          
+          .mobile-about-button {
+            display: inline-flex !important;
+            padding: 0.5rem !important;
+            font-size: 0.875rem !important;
+            margin: 0 !important;
+            background: ${colors.neutral[100]} !important;
+            border: 1px solid ${colors.border.medium} !important;
+            min-height: 32px !important;
+            min-width: 32px !important;
+            flex-shrink: 0 !important;
+          }
+          
+          .mobile-about-button span {
+            display: none !important;
+          }
+          
+          /* Enhanced mobile YouTube button */
+          .youtube-button {
+            min-height: 44px !important;
+            min-width: 44px !important;
+            padding: 10px 14px !important;
+            font-size: 0.875rem !important;
+            border-radius: 10px !important;
+          }
+          
+          .youtube-button svg {
+            width: 18px !important;
+            height: 18px !important;
+          }
+        }
+        
+        /* Desktop and tablet styles */
+        @media (min-width: 769px), (max-width: 768px) and (orientation: landscape) {
+          .mobile-about-button {
+            display: none !important;
+          }
         }
         
         @media (max-width: 768px) {
