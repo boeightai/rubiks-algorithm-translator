@@ -369,9 +369,65 @@ npm run lint     # Run ESLint for code quality
 
 ## 📁 Public Assets
 
-- **Move Images**: `/public/images/moves/` - Visual representations of cube moves (38 images)
-- **Pattern Images**: `/public/images/patterns/` - Recognition patterns for algorithms
-- **Tutorial Images**: `/public/images/moves/` - Step-by-step tutorials
+### Move Images (`/public/images/moves/`)
+Visual representations of cube moves for algorithm translation:
+
+#### Basic Face Moves (12 images)
+- **R.png** (5.3KB) - Right face clockwise
+- **R-prime.png** (5.3KB) - Right face counter-clockwise  
+- **R2.png** (8.0KB) - Right face 180° rotation
+- **L.png** (5.4KB) - Left face clockwise
+- **L-prime.png** (5.4KB) - Left face counter-clockwise
+- **L2.png** (7.9KB) - Left face 180° rotation
+- **U.png** (5.2KB) - Up face clockwise
+- **U-prime.png** (5.3KB) - Up face counter-clockwise
+- **U2.png** (8.4KB) - Up face 180° rotation
+- **D.png** (5.2KB) - Down face clockwise
+- **D-prime.png** (5.2KB) - Down face counter-clockwise
+- **D2.png** (8.4KB) - Down face 180° rotation
+- **F.png** (7.6KB) - Front face clockwise
+- **F-prime.png** (7.8KB) - Front face counter-clockwise
+- **F2.png** (8.5KB) - Front face 180° rotation
+
+#### Wide Moves (12 images)
+- **Rw.png** (6.7KB) - Right wide move (R + M slice)
+- **Rw-prime.png** (6.6KB) - Right wide move counter-clockwise
+- **Rw2.png** (9.5KB) - Right wide move 180°
+- **Lw.png** (6.7KB) - Left wide move (L + M slice)
+- **Lw-prime.png** (6.7KB) - Left wide move counter-clockwise
+- **Lw2.png** (9.6KB) - Left wide move 180°
+- **Uw.png** (6.5KB) - Up wide move (U + E slice)
+- **Uw-prime.png** (5.6KB) - Up wide move counter-clockwise
+- **Uw2.png** (9.4KB) - Up wide move 180°
+- **Dw.png** (5.4KB) - Down wide move (D + E slice)
+- **Dw-prime.png** (6.5KB) - Down wide move counter-clockwise
+- **Dw2.png** (9.4KB) - Down wide move 180°
+- **Fw.png** (9.2KB) - Front wide move (F + S slice)
+- **Fw-prime.png** (9.1KB) - Front wide move counter-clockwise
+- **Fw2.png** (9.9KB) - Front wide move 180°
+
+#### Middle Layer Moves (3 images)
+- **M.png** (5.4KB) - Middle slice (between L and R faces)
+- **M-prime.png** (5.4KB) - Middle slice counter-clockwise
+- **M2.png** (7.3KB) - Middle slice 180° rotation
+
+#### Tutorial Images (2 images)
+- **2look-oll-4-tutorial.png** (63KB) - Step-by-step tutorial for 2-look OLL case 4
+- **oll-case-24-tutorial.png** (51KB) - Step-by-step tutorial for OLL case 24
+
+### Pattern Images (`/public/images/patterns/`)
+Recognition patterns for algorithm identification:
+
+- **2look-oll-4-pattern.png** (2.7KB) - Recognition pattern for 2-look OLL case 4
+- **oll-case-24-pattern.png** (2.7KB) - Recognition pattern for OLL case 24
+- **oll-case-25-pattern.png** (2.7KB) - Recognition pattern for OLL case 25
+
+### Icon Images (`/public/images/icons/`)
+Application icons and branding:
+
+- **cube-icon.png** (27KB) - Main application icon featuring a Rubik's cube
+
+**Total: 44 PNG images** across all categories for complete visual algorithm translation system
 
 ## 🔒 License & Commercial Use
 

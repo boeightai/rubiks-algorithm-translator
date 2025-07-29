@@ -224,26 +224,18 @@ const AboutModal = ({ isOpen, onClose }) => {
                 more intuitive and accessible for beginners and advanced cubers alike.
               </p>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                This project serves dual purposes: it helps cubers master algorithms through our visual system, 
-                while also serving as our coding learning journey. We're exploring modern development tools 
-                like Cursor and Claude Code, making this a perfect blend of our interests.
+                We're exploring modern development tools like Cursor and Claude Code. We're excited to share our work 
+                with the broader community and welcome contributions from anyone that shares our interests in speedcubing and coding!
               </p>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                We're excited to share our work with the broader community and welcome contributions from both 
-                the programming community and the Rubik's cube community! Whether you're a developer who wants 
-                to help improve the codebase or a cuber who wants to suggest new features or algorithms, 
-                we'd love to hear from you.
-              </p>
-              <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                Our longer-term vision is to keep creating and adding more features, with the goal of one day 
-                developing this into a freemium business model. We plan to offer premium features while ensuring 
-                that beginners can always access our visual notational system and core learning tools for free. 
-                This way, we can support the community while building something sustainable.
+                Our vision is to keep creating and adding more features, with the goal of one day developing this 
+                into a freemium app. We plan to offer premium features while ensuring that beginners can always 
+                access our visual notational system and core learning tools for free. This way, we can support 
+                the community while building something sustainable.
               </p>
               <p style={{ margin: 0 }}>
-                Check out our GitHub repository to see the code, contribute to the project, or share your ideas 
-                for new features. Together, we can make learning the Rubik's cube more accessible and enjoyable 
-                for everyone!
+                Check out our GitHub repo to contribute to the project or share your ideas for new features. 
+                Together, we can make learning the Rubik's cube more accessible and enjoyable for everyone!
               </p>
             </div>
 
