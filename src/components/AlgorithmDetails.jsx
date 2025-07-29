@@ -100,10 +100,17 @@ const AlgorithmDetails = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '32px',
-          color: colors.neutral[400],
+          overflow: 'hidden',
         }}>
-          🧩
+          <img
+            src="/images/icons/cube-icon.png"
+            alt="Cube icon"
+            style={{
+              width: '60px',
+              height: '60px',
+              objectFit: 'contain',
+            }}
+          />
         </div>
         <div>
           <div style={{
