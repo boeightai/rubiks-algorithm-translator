@@ -127,82 +127,181 @@ const Header = ({
               lineHeight: typography.lineHeight.tight,
             }}>
               <span>{title}</span>
-              {/* Mobile About button - only visible on mobile portrait */}
-              <button
-                className="mobile-about-button"
-                onClick={() => setIsAboutModalOpen(true)}
-                style={{
-                  display: 'none', // Hidden by default, shown via CSS media query
-                  padding: `${spacing[2]} ${spacing[3]}`,
-                  border: `1px solid ${colors.border.medium}`,
-                  borderRadius: '8px',
-                  background: colors.neutral[100],
-                  color: colors.neutral[700],
-                  fontWeight: typography.fontWeight.medium,
-                  fontSize: typography.fontSize.sm,
-                  cursor: 'pointer',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: spacing[2],
-                  outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
-                  boxShadow: shadows.sm,
-                  minHeight: '36px',
-                  minWidth: '36px',
-                  whiteSpace: 'nowrap',
-                  touchAction: 'manipulation',
-                  WebkitTapHighlightColor: 'transparent',
-                  WebkitUserSelect: 'none',
-                  userSelect: 'none',
-                }}
-                onFocus={(e) => {
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
-                }}
-                onBlur={(e) => {
-                  e.target.style.boxShadow = shadows.sm
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = colors.neutral[50]
-                  e.target.style.borderColor = colors.border.dark
-                  e.target.style.transform = 'translateY(-1px)'
-                  e.target.style.boxShadow = shadows.md
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = colors.neutral[100]
-                  e.target.style.borderColor = colors.border.medium
-                  e.target.style.transform = 'translateY(0)'
-                  e.target.style.boxShadow = shadows.sm
-                }}
-                onTouchStart={(e) => {
-                  e.target.style.transform = 'scale(0.98)'
-                  e.target.style.background = colors.neutral[100]
-                }}
-                onTouchEnd={(e) => {
-                  e.target.style.transform = 'scale(1)'
-                  e.target.style.background = colors.neutral[100]
-                }}
-                aria-label="Learn more about this project"
-                title="About this project"
-              >
-                <svg 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                  style={{ flexShrink: 0 }}
-                  aria-hidden="true"
+              {/* Mobile buttons container - only visible on mobile portrait */}
+              <div className="mobile-buttons-container" style={{
+                display: 'none', // Hidden by default, shown via CSS media query
+                alignItems: 'center',
+                gap: spacing[2],
+                flexShrink: 0,
+              }}>
+                {/* Mobile Theme Toggle Button */}
+                <button
+                  className="mobile-theme-toggle"
+                  onClick={toggleTheme}
+                  style={{
+                    padding: `${spacing[2]} ${spacing[2]}`,
+                    border: `1px solid ${colors.border.medium}`,
+                    borderRadius: '8px',
+                    background: colors.neutral[100],
+                    color: colors.neutral[700],
+                    fontWeight: typography.fontWeight.medium,
+                    fontSize: typography.fontSize.sm,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    outline: 'none',
+                    transition: 'all 0.2s ease',
+                    boxSizing: 'border-box',
+                    boxShadow: shadows.sm,
+                    minHeight: '36px',
+                    minWidth: '36px',
+                    touchAction: 'manipulation',
+                    WebkitTapHighlightColor: 'transparent',
+                    WebkitUserSelect: 'none',
+                    userSelect: 'none',
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.boxShadow = shadows.sm
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = colors.neutral[50]
+                    e.target.style.borderColor = colors.border.dark
+                    e.target.style.transform = 'translateY(-1px)'
+                    e.target.style.boxShadow = shadows.md
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = colors.neutral[100]
+                    e.target.style.borderColor = colors.border.medium
+                    e.target.style.transform = 'translateY(0)'
+                    e.target.style.boxShadow = shadows.sm
+                  }}
+                  onTouchStart={(e) => {
+                    e.target.style.transform = 'scale(0.98)'
+                    e.target.style.background = colors.neutral[100]
+                  }}
+                  onTouchEnd={(e) => {
+                    e.target.style.transform = 'scale(1)'
+                    e.target.style.background = colors.neutral[100]
+                  }}
+                  aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+                  title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
                 >
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                  <path d="M12 17h.01"/>
-                </svg>
-                <span>About</span>
-              </button>
+                  {isDarkMode ? (
+                    // Sun icon for light mode
+                    <svg 
+                      width="16" 
+                      height="16" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2"
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      style={{ flexShrink: 0 }}
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="5"/>
+                      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                  ) : (
+                    // Moon icon for dark mode
+                    <svg 
+                      width="16" 
+                      height="16" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2"
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      style={{ flexShrink: 0 }}
+                      aria-hidden="true"
+                    >
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                  )}
+                </button>
+
+                {/* Mobile About button */}
+                <button
+                  className="mobile-about-button"
+                  onClick={() => setIsAboutModalOpen(true)}
+                  style={{
+                    padding: `${spacing[2]} ${spacing[3]}`,
+                    border: `1px solid ${colors.border.medium}`,
+                    borderRadius: '8px',
+                    background: colors.neutral[100],
+                    color: colors.neutral[700],
+                    fontWeight: typography.fontWeight.medium,
+                    fontSize: typography.fontSize.sm,
+                    cursor: 'pointer',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: spacing[2],
+                    outline: 'none',
+                    transition: 'all 0.2s ease',
+                    boxSizing: 'border-box',
+                    boxShadow: shadows.sm,
+                    minHeight: '36px',
+                    minWidth: '36px',
+                    whiteSpace: 'nowrap',
+                    touchAction: 'manipulation',
+                    WebkitTapHighlightColor: 'transparent',
+                    WebkitUserSelect: 'none',
+                    userSelect: 'none',
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.boxShadow = shadows.sm
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = colors.neutral[50]
+                    e.target.style.borderColor = colors.border.dark
+                    e.target.style.transform = 'translateY(-1px)'
+                    e.target.style.boxShadow = shadows.md
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = colors.neutral[100]
+                    e.target.style.borderColor = colors.border.medium
+                    e.target.style.transform = 'translateY(0)'
+                    e.target.style.boxShadow = shadows.sm
+                  }}
+                  onTouchStart={(e) => {
+                    e.target.style.transform = 'scale(0.98)'
+                    e.target.style.background = colors.neutral[100]
+                  }}
+                  onTouchEnd={(e) => {
+                    e.target.style.transform = 'scale(1)'
+                    e.target.style.background = colors.neutral[100]
+                  }}
+                  aria-label="Learn more about this project"
+                  title="About this project"
+                >
+                  <svg 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2"
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    style={{ flexShrink: 0 }}
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <path d="M12 17h.01"/>
+                  </svg>
+                  <span>About</span>
+                </button>
+              </div>
             </h1>
             <p style={{ 
               color: colors.neutral[600], 
@@ -556,9 +655,18 @@ const Header = ({
             margin-top: 0.75rem !important;
           }
           
-          /* Keep theme toggle visible but adjust About button on mobile portrait */
+          /* Hide desktop About button and theme toggle on mobile portrait */
           .responsive-header > div > div:last-child .about-button {
             display: none !important;
+          }
+          
+          .responsive-header > div > div:last-child button:first-child {
+            display: none !important;
+          }
+          
+          /* Show mobile buttons container on mobile portrait */
+          .mobile-buttons-container {
+            display: flex !important;
           }
           
           .mobile-about-button {
@@ -577,11 +685,11 @@ const Header = ({
             display: none !important;
           }
           
-          /* Ensure theme toggle is visible and properly sized on mobile */
-          .responsive-header > div > div:last-child button:first-child {
-            min-height: 44px !important;
-            min-width: 44px !important;
-            padding: 0.75rem !important;
+          .mobile-theme-toggle {
+            min-height: 32px !important;
+            min-width: 32px !important;
+            padding: 0.5rem !important;
+            flex-shrink: 0 !important;
           }
           
           /* Enhanced mobile YouTube button */
@@ -601,7 +709,15 @@ const Header = ({
         
         /* Desktop and tablet styles */
         @media (min-width: 769px), (max-width: 768px) and (orientation: landscape) {
+          .mobile-buttons-container {
+            display: none !important;
+          }
+          
           .mobile-about-button {
+            display: none !important;
+          }
+          
+          .mobile-theme-toggle {
             display: none !important;
           }
         }
