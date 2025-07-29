@@ -18,6 +18,7 @@ Our goal is to help people who struggle with standard notation learn to solve Ru
 - **Algorithm Database**: 126 algorithms across all solving stages
 - **Search & Filter**: Find algorithms by name, notation, category, or nickname
 - **Favorites System**: Star and save your favorite algorithms
+- **Dark Mode Support**: Toggle between light and dark themes with system preference detection
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 
 ### Visual Learning
@@ -25,6 +26,7 @@ Our goal is to help people who struggle with standard notation learn to solve Ru
 - **Tutorial Images**: Step-by-step visual guides for complex algorithms
 - **Pattern Images**: Visual patterns to help identify algorithm cases
 - **Mobile-Optimized**: Touch-friendly interface with tabbed navigation on mobile devices
+- **Theme Customization**: Seamless dark/light mode switching with persistent user preferences
 
 ## 🧩 Understanding Cube Notation
 
