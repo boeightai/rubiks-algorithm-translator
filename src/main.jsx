@@ -21,14 +21,20 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
+// Initialize theme before app renders
+const savedTheme = localStorage.getItem('theme')
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light')
+document.documentElement.setAttribute('data-theme', initialTheme)
+
 // Register service worker for offline support
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
+      .then(() => {
         // Service worker registered successfully
       })
-      .catch((registrationError) => {
+      .catch(() => {
         // Service worker registration failed - handled silently in production
       })
   })

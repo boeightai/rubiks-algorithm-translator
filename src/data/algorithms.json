@@ -1000,24 +1000,6 @@
     "nicknames": ["Dot"]
   },
   {
-    "id": "pll-aa-perm-alt",
-    "name": "Aa-Perm Alternative",
-    "notation": "R' F R' B2 R F' R' B2 R2",
-    "category": "PLL",
-    "difficulty": "advanced",
-    "description": "Alternative Aa-Perm without cube rotation",
-    "nicknames": ["Aa-Perm Alt"]
-  },
-  {
-    "id": "pll-ab-perm-alt",
-    "name": "Ab-Perm Alternative",
-    "notation": "R2 B2 R F R' B2 R F' R",
-    "category": "PLL",
-    "difficulty": "advanced",
-    "description": "Alternative Ab-Perm without cube rotation",
-    "nicknames": ["Ab-Perm Alt"]
-  },
-  {
     "id": "pll-e-perm",
     "name": "E-Perm",
     "notation": "F2 U R' L F2 L' R U F2",

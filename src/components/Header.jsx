@@ -19,7 +19,7 @@
 import { colors, typography, spacing, shadows } from '../styles/designSystem'
 import StarIcon from './ui/StarIcon'
 import AboutModal from './AboutModal'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Header = ({ 
   title = "Bo and Hailey's Visual Notation System",
@@ -29,6 +29,24 @@ const Header = ({
   setSelectedCategory
 }) => {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  // Initialize theme on component mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light')
+    
+    setIsDarkMode(initialTheme === 'dark')
+    document.documentElement.setAttribute('data-theme', initialTheme)
+  }, [])
+
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? 'light' : 'dark'
+    setIsDarkMode(!isDarkMode)
+    document.documentElement.setAttribute('data-theme', newTheme)
+    localStorage.setItem('theme', newTheme)
+  }
   const handleWiredButtonClick = () => {
     if (selectedCategory === 'Wired') {
       // If Wired is currently selected, switch back to All Categories
@@ -62,11 +80,11 @@ const Header = ({
       link.click()
       document.body.removeChild(link)
       
-    } catch (error) {
+    } catch {
       // Method 3: Final fallback - redirect current tab
       try {
         window.location.href = youtubeVideoUrl
-      } catch (redirectError) {
+      } catch {
         // Show user-friendly error message
         alert('Unable to open YouTube video. Please copy this link and open it manually: ' + youtubeVideoUrl)
       }
@@ -317,7 +335,7 @@ const Header = ({
           </div>
         </div>
 
-        {/* Right side - About button */}
+        {/* Right side - Theme toggle and About button */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -325,8 +343,100 @@ const Header = ({
           marginLeft: spacing[4],
           flexShrink: 0,
         }}>
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            style={{
+              padding: `${spacing[2]} ${spacing[2]}`,
+              border: `1px solid ${colors.border.medium}`,
+              borderRadius: '8px',
+              background: colors.neutral[100],
+              color: colors.neutral[700],
+              fontWeight: typography.fontWeight.medium,
+              fontSize: typography.fontSize.sm,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              transition: 'all 0.2s ease',
+              boxSizing: 'border-box',
+              boxShadow: shadows.sm,
+              minHeight: '36px',
+              minWidth: '36px',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = shadows.sm
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = colors.neutral[50]
+              e.target.style.borderColor = colors.border.dark
+              e.target.style.transform = 'translateY(-1px)'
+              e.target.style.boxShadow = shadows.md
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = colors.neutral[100]
+              e.target.style.borderColor = colors.border.medium
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = shadows.sm
+            }}
+            onTouchStart={(e) => {
+              e.target.style.transform = 'scale(0.98)'
+              e.target.style.background = colors.neutral[100]
+            }}
+            onTouchEnd={(e) => {
+              e.target.style.transform = 'scale(1)'
+              e.target.style.background = colors.neutral[100]
+            }}
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDarkMode ? (
+              // Sun icon for light mode
+              <svg 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+                style={{ flexShrink: 0 }}
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            ) : (
+              // Moon icon for dark mode
+              <svg 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+                style={{ flexShrink: 0 }}
+                aria-hidden="true"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
+          </button>
+
           {/* About Button */}
           <button
+            className="about-button"
             onClick={() => setIsAboutModalOpen(true)}
             style={{
               padding: `${spacing[2]} ${spacing[3]}`,
@@ -446,8 +556,8 @@ const Header = ({
             margin-top: 0.75rem !important;
           }
           
-          /* Move About button to title area on mobile portrait */
-          .responsive-header > div > div:last-child {
+          /* Keep theme toggle visible but adjust About button on mobile portrait */
+          .responsive-header > div > div:last-child .about-button {
             display: none !important;
           }
           
@@ -465,6 +575,13 @@ const Header = ({
           
           .mobile-about-button span {
             display: none !important;
+          }
+          
+          /* Ensure theme toggle is visible and properly sized on mobile */
+          .responsive-header > div > div:last-child button:first-child {
+            min-height: 44px !important;
+            min-width: 44px !important;
+            padding: 0.75rem !important;
           }
           
           /* Enhanced mobile YouTube button */

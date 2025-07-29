@@ -109,6 +109,9 @@ const AlgorithmDetails = ({
               width: '60px',
               height: '60px',
               objectFit: 'contain',
+              backgroundColor: 'var(--move-image-bg)',
+              padding: 'var(--move-image-padding)',
+              borderRadius: '8px',
             }}
           />
         </div>

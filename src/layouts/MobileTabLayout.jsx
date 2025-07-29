@@ -32,7 +32,7 @@ const MobileTabLayout = ({
   const [activeTab, setActiveTab] = useState('algorithms')
   const [showNotification, setShowNotification] = useState(false)
   const autoSwitchTimeoutRef = useRef(null)
-  const { isMobile, isTablet, deviceType } = useMobileDetection()
+  const { isMobile, isTablet } = useMobileDetection()
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
   
   // Update window width on resize

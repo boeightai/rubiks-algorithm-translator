@@ -203,19 +203,6 @@ function VisualSequence({ notation }) {
     return colors.border.light
   }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
-  // Function to get the move image background color
-  const getMoveImageBackground = useCallback((index) => {
-    const isRightHighlighted = isPartOfRightTrigger(index)
-    const isLeftHighlighted = isPartOfLeftTrigger(index)
-    
-    // If both patterns overlap, use a blended approach
-    if (isRightHighlighted && isLeftHighlighted) {
-      return colors.neutral[50] // Use neutral background for overlapping patterns
-    }
-    if (isRightHighlighted) return colors.success[50]
-    if (isLeftHighlighted) return colors.info[50]
-    return colors.background.primary
-  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
   // Function to get the move label color
   const getMoveLabelColor = useCallback((index) => {
@@ -251,6 +238,7 @@ function VisualSequence({ notation }) {
           border: `2px solid ${colors.warning[300]}`,
           borderRadius: borderRadius.lg,
           backgroundColor: colors.warning[50],
+          padding: 'var(--move-image-padding)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -269,6 +257,7 @@ function VisualSequence({ notation }) {
           border: `2px solid ${colors.warning[300]}`,
           borderRadius: borderRadius.lg,
           backgroundColor: colors.warning[50],
+          padding: 'var(--move-image-padding)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -295,7 +284,8 @@ function VisualSequence({ notation }) {
         style={{
           border: `2px solid ${getMoveImageBorder(index)}`,
           borderRadius: borderRadius.lg,
-          backgroundColor: getMoveImageBackground(index),
+          backgroundColor: 'var(--move-image-bg)',
+          padding: 'var(--move-image-padding)',
           boxShadow: shadows.sm,
           transition: 'transform 0.2s ease',
           transform: 'scale(1)',
@@ -309,7 +299,7 @@ function VisualSequence({ notation }) {
         draggable="false"
       />
     )
-  }, [imageErrors, getMoveImageBorder, getMoveImageBackground, isMobile, forceReload])
+  }, [imageErrors, getMoveImageBorder, isMobile, forceReload])
 
   return (
     <div style={{

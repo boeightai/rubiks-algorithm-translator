@@ -60,7 +60,7 @@ export function useMobileDetection(breakpoint = 768) {
         } else {
           setDeviceType('desktop')
         }
-      } catch (error) {
+      } catch {
         // Fallback to desktop if detection fails
         setIsMobile(false)
         setIsTablet(false)

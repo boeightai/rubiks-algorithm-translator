@@ -107,7 +107,7 @@ const AboutModal = ({ isOpen, onClose }) => {
     >
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%)',
+          background: 'var(--bg-primary)',
           backdropFilter: 'blur(20px)',
           borderRadius: isMobile ? '24px' : '32px',
           maxWidth: isMobile ? '100%' : '700px',
@@ -115,9 +115,9 @@ const AboutModal = ({ isOpen, onClose }) => {
           overflow: 'hidden',
           position: 'relative',
           width: '100%',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          boxShadow: 'var(--shadow-lg)',
           animation: 'slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
+          border: '1px solid var(--border-light)',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -133,8 +133,8 @@ const AboutModal = ({ isOpen, onClose }) => {
             height: '48px',
             borderRadius: '50%',
             border: 'none',
-            background: 'rgba(255, 255, 255, 0.9)',
-            color: colors.neutral[600],
+            background: 'var(--bg-secondary)',
+            color: 'var(--text-muted)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -143,25 +143,25 @@ const AboutModal = ({ isOpen, onClose }) => {
             fontSize: '20px',
             fontWeight: typography.fontWeight.medium,
             transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            boxShadow: 'var(--shadow-base)',
             backdropFilter: 'blur(10px)',
           }}
           onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 1)'
+            e.target.style.background = 'var(--bg-primary)'
             e.target.style.transform = 'scale(1.1) rotate(90deg)'
-            e.target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)'
+            e.target.style.boxShadow = 'var(--shadow-md)'
           }}
           onMouseLeave={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.9)'
+            e.target.style.background = 'var(--bg-secondary)'
             e.target.style.transform = 'scale(1) rotate(0deg)'
-            e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)'
+            e.target.style.boxShadow = 'var(--shadow-base)'
           }}
           onTouchStart={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 1)'
+            e.target.style.background = 'var(--bg-primary)'
             e.target.style.transform = 'scale(0.95)'
           }}
           onTouchEnd={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.9)'
+            e.target.style.background = 'var(--bg-secondary)'
             e.target.style.transform = 'scale(1)'
           }}
           aria-label="Close about modal"
@@ -185,13 +185,13 @@ const AboutModal = ({ isOpen, onClose }) => {
             <h1
               id="about-modal-title"
               style={{
-                color: colors.neutral[900],
+                color: 'var(--text-primary)',
                 fontSize: isMobile ? typography.fontSize['2xl'] : typography.fontSize['3xl'],
                 fontWeight: typography.fontWeight.bold,
                 marginBottom: spacing[2],
                 marginTop: 0,
                 lineHeight: typography.lineHeight.tight,
-                background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
+                background: 'linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -204,14 +204,14 @@ const AboutModal = ({ isOpen, onClose }) => {
           {/* Content Sections */}
           <div style={{
             lineHeight: typography.lineHeight.relaxed,
-            color: colors.neutral[700],
+            color: 'var(--text-secondary)',
             fontSize: typography.fontSize.base,
           }}>
             <div style={{
-              background: 'rgba(255, 255, 255, 0.5)',
+              background: 'var(--bg-secondary)',
               borderRadius: borderRadius.xl,
               padding: spacing[5],
-              border: '1px solid rgba(255, 255, 255, 0.3)',
+              border: '1px solid var(--border-light)',
               backdropFilter: 'blur(10px)',
             }}>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
@@ -262,16 +262,16 @@ const AboutModal = ({ isOpen, onClose }) => {
                   textDecoration: 'none',
                   cursor: 'pointer',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                  boxShadow: 'var(--shadow-base)',
                   minHeight: '48px',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)'
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)'
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)'
+                  e.currentTarget.style.boxShadow = 'var(--shadow-base)'
                 }}
               >
                 {/* GitHub Icon */}
@@ -342,17 +342,17 @@ const AboutModal = ({ isOpen, onClose }) => {
         }
         
         .about-modal-content::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
+          background: var(--scrollbar-track);
           border-radius: 3px;
         }
         
         .about-modal-content::-webkit-scrollbar-thumb {
-          background: rgba(59, 130, 246, 0.3);
+          background: var(--scrollbar-thumb);
           border-radius: 3px;
         }
         
         .about-modal-content::-webkit-scrollbar-thumb:hover {
-          background: rgba(59, 130, 246, 0.5);
+          background: var(--scrollbar-thumb-hover);
         }
       `}</style>
     </div>
