@@ -1,0 +1,16 @@
+[
+  {
+    "id": "right-trigger",
+    "name": "Right Trigger",
+    "notation": "R U R' U'",
+    "nicknames": ["Right Trigger", "Sexy Move"],
+    "description": "The fundamental right-hand algorithm used throughout cube solving"
+  },
+  {
+    "id": "left-trigger",
+    "name": "Left Trigger",
+    "notation": "L' U' L U",
+    "nicknames": ["Left Trigger", "Left Sexy Move"],
+    "description": "The left-hand counterpart to the Right Trigger"
+  }
+]

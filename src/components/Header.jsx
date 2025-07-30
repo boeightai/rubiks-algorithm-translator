@@ -26,7 +26,9 @@ const Header = ({
   subtitle = "An Alternate Visual Notation System for Solving Rubik's Cubes",
   style = {},
   selectedCategory,
-  setSelectedCategory
+  setSelectedCategory,
+  onModeToggle,
+  currentMode
 }) => {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -532,6 +534,67 @@ const Header = ({
               </svg>
             )}
           </button>
+
+          {/* Mode Toggle Button - only show when props are provided */}
+          {onModeToggle && currentMode && (
+            <button
+              onClick={onModeToggle}
+              style={{
+                padding: `${spacing[2]} ${spacing[3]}`,
+                border: `1px solid ${colors.border.medium}`,
+                borderRadius: '8px',
+                background: colors.primary[500],
+                color: colors.white,
+                fontWeight: typography.fontWeight.medium,
+                fontSize: typography.fontSize.sm,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: spacing[2],
+                outline: 'none',
+                transition: 'all 0.2s ease',
+                boxSizing: 'border-box',
+                boxShadow: shadows.sm,
+                minHeight: '36px',
+                minWidth: '36px',
+                whiteSpace: 'nowrap',
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent',
+                WebkitUserSelect: 'none',
+                userSelect: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+              }}
+              onBlur={(e) => {
+                e.target.style.boxShadow = shadows.sm
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = colors.primary[600]
+                e.target.style.transform = 'translateY(-1px)'
+                e.target.style.boxShadow = shadows.md
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = colors.primary[500]
+                e.target.style.transform = 'translateY(0)'
+                e.target.style.boxShadow = shadows.sm
+              }}
+              onTouchStart={(e) => {
+                e.target.style.transform = 'scale(0.98)'
+                e.target.style.background = colors.primary[600]
+              }}
+              onTouchEnd={(e) => {
+                e.target.style.transform = 'scale(1)'
+                e.target.style.background = colors.primary[500]
+              }}
+              aria-label="Switch to Tutorial mode"
+              title="Switch to Tutorial mode"
+            >
+              <span style={{ fontSize: '14px' }}>📚</span>
+              <span>Tutorial</span>
+            </button>
+          )}
 
           {/* About Button */}
           <button

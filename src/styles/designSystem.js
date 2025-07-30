@@ -102,7 +102,11 @@ export const colors = {
     light: 'var(--border-light)',
     medium: 'var(--border-medium)',
     dark: 'var(--border-dark)',
-  }
+  },
+  
+  // Common colors
+  white: '#ffffff',
+  black: '#000000'
 }
 
 export const typography = {

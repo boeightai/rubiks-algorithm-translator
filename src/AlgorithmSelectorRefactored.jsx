@@ -27,7 +27,7 @@ import VisualSequence from './VisualSequence'
 import MobileTabLayout from './layouts/MobileTabLayout'
 import Header from './components/Header'
 
-function AlgorithmSelectorRefactored() {
+function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
   const { favoriteIds, toggleFavorite, isFavorite } = useFavorites()
   const { wiredIds, isWired } = useWired()
   const {
@@ -54,6 +54,8 @@ function AlgorithmSelectorRefactored() {
     <Header 
       selectedCategory={selectedCategory}
       setSelectedCategory={setSelectedCategory}
+      onModeToggle={onModeToggle}
+      currentMode={currentMode}
     />
   )
 

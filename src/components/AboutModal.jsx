@@ -17,7 +17,7 @@
  */
 
 import { useEffect, useRef } from 'react'
-import { colors, typography, spacing, borderRadius } from '../styles/designSystem'
+import { typography, spacing, borderRadius } from '../styles/designSystem'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
 const AboutModal = ({ isOpen, onClose }) => {
