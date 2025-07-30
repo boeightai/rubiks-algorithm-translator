@@ -52,6 +52,7 @@ function TutorialMode() {
         {/* YouTube Video Section */}
         <div style={{
           marginBottom: spacing[8],
+          padding: `0 ${spacing[2]}`, // Add horizontal padding for smaller screens
         }}>
           <YouTubeEmbed />
         </div>

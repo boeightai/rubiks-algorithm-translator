@@ -32,16 +32,6 @@ function ModeToggle({ mode, onToggle }) {
       alignItems: 'center',
       gap: spacing[2],
     }}>
-      {/* Mode label for desktop */}
-      {!isMobile && mode === 'tutorial' && (
-        <span style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.neutral[600],
-          fontWeight: typography.fontWeight.medium,
-        }}>
-          Click Here for the Full Algorithms Library
-        </span>
-      )}
       
       {/* Toggle button */}
       <button
@@ -78,7 +68,7 @@ function ModeToggle({ mode, onToggle }) {
         
         {/* Text */}
         <span>
-          {mode === 'tutorial' ? 'Explorer Mode' : 'Tutorial Mode'}
+          {mode === 'tutorial' ? 'Full Algorithms List' : 'Tutorial Mode'}
         </span>
         
         {/* Arrow indicator */}
@@ -115,7 +105,7 @@ function ModeToggle({ mode, onToggle }) {
           pointerEvents: 'none',
           transition: 'opacity 0.2s ease',
         }}>
-          Switch to {mode === 'tutorial' ? 'Explorer' : 'Tutorial'} Mode
+          Switch to {mode === 'tutorial' ? 'Full Algorithms List' : 'Tutorial Mode'}
         </div>
       )}
     </div>

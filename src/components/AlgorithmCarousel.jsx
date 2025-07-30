@@ -82,43 +82,54 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
           textAlign: 'center',
           minWidth: '200px',
         }}>
-          <h2 style={{
-            fontSize: isMobile ? typography.fontSize.xl : typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.neutral[900],
-            margin: 0,
+          {/* Title and Nicknames Container */}
+          <div style={{
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginBottom: spacing[2],
           }}>
-            {currentAlgorithm.name}
-          </h2>
-          
-          {/* Nicknames */}
-          {currentAlgorithm.nicknames && currentAlgorithm.nicknames.length > 0 && (
-            <div style={{
-              display: 'flex',
-              gap: spacing[2],
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              marginBottom: spacing[3],
+            <h2 style={{
+              fontSize: isMobile ? typography.fontSize.xl : typography.fontSize['2xl'],
+              fontWeight: typography.fontWeight.bold,
+              color: colors.neutral[900],
+              margin: 0,
+              textAlign: 'center',
             }}>
-              {currentAlgorithm.nicknames.map((nickname, index) => (
-                <span
-                  key={index}
-                  style={{
-                    backgroundColor: colors.neutral[100],
-                    color: colors.neutral[700],
-                    padding: `${spacing[1]} ${spacing[3]}`,
-                    borderRadius: borderRadius.full,
-                    fontSize: typography.fontSize.sm,
-                    fontWeight: typography.fontWeight.medium,
-                    border: `1px solid ${colors.neutral[200]}`,
-                  }}
-                >
-                  {nickname}
-                </span>
-              ))}
-            </div>
-          )}
+              {currentAlgorithm.name}
+            </h2>
+            
+            {/* Nicknames positioned to the right */}
+            {currentAlgorithm.nicknames && currentAlgorithm.nicknames.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                left: 'calc(50% + ' + (currentAlgorithm.name.length * 0.6) + 'ch)',
+                marginLeft: spacing[2],
+                display: 'flex',
+                gap: spacing[2],
+                flexWrap: 'wrap',
+                whiteSpace: 'nowrap',
+              }}>
+                {currentAlgorithm.nicknames.map((nickname, index) => (
+                  <span
+                    key={index}
+                    style={{
+                      backgroundColor: colors.neutral[100],
+                      color: colors.neutral[700],
+                      padding: `${spacing[1]} ${spacing[2]}`,
+                      borderRadius: borderRadius.full,
+                      fontSize: typography.fontSize.xs,
+                      fontWeight: typography.fontWeight.medium,
+                      border: `1px solid ${colors.neutral[200]}`,
+                    }}
+                  >
+                    {nickname}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
           
           {/* Progress indicator */}
           <div style={{

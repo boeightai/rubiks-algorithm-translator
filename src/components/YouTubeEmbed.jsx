@@ -17,14 +17,25 @@
  */
 
 import { colors, borderRadius, shadows, spacing } from '../styles/designSystem'
+import { useMobileDetection } from '../hooks/useMobileDetection'
 
 function YouTubeEmbed() {
   // Placeholder video ID - replace with your actual video ID
   const videoId = 'YOUR_VIDEO_ID' // Replace with actual YouTube video ID
+  const { isMobile, isTablet } = useMobileDetection()
+  
+  // Determine max width based on device type
+  const getMaxWidth = () => {
+    if (isMobile) return '100%' // Full width on mobile
+    if (isTablet) return '600px' // Medium size on tablet
+    return '700px' // Larger but not full width on desktop
+  }
   
   return (
     <div style={{
       width: '100%',
+      maxWidth: getMaxWidth(),
+      margin: '0 auto', // Center the video
       backgroundColor: colors.background.secondary,
       borderRadius: borderRadius.xl,
       overflow: 'hidden',
@@ -54,29 +65,6 @@ function YouTubeEmbed() {
         />
       </div>
       
-      {/* Video placeholder message if no video ID */}
-      {videoId === 'YOUR_VIDEO_ID' && (
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          textAlign: 'center',
-          padding: spacing[4],
-          backgroundColor: colors.neutral[900] + 'CC',
-          color: colors.white,
-          borderRadius: borderRadius.lg,
-          pointerEvents: 'none',
-        }}>
-          <div style={{ fontSize: '48px', marginBottom: spacing[2] }}>📹</div>
-          <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            YouTube Video Placeholder
-          </div>
-          <div style={{ fontSize: '14px', marginTop: spacing[2], opacity: 0.8 }}>
-            Replace 'YOUR_VIDEO_ID' with your actual YouTube video ID
-          </div>
-        </div>
-      )}
     </div>
   )
 }
