@@ -207,6 +207,26 @@ const AboutModal = ({ isOpen, onClose }) => {
             color: 'var(--text-secondary)',
             fontSize: typography.fontSize.base,
           }}>
+            {/* Family Photo */}
+            <div style={{
+              marginBottom: spacing[6],
+              textAlign: 'center',
+            }}>
+              <img
+                src="/images/family-photo.png"
+                alt="Hailey and I working on Rubik's Cube algorithms"
+                style={{
+                  width: '100%',
+                  maxWidth: isMobile ? '250px' : '300px',
+                  height: 'auto',
+                  borderRadius: borderRadius.lg,
+                  boxShadow: 'var(--shadow-md)',
+                  border: '1px solid var(--border-light)',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+            
             <div style={{
               background: 'var(--bg-secondary)',
               borderRadius: borderRadius.xl,
@@ -215,27 +235,12 @@ const AboutModal = ({ isOpen, onClose }) => {
               backdropFilter: 'blur(10px)',
             }}>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                Welcome to our Rubik's Cube Algorithm Translator! This project was born from a shared passion 
-                between father and daughter - Bo and Hailey's love for solving Rubik's cubes and learning to code together.
+                Welcome to our Rubik's Cube Algorithm Translator. This project was born from a shared passion 
+                between my 9 year old daughter Hailey and I - our love of solving Rubik's Cubes and learning to code.
               </p>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                We created this application because we found the standard Rubik's cube notation system challenging 
-                to memorize. Our solution? A custom visual notation system that makes learning algorithms 
-                more intuitive and accessible for beginners and advanced cubers alike.
-              </p>
-              <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                We're exploring modern development tools like Cursor and Claude Code. We're excited to share our work 
-                with the broader community and welcome contributions from anyone that shares our interests in speedcubing and coding!
-              </p>
-              <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                Our vision is to keep creating and adding more features, with the goal of one day developing this 
-                into a freemium app. We plan to offer premium features while ensuring that beginners can always 
-                access our visual notational system and core learning tools for free. This way, we can support 
-                the community while building something sustainable.
-              </p>
-              <p style={{ margin: 0 }}>
-                Check out our GitHub repo to contribute to the project or share your ideas for new features. 
-                Together, we can make learning the Rubik's cube more accessible and enjoyable for everyone!
+                We're excited to share our ongoing development with both the speedcubing and coding communities. 
+                We also hope to attract new people to learn how to solve Rubik's Cubes with our visual system!
               </p>
             </div>
 

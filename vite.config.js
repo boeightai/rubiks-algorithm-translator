@@ -21,7 +21,9 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    fastRefresh: true
+  })],
   base: '/',
   build: {
     rollupOptions: {
@@ -47,8 +49,11 @@ export default defineConfig({
     }
   },
   server: {
+    hmr: {
+      port: 5173
+    },
     headers: {
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
       'X-XSS-Protection': '1; mode=block',
