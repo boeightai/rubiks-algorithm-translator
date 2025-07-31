@@ -86,8 +86,11 @@ export function loadImageWithRetry(src, options = {}) {
       if (mobileOptimized) {
         // Set loading priority for mobile
         img.loading = preload ? 'eager' : 'lazy'
-        // Add crossOrigin for better mobile compatibility
-        img.crossOrigin = 'anonymous'
+        // Add crossOrigin for better mobile compatibility - except iPad Safari
+        const isIPadSafari = /iPad|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document
+        if (!isIPadSafari) {
+          img.crossOrigin = 'anonymous'
+        }
         // Add decoding hint for better performance
         img.decoding = 'async'
       }
@@ -170,7 +173,11 @@ export function checkImageExists(url, options = {}) {
     
     if (mobileOptimized) {
       img.loading = 'eager'
-      img.crossOrigin = 'anonymous'
+      // Check for iPad Safari specifically
+      const isIPadSafari = /iPad|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document
+      if (!isIPadSafari) {
+        img.crossOrigin = 'anonymous'
+      }
     }
     
     const cleanup = () => {

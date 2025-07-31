@@ -251,22 +251,27 @@ function VisualSequence({ notation }) {
     const handleError = () => {
       setImageErrors(prev => new Set([...prev, move]))
       
-      // For iPad, try multiple reload strategies
+      // For iPad Safari, use more aggressive retry strategies
       if (isIPad) {
-        // First retry after 500ms
+        // Immediate retry for iPad Safari cache issues
         setTimeout(() => {
           setForceReload(prev => prev + 1)
-        }, 500)
+        }, 100)
         
-        // Second retry after 2 seconds if still failing
+        // Second retry after 1 second
         setTimeout(() => {
           setForceReload(prev => prev + 1)
-        }, 2000)
+        }, 1000)
         
-        // Third retry after 5 seconds
+        // Third retry after 3 seconds with different cache buster
         setTimeout(() => {
           setForceReload(prev => prev + 1)
-        }, 5000)
+        }, 3000)
+        
+        // Final retry after 6 seconds
+        setTimeout(() => {
+          setForceReload(prev => prev + 1)
+        }, 6000)
       }
     }
 
@@ -318,14 +323,16 @@ function VisualSequence({ notation }) {
       )
     }
 
-    // Add cache busting for mobile devices to force reload
-    const imageUrl = (isMobile || isIPad) && forceReload > 0
-      ? `${imageSrc}?v=${forceReload}`
-      : imageSrc
+    // iPad Safari specific cache busting - use timestamp for aggressive cache bypass
+    const imageUrl = isIPad && forceReload > 0
+      ? `${imageSrc}?safari=${Date.now()}&v=${forceReload}`
+      : (isMobile && forceReload > 0)
+        ? `${imageSrc}?v=${forceReload}`
+        : imageSrc
 
     return (
       <img
-        key={`${move}-${forceReload}`} // Force remount on reload
+        key={`${move}-${forceReload}-${isIPad ? Date.now() : ''}`} // Force remount on reload with timestamp for iPad
         src={imageUrl}
         alt={move}
         className="responsive-cube-image"
@@ -343,13 +350,16 @@ function VisualSequence({ notation }) {
             imageRendering: 'crisp-edges',
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
+            // Safari-specific image loading optimization
+            WebkitTransform: 'translateZ(0)',
+            transform: 'translateZ(0)',
           }),
         }}
         onError={handleError}
         onLoad={handleLoad}
         loading="eager"
         decoding="async"
-        crossOrigin="anonymous"
+        crossOrigin={isIPad ? undefined : "anonymous"} // Remove crossOrigin for iPad Safari to avoid CORS issues
         draggable="false"
       />
     )
