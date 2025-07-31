@@ -25,6 +25,10 @@ function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
   const [forceReload, setForceReload] = useState(0)
   const { isMobile, isTablet } = useMobileDetection()
+  
+
+
+
 
   // Determine if we're on desktop for compact layout
   const isDesktop = !isMobile && !isTablet
@@ -76,6 +80,8 @@ function VisualSequence({ notation }) {
       }
     }
     const parsedMoves = parseNotation(notation)
+    
+
     const rightTriggerPattern = ['R', 'U', "R'", "U'"]  // Only the standard Right Trigger
     const leftTriggerPattern = ["L'", "U'", 'L', 'U']   // Only the standard Left Trigger
     const highlighted = new Set()
@@ -225,13 +231,19 @@ function VisualSequence({ notation }) {
   const MoveImage = useCallback(({ move, index }) => {
     const imageSrc = moves[move]
     const hasError = imageErrors.has(move)
+    
+
+    
+
 
     const handleError = () => {
+      console.error(`Failed to load image for move: ${move}`)
       setImageErrors(prev => new Set([...prev, move]))
     }
 
     const handleLoad = () => {
       // Image loaded successfully - remove from error set if it was there
+      console.log(`Successfully loaded image for move: ${move}`)
       setImageErrors(prev => {
         const newSet = new Set(prev)
         newSet.delete(move)
@@ -317,6 +329,7 @@ function VisualSequence({ notation }) {
       padding: isDesktop ? spacing[4] : spacing[6], // Reduced padding for desktop
       boxShadow: shadows.sm,
     }}>
+
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -441,8 +454,26 @@ function VisualSequence({ notation }) {
             fontSize: typography.fontSize.sm,
             color: colors.neutral[500],
           }}>
-            {!notation || typeof notation !== 'string' ? 'No notation provided' : 'No moves to display'}
+            {!notation || typeof notation !== 'string' ? 'Select an algorithm to see the visual sequence' : 'No moves to display'}
           </div>
+          {isMobile && (
+            <div style={{
+              fontSize: typography.fontSize.xs,
+              color: colors.neutral[400],
+              marginTop: spacing[2],
+            }}>
+              💡 Tip: Switch to the "Visual" tab to see the sequence
+            </div>
+          )}
+          {!isMobile && (
+            <div style={{
+              fontSize: typography.fontSize.xs,
+              color: colors.neutral[400],
+              marginTop: spacing[2],
+            }}>
+              💡 Tip: Click on an algorithm to see its visual sequence
+            </div>
+          )}
         </div>
       ) : (
         <div 
@@ -457,9 +488,23 @@ function VisualSequence({ notation }) {
             width: '100%',
           }}
         >
+          {/* Loading indicator for images */}
+          {imageErrors.size > 0 && (
+            <div style={{
+              width: '100%',
+              textAlign: 'center',
+              padding: spacing[2],
+              color: colors.warning[600],
+              fontSize: typography.fontSize.sm,
+            }}>
+              ⚠️ Some images are still loading...
+            </div>
+          )}
           {(() => {
             const renderedMoves = []
             let i = 0
+            
+
             
             while (i < moveList.length) {
               const move = moveList[i]
