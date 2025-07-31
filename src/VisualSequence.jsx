@@ -24,19 +24,18 @@ import { useMobileDetection } from './hooks/useMobileDetection'
 function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
   const [forceReload, setForceReload] = useState(0)
-  const { isMobile, isTablet } = useMobileDetection()
+  const { isMobile, isTablet, deviceType } = useMobileDetection()
   
-
-
-
-
   // Determine if we're on desktop for compact layout
   const isDesktop = !isMobile && !isTablet
+  
+  // Check if we're specifically on an iPad
+  const isIPad = deviceType === 'ipad'
 
   // Handle visibility change to reload images when returning to the app
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && isMobile) {
+      if (document.visibilityState === 'visible' && (isMobile || isIPad)) {
         // Clear image errors and force reload when becoming visible
         setImageErrors(new Set())
         setForceReload(prev => prev + 1)
@@ -45,7 +44,7 @@ function VisualSequence({ notation }) {
 
     // Also handle page show event for iOS Safari
     const handlePageShow = (event) => {
-      if (event.persisted && isMobile) {
+      if (event.persisted && (isMobile || isIPad)) {
         // Page was restored from bfcache
         setImageErrors(new Set())
         setForceReload(prev => prev + 1)
@@ -59,7 +58,7 @@ function VisualSequence({ notation }) {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       window.removeEventListener('pageshow', handlePageShow)
     }
-  }, [isMobile])
+  }, [isMobile, isIPad])
 
   // Parse the notation string into individual moves
   const parseNotation = useCallback((notation) => {
@@ -67,6 +66,19 @@ function VisualSequence({ notation }) {
     // Split by spaces and filter out empty strings
     return notation.split(' ').filter(move => move.trim() !== '')
   }, [])
+
+  // Preload images for iPad to ensure they're available
+  useEffect(() => {
+    if (isIPad && notation) {
+      const parsedMoves = parseNotation(notation)
+      parsedMoves.forEach(move => {
+        if (moves[move]) {
+          const img = new Image()
+          img.src = moves[move]
+        }
+      })
+    }
+  }, [notation, isIPad])
 
   // Memoized move list and pattern detection
   const { moveList, highlightedMoves, leftTriggerMoves, triggerGroups } = useMemo(() => {
@@ -239,6 +251,24 @@ function VisualSequence({ notation }) {
     const handleError = () => {
       console.error(`Failed to load image for move: ${move}`)
       setImageErrors(prev => new Set([...prev, move]))
+      
+      // For iPad, try multiple reload strategies
+      if (isIPad) {
+        // First retry after 500ms
+        setTimeout(() => {
+          setForceReload(prev => prev + 1)
+        }, 500)
+        
+        // Second retry after 2 seconds if still failing
+        setTimeout(() => {
+          setForceReload(prev => prev + 1)
+        }, 2000)
+        
+        // Third retry after 5 seconds
+        setTimeout(() => {
+          setForceReload(prev => prev + 1)
+        }, 5000)
+      }
     }
 
     const handleLoad = () => {
@@ -249,6 +279,11 @@ function VisualSequence({ notation }) {
         newSet.delete(move)
         return newSet
       })
+      
+      // For iPad, log successful loading for debugging
+      if (isIPad) {
+        console.log(`iPad: Successfully loaded image for move: ${move}`)
+      }
     }
 
     // Handle missing move in moves.json
@@ -290,10 +325,13 @@ function VisualSequence({ notation }) {
       )
     }
 
-    // Add cache busting for mobile to force reload
-    const imageUrl = isMobile && forceReload > 0 
-      ? `${imageSrc}?reload=${forceReload}` 
-      : imageSrc
+    // Add cache busting for mobile and iPad to force reload
+    // For iPad, use a more aggressive cache busting strategy
+    const imageUrl = isIPad 
+      ? `${imageSrc}?ipad=${Date.now()}&reload=${forceReload}` 
+      : (isMobile && forceReload > 0) 
+        ? `${imageSrc}?reload=${forceReload}` 
+        : imageSrc
 
     return (
       <img
@@ -310,12 +348,18 @@ function VisualSequence({ notation }) {
           transition: 'transform 0.2s ease',
           transform: 'scale(1)',
           maxWidth: '100%',
+          // iPad-specific optimizations
+          ...(isIPad && {
+            imageRendering: 'crisp-edges',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }),
         }}
         onError={handleError}
         onLoad={handleLoad}
-        loading="eager" // Always eager on mobile to ensure loading
+        loading={isIPad ? "eager" : "eager"} // Always eager on iPad to ensure loading
         decoding="async"
-        crossOrigin="anonymous"
+        crossOrigin={isIPad ? undefined : "anonymous"} // Remove crossOrigin for iPad to avoid issues
         draggable="false"
       />
     )
@@ -497,7 +541,10 @@ function VisualSequence({ notation }) {
               color: colors.warning[600],
               fontSize: typography.fontSize.sm,
             }}>
-              ⚠️ Some images are still loading...
+              {isIPad 
+                ? `🔄 Loading images for iPad... (${imageErrors.size} remaining)` 
+                : '⚠️ Some images are still loading...'
+              }
             </div>
           )}
           {(() => {
