@@ -21,9 +21,11 @@ import YouTubeEmbed from './components/YouTubeEmbed'
 import AlgorithmCarousel from './components/AlgorithmCarousel'
 import tutorialAlgorithms from './data/tutorialAlgorithms.json'
 import { colors, spacing } from './styles/designSystem'
+import { useMobileDetection } from './hooks/useMobileDetection'
 
 function TutorialMode() {
   const [currentAlgorithmIndex, setCurrentAlgorithmIndex] = useState(0)
+  const { isMobile, isTablet } = useMobileDetection()
   
   const handleNext = () => {
     setCurrentAlgorithmIndex((prev) => 
@@ -37,11 +39,14 @@ function TutorialMode() {
     )
   }
   
+  // Determine if we're on desktop for compact layout
+  const isDesktop = !isMobile && !isTablet
+  
   return (
     <div style={{
       backgroundColor: colors.background.primary,
       minHeight: '100vh',
-      paddingTop: spacing[20], // Space for fixed mode toggle
+      paddingTop: isDesktop ? spacing[16] : spacing[20], // Reduced top padding for desktop
     }}>
       {/* Container */}
       <div style={{
@@ -51,8 +56,8 @@ function TutorialMode() {
       }}>
         {/* YouTube Video Section */}
         <div style={{
-          marginBottom: spacing[8],
-          padding: `0 ${spacing[2]}`, // Add horizontal padding for smaller screens
+          marginBottom: isDesktop ? spacing[4] : spacing[8], // Reduced margin for desktop
+          padding: `0 ${spacing[2]}`,
         }}>
           <YouTubeEmbed />
         </div>

@@ -24,11 +24,14 @@ function YouTubeEmbed() {
   const videoId = 'YOUR_VIDEO_ID' // Replace with actual YouTube video ID
   const { isMobile, isTablet } = useMobileDetection()
   
+  // Determine if we're on desktop for compact layout
+  const isDesktop = !isMobile && !isTablet
+  
   // Determine max width based on device type
   const getMaxWidth = () => {
     if (isMobile) return '100%' // Full width on mobile
     if (isTablet) return '600px' // Medium size on tablet
-    return '700px' // Larger but not full width on desktop
+    return isDesktop ? '500px' : '700px' // More compact on desktop
   }
   
   return (

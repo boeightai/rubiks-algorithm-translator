@@ -24,7 +24,10 @@ import { useMobileDetection } from './hooks/useMobileDetection'
 function VisualSequence({ notation }) {
   const [imageErrors, setImageErrors] = useState(new Set())
   const [forceReload, setForceReload] = useState(0)
-  const { isMobile } = useMobileDetection()
+  const { isMobile, isTablet } = useMobileDetection()
+
+  // Determine if we're on desktop for compact layout
+  const isDesktop = !isMobile && !isTablet
 
   // Handle visibility change to reload images when returning to the app
   useEffect(() => {
@@ -306,15 +309,15 @@ function VisualSequence({ notation }) {
       background: colors.background.primary,
       borderRadius: borderRadius.xl,
       border: `1px solid ${colors.border.light}`,
-      padding: spacing[6],
+      padding: isDesktop ? spacing[4] : spacing[6], // Reduced padding for desktop
       boxShadow: shadows.sm,
     }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: spacing[2],
-        marginBottom: spacing[4],
-        paddingBottom: spacing[3],
+        marginBottom: isDesktop ? spacing[3] : spacing[4], // Reduced margin for desktop
+        paddingBottom: isDesktop ? spacing[2] : spacing[3], // Reduced padding for desktop
         borderBottom: `1px solid ${colors.border.light}`,
         flexWrap: 'wrap',
       }}>
@@ -419,7 +422,7 @@ function VisualSequence({ notation }) {
       {moveList.length === 0 ? (
         <div style={{
           textAlign: 'center',
-          padding: spacing[8],
+          padding: isDesktop ? spacing[6] : spacing[8], // Reduced padding for desktop
           color: colors.neutral[500],
         }}>
           <div style={{
@@ -442,10 +445,10 @@ function VisualSequence({ notation }) {
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: spacing[3],
+            gap: isDesktop ? spacing[2] : spacing[3], // Reduced gap for desktop
             justifyContent: 'center',
             alignItems: 'flex-end',
-            minHeight: '120px',
+            minHeight: isDesktop ? '100px' : '120px', // Reduced min height for desktop
             width: '100%',
           }}
         >
@@ -475,7 +478,7 @@ function VisualSequence({ notation }) {
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      gap: spacing[2],
+                      gap: isDesktop ? spacing[1] : spacing[2], // Reduced gap for desktop
                       position: 'relative',
                     }}>
                       {/* Move number */}
@@ -522,8 +525,8 @@ function VisualSequence({ notation }) {
                 renderedMoves.push(
                   <div key={`trigger-${i}`} style={{
                     display: 'flex',
-                    gap: spacing[2],
-                    padding: spacing[3],
+                    gap: isDesktop ? spacing[1] : spacing[2], // Reduced gap for desktop
+                    padding: isDesktop ? spacing[2] : spacing[3], // Reduced padding for desktop
                     background: triggerBackground,
                     border: `3px solid ${triggerColor}`,
                     borderRadius: borderRadius.lg,
@@ -544,7 +547,7 @@ function VisualSequence({ notation }) {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: spacing[2],
+                    gap: isDesktop ? spacing[1] : spacing[2], // Reduced gap for desktop
                     position: 'relative',
                   }}>
                     {/* Move number */}
@@ -624,6 +627,24 @@ function VisualSequence({ notation }) {
           min-height: 120px;
           width: 100%;
           box-sizing: border-box;
+        }
+        
+        /* Desktop optimizations */
+        @media (min-width: 1024px) {
+          .responsive-cube-image,
+          .responsive-cube-image-fallback {
+            width: 56px !important;
+            height: 56px !important;
+          }
+          
+          .responsive-cube-grid {
+            gap: 16px !important;
+            min-height: 100px !important;
+          }
+          
+          .responsive-cube-grid > div > div {
+            gap: 8px !important;
+          }
         }
         
         @media (max-width: 768px) {

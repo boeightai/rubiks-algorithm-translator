@@ -12,5 +12,47 @@
     "notation": "L' U' L U",
     "nicknames": ["Left Sexy Move"],
     "description": "The left-hand counterpart to the Right Trigger"
+  },
+  {
+    "id": "daisy-edge-flipper",
+    "name": "Daisy Edge Flipper",
+    "notation": "F U' R",
+    "nicknames": [],
+    "description": "Simple algorithm for flipping edges in daisy pattern"
+  },
+  {
+    "id": "fish-kite",
+    "name": "Fish",
+    "notation": "F U R U' R' F'",
+    "nicknames": ["Kite"],
+    "description": "OLL algorithm that creates a cross pattern on the top face"
+  },
+  {
+    "id": "sune",
+    "name": "Sune",
+    "notation": "R U R' U R U2 R'",
+    "nicknames": [],
+    "description": "A fundamental OLL algorithm that orients the top face corners"
+  },
+  {
+    "id": "t-perm-setup",
+    "name": "T-Perm Setup",
+    "notation": "L' U R U' L U R'",
+    "nicknames": [],
+    "description": "A setup move used to prepare the cube for T-Perm algorithm execution"
+  },
+  {
+    "id": "e-perm",
+    "name": "E-Perm",
+    "notation": "F2 U R' L F2 L' R U F2",
+    "nicknames": [],
+    "description": "Advanced PLL algorithm for diagonal corner swap in the last layer"
+  },
+  {
+    "id": "e-perm-inverse",
+    "name": "E-Perm Inverse",
+    "notation": "F2 U' R' L F2 L' R U' F2",
+    "nicknames": [],
+    "description": "Inverse version of E-Perm for diagonal corner swap in the opposite direction"
   }
 ]

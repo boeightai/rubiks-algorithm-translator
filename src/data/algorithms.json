@@ -9,7 +9,7 @@
     "nicknames": []
   },
   {
-    "id": "white-cross-2", 
+    "id": "white-cross-2",
     "name": "White Cross Edge 2",
     "notation": "R D' R' D",
     "category": "Beginner Cross",
@@ -24,16 +24,22 @@
     "category": "Beginner Corners",
     "difficulty": "beginner",
     "description": "Basic corner insertion",
-    "nicknames": ["Right Trigger", "Sexy Move"]
+    "nicknames": [
+      "Right Trigger",
+      "Sexy Move"
+    ]
   },
   {
     "id": "white-corners-2",
-    "name": "Left Hand Algorithm", 
+    "name": "Left Hand Algorithm",
     "notation": "L' U' L U",
     "category": "Beginner Corners",
     "difficulty": "beginner",
     "description": "Left-handed corner insertion",
-    "nicknames": ["Left Trigger", "Left Sexy Move"]
+    "nicknames": [
+      "Left Trigger",
+      "Left Sexy Move"
+    ]
   },
   {
     "id": "second-layer-right",
@@ -42,36 +48,21 @@
     "category": "Beginner F2L",
     "difficulty": "beginner",
     "description": "Insert edge to the right",
-    "nicknames": ["Right Edge Insert"]
+    "nicknames": [
+      "Right Edge Insert"
+    ]
   },
   {
     "id": "second-layer-left",
-    "name": "Second Layer Left", 
+    "name": "Second Layer Left",
     "notation": "U' L' U L U F U' F'",
     "category": "Beginner F2L",
     "difficulty": "beginner",
     "description": "Insert edge to the left",
-    "nicknames": ["Left Edge Insert"]
+    "nicknames": [
+      "Left Edge Insert"
+    ]
   },
-  {
-    "id": "beginner-oll",
-    "name": "Beginner OLL Cross",
-    "notation": "F R U R' U' F'",
-    "category": "Beginner OLL",
-    "difficulty": "beginner",
-    "description": "Make yellow cross on top",
-    "nicknames": ["OLL Cross", "FURU'R'F'"]
-  },
-  {
-    "id": "beginner-oll-corners",
-    "name": "Beginner OLL Corners",
-    "notation": "R U R' U R U2 R'",
-    "category": "Beginner OLL", 
-    "difficulty": "beginner",
-    "description": "Orient yellow corners",
-    "nicknames": ["Sune"]
-  },
-
   {
     "id": "beginner-pll-edges",
     "name": "Beginner Edge Permutation",
@@ -88,23 +79,27 @@
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Corner and edge paired, simple insertion",
-    "nicknames": ["Basic F2L Insert"]
+    "nicknames": [
+      "Basic F2L Insert"
+    ]
   },
   {
-    "id": "f2l-case-2", 
+    "id": "f2l-case-2",
     "name": "F2L Case 2",
     "notation": "F' U F",
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Alternative simple insertion",
-    "nicknames": ["Basic F2L Insert"]
+    "nicknames": [
+      "Basic F2L Insert"
+    ]
   },
   {
     "id": "f2l-case-3",
     "name": "F2L Case 3",
     "notation": "R U R' U' R U R'",
     "category": "F2L",
-    "difficulty": "intermediate", 
+    "difficulty": "intermediate",
     "description": "Separated corner and edge",
     "nicknames": []
   },
@@ -124,16 +119,16 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 27 - Sune pattern",
-    "nicknames": ["Sune"]
+    "nicknames": []
   },
   {
     "id": "antisune",
-    "name": "Anti-Sune", 
+    "name": "Anti-Sune",
     "notation": "R' U' R U' R' U2 R",
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 26 - Anti-Sune pattern",
-    "nicknames": ["Anti-Sune"]
+    "nicknames": []
   },
   {
     "id": "oll-cross",
@@ -142,7 +137,9 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 44 - Form cross on top",
-    "nicknames": ["Cross", "OLL Cross"]
+    "nicknames": [
+      "Cross"
+    ]
   },
   {
     "id": "oll-l-shape",
@@ -151,7 +148,9 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 45 - L-shaped pattern",
-    "nicknames": ["L-Shape", "L"]
+    "nicknames": [
+      "L-Shape"
+    ]
   },
   {
     "id": "oll-line",
@@ -160,7 +159,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 51 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-dot",
@@ -169,7 +168,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 57 - Dot pattern",
-    "nicknames": ["Dot"]
+    "nicknames": []
   },
   {
     "id": "oll-pi",
@@ -178,7 +177,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 32 - Pi pattern",
-    "nicknames": ["Pi"]
+    "nicknames": []
   },
   {
     "id": "oll-t-shape",
@@ -187,16 +186,18 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 33 - T-shaped pattern",
-    "nicknames": ["T-Shape", "T"]
+    "nicknames": [
+      "T-Shape"
+    ]
   },
   {
     "id": "oll-case-24",
-    "name": "OLL Case 24 - Chameleon", 
+    "name": "OLL Case 24 - Chameleon",
     "notation": "r U R' U' r' F R F'",
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 24 - Chameleon pattern",
-    "nicknames": ["Chameleon"]
+    "nicknames": []
   },
   {
     "id": "oll-case-25",
@@ -205,7 +206,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 25 - Cross pattern",
-    "nicknames": ["Cross"]
+    "nicknames": []
   },
   {
     "id": "2look-oll-1",
@@ -214,7 +215,7 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "All corners oriented except front-right",
-    "nicknames": ["Sune"]
+    "nicknames": []
   },
   {
     "id": "2look-oll-2",
@@ -223,7 +224,7 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "All corners oriented except front-left",
-    "nicknames": ["Anti-Sune"]
+    "nicknames": []
   },
   {
     "id": "2look-oll-3",
@@ -232,7 +233,7 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "Two adjacent corners need orienting",
-    "nicknames": ["Pi"]
+    "nicknames": []
   },
   {
     "id": "2look-oll-4",
@@ -241,7 +242,11 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "Two diagonal corners need orienting",
-    "nicknames": ["U", "Superman", "Headlights"]
+    "nicknames": [
+      "U",
+      "Superman",
+      "Headlights"
+    ]
   },
   {
     "id": "2look-oll-5",
@@ -250,7 +255,7 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "Front two corners need orienting",
-    "nicknames": ["T"]
+    "nicknames": []
   },
   {
     "id": "2look-oll-6",
@@ -259,7 +264,7 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "Left two corners need orienting",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "2look-oll-7",
@@ -268,11 +273,11 @@
     "category": "2-Look OLL",
     "difficulty": "intermediate",
     "description": "All four corners need orienting",
-    "nicknames": ["H"]
+    "nicknames": []
   },
   {
     "id": "f-perm",
-    "name": "F-Perm", 
+    "name": "F-Perm",
     "notation": "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
     "category": "PLL",
     "difficulty": "advanced",
@@ -283,7 +288,7 @@
     "id": "ga-perm",
     "name": "Ga-Perm",
     "notation": "R2 U R' U R' U' R U' R2 D U' R' U R D'",
-    "category": "PLL", 
+    "category": "PLL",
     "difficulty": "advanced",
     "description": "Diagonal corner and edge swap",
     "nicknames": []
@@ -299,7 +304,7 @@
   },
   {
     "id": "gc-perm",
-    "name": "Gc-Perm", 
+    "name": "Gc-Perm",
     "notation": "R2 U' R U' R U R' U R2 D' U R U' R' D",
     "category": "PLL",
     "difficulty": "advanced",
@@ -322,13 +327,15 @@
     "category": "PLL",
     "difficulty": "intermediate",
     "description": "Opposite edge swap",
-    "nicknames": ["H", "PLL Opposite"]
+    "nicknames": [
+      "PLL Opposite"
+    ]
   },
   {
     "id": "ja-perm",
     "name": "Ja-Perm",
     "notation": "R' U L' U2 R U' R' U2 R L U'",
-    "category": "PLL", 
+    "category": "PLL",
     "difficulty": "intermediate",
     "description": "Adjacent corner swap",
     "nicknames": []
@@ -371,7 +378,7 @@
   },
   {
     "id": "rb-perm",
-    "name": "Rb-Perm", 
+    "name": "Rb-Perm",
     "notation": "R2 F R U R U' R' F' R U2 R' U2 R",
     "category": "PLL",
     "difficulty": "advanced",
@@ -385,7 +392,7 @@
     "category": "PLL",
     "difficulty": "intermediate",
     "description": "Adjacent edge swap",
-    "nicknames": ["T"]
+    "nicknames": []
   },
   {
     "id": "ua-perm",
@@ -406,7 +413,7 @@
     "nicknames": []
   },
   {
-    "id": "y-perm", 
+    "id": "y-perm",
     "name": "Y-Perm",
     "notation": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
     "category": "PLL",
@@ -430,7 +437,9 @@
     "category": "PLL",
     "difficulty": "intermediate",
     "description": "PLL Ua-Perm variation: swaps two edge pieces in the top layer (front and right edges).",
-    "nicknames": ["Ua-Perm Variation", "PLL Adjacent"]
+    "nicknames": [
+      "PLL Adjacent"
+    ]
   },
   {
     "id": "f2l-case-5",
@@ -439,7 +448,7 @@
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Corner in place, edge needs to be inserted",
-    "nicknames": ["Corner in Place"]
+    "nicknames": []
   },
   {
     "id": "f2l-case-6",
@@ -448,7 +457,7 @@
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Edge in place, corner needs to be inserted",
-    "nicknames": ["Edge in Place"]
+    "nicknames": []
   },
   {
     "id": "f2l-case-7",
@@ -457,7 +466,7 @@
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Both corner and edge separated, need pairing",
-    "nicknames": ["Both Separated"]
+    "nicknames": []
   },
   {
     "id": "oll-case-1",
@@ -466,7 +475,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 1 - All corners oriented, no edges oriented",
-    "nicknames": ["Dot"]
+    "nicknames": []
   },
   {
     "id": "oll-case-2",
@@ -475,7 +484,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 2 - I-shaped pattern",
-    "nicknames": ["I"]
+    "nicknames": []
   },
   {
     "id": "oll-case-3",
@@ -484,16 +493,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 3 - L-shaped pattern",
-    "nicknames": ["L"]
-  },
-  {
-    "id": "oll-case-4",
-    "name": "OLL Case 4 - Line",
-    "notation": "F R U R' U' F'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 4 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-5",
@@ -502,16 +502,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 5 - Cross pattern",
-    "nicknames": ["Cross"]
-  },
-  {
-    "id": "oll-case-6",
-    "name": "OLL Case 6 - Lightning",
-    "notation": "R U R' U R U2 R'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 6 - Lightning pattern",
-    "nicknames": ["Lightning"]
+    "nicknames": []
   },
   {
     "id": "oll-case-7",
@@ -520,7 +511,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 7 - Fish pattern",
-    "nicknames": ["Fish"]
+    "nicknames": []
   },
   {
     "id": "oll-case-8",
@@ -529,7 +520,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 8 - Fish pattern",
-    "nicknames": ["Fish"]
+    "nicknames": []
   },
   {
     "id": "oll-case-9",
@@ -538,7 +529,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 9 - Fish pattern",
-    "nicknames": ["Fish"]
+    "nicknames": []
   },
   {
     "id": "oll-case-10",
@@ -547,7 +538,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 10 - Fish pattern",
-    "nicknames": ["Fish"]
+    "nicknames": []
   },
   {
     "id": "oll-case-11",
@@ -556,7 +547,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 11 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-12",
@@ -565,7 +556,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 12 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-13",
@@ -574,7 +565,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 13 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-14",
@@ -583,7 +574,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 14 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-15",
@@ -592,7 +583,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 15 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-16",
@@ -601,7 +592,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 16 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-17",
@@ -610,7 +601,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 17 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-18",
@@ -619,7 +610,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 18 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-19",
@@ -628,7 +619,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 19 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "oll-case-20",
@@ -637,7 +628,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 20 - Knight pattern",
-    "nicknames": ["Knight"]
+    "nicknames": []
   },
   {
     "id": "f2l-edge-flip",
@@ -646,7 +637,7 @@
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Flip edge in F2L slot",
-    "nicknames": ["Edge Flip"]
+    "nicknames": []
   },
   {
     "id": "f2l-corner-twist",
@@ -655,7 +646,7 @@
     "category": "F2L",
     "difficulty": "intermediate",
     "description": "Twist corner in F2L slot",
-    "nicknames": ["Corner Twist"]
+    "nicknames": []
   },
   {
     "id": "oll-case-21",
@@ -664,7 +655,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 21 - C-shaped pattern",
-    "nicknames": ["C"]
+    "nicknames": []
   },
   {
     "id": "oll-case-22",
@@ -673,7 +664,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 22 - C-shaped pattern",
-    "nicknames": ["C"]
+    "nicknames": []
   },
   {
     "id": "oll-case-23",
@@ -682,61 +673,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 23 - W-shaped pattern",
-    "nicknames": ["W"]
-  },
-  {
-    "id": "oll-case-26",
-    "name": "OLL Case 26 - Anti-Sune",
-    "notation": "R' U' R U' R' U2 R",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 26 - Anti-Sune pattern",
-    "nicknames": ["Anti-Sune"]
-  },
-  {
-    "id": "oll-case-27",
-    "name": "OLL Case 27 - Sune",
-    "notation": "R U R' U R U2 R'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 27 - Sune pattern",
-    "nicknames": ["Sune"]
-  },
-  {
-    "id": "oll-case-28",
-    "name": "OLL Case 28 - Anti-Sune",
-    "notation": "R' U' R U' R' U2 R",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 28 - Anti-Sune pattern",
-    "nicknames": ["Anti-Sune"]
-  },
-  {
-    "id": "oll-case-29",
-    "name": "OLL Case 29 - Sune",
-    "notation": "R U R' U R U2 R'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 29 - Sune pattern",
-    "nicknames": ["Sune"]
-  },
-  {
-    "id": "oll-case-30",
-    "name": "OLL Case 30 - Anti-Sune",
-    "notation": "R' U' R U' R' U2 R",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 30 - Anti-Sune pattern",
-    "nicknames": ["Anti-Sune"]
-  },
-  {
-    "id": "oll-case-31",
-    "name": "OLL Case 31 - Sune",
-    "notation": "R U R' U R U2 R'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 31 - Sune pattern",
-    "nicknames": ["Sune"]
+    "nicknames": []
   },
   {
     "id": "oll-case-32",
@@ -745,7 +682,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 32 - Pi pattern",
-    "nicknames": ["Pi"]
+    "nicknames": []
   },
   {
     "id": "oll-case-33",
@@ -754,7 +691,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 33 - T-shaped pattern",
-    "nicknames": ["T"]
+    "nicknames": []
   },
   {
     "id": "oll-case-34",
@@ -763,16 +700,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 34 - T-shaped pattern",
-    "nicknames": ["T"]
-  },
-  {
-    "id": "oll-case-35",
-    "name": "OLL Case 35 - T",
-    "notation": "F R U R' U' F'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 35 - T-shaped pattern",
-    "nicknames": ["T"]
+    "nicknames": []
   },
   {
     "id": "oll-case-36",
@@ -781,7 +709,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 36 - T-shaped pattern",
-    "nicknames": ["T"]
+    "nicknames": []
   },
   {
     "id": "oll-case-37",
@@ -790,16 +718,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 37 - L-shaped pattern",
-    "nicknames": ["L"]
-  },
-  {
-    "id": "oll-case-38",
-    "name": "OLL Case 38 - L",
-    "notation": "F R U R' U' F'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 38 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-39",
@@ -808,7 +727,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 39 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-40",
@@ -817,7 +736,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 40 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-41",
@@ -826,7 +745,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 41 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-42",
@@ -835,7 +754,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 42 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-43",
@@ -844,16 +763,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 43 - L-shaped pattern",
-    "nicknames": ["L"]
-  },
-  {
-    "id": "oll-case-44",
-    "name": "OLL Case 44 - Cross",
-    "notation": "F R U R' U' F'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 44 - Cross pattern",
-    "nicknames": ["Cross"]
+    "nicknames": []
   },
   {
     "id": "oll-case-45",
@@ -862,16 +772,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 45 - L-shaped pattern",
-    "nicknames": ["L"]
-  },
-  {
-    "id": "oll-case-46",
-    "name": "OLL Case 46 - L",
-    "notation": "F R U R' U' F'",
-    "category": "OLL",
-    "difficulty": "intermediate",
-    "description": "OLL Case 46 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-47",
@@ -880,7 +781,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 47 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-48",
@@ -889,7 +790,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 48 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-49",
@@ -898,7 +799,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 49 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-50",
@@ -907,7 +808,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 50 - L-shaped pattern",
-    "nicknames": ["L"]
+    "nicknames": []
   },
   {
     "id": "oll-case-51",
@@ -916,7 +817,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 51 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-52",
@@ -925,7 +826,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 52 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-53",
@@ -934,7 +835,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 53 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-54",
@@ -943,7 +844,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 54 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-55",
@@ -952,7 +853,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 55 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-56",
@@ -961,7 +862,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 56 - Line pattern",
-    "nicknames": ["Line"]
+    "nicknames": []
   },
   {
     "id": "oll-case-57",
@@ -970,7 +871,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 57 - Dot pattern",
-    "nicknames": ["Dot"]
+    "nicknames": []
   },
   {
     "id": "oll-case-58",
@@ -979,7 +880,7 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 58 - Dot pattern",
-    "nicknames": ["Dot"]
+    "nicknames": []
   },
   {
     "id": "oll-case-59",
@@ -988,7 +889,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 59 - Dot pattern",
-    "nicknames": ["Dot"]
+    "nicknames": []
   },
   {
     "id": "oll-case-60",
@@ -997,7 +898,7 @@
     "category": "OLL",
     "difficulty": "advanced",
     "description": "OLL Case 60 - Dot pattern",
-    "nicknames": ["Dot"]
+    "nicknames": []
   },
   {
     "id": "pll-e-perm",
@@ -1006,7 +907,7 @@
     "category": "PLL",
     "difficulty": "advanced",
     "description": "E-Perm algorithm for diagonal corner swap",
-    "nicknames": ["E-Perm"]
+    "nicknames": []
   },
   {
     "id": "pll-e-perm-inverse",
@@ -1015,7 +916,7 @@
     "category": "PLL",
     "difficulty": "advanced",
     "description": "E-Perm inverse algorithm for diagonal corner swap",
-    "nicknames": ["E-Perm Inverse"]
+    "nicknames": []
   },
   {
     "id": "pll-e-perm-alt",
@@ -1024,7 +925,7 @@
     "category": "PLL",
     "difficulty": "advanced",
     "description": "Alternative E-Perm without cube rotation",
-    "nicknames": ["E-Perm Alt"]
+    "nicknames": []
   },
   {
     "id": "pll-v-perm-alt",
@@ -1033,7 +934,7 @@
     "category": "PLL",
     "difficulty": "advanced",
     "description": "Alternative V-Perm without cube rotation",
-    "nicknames": ["V-Perm Alt"]
+    "nicknames": []
   },
   {
     "id": "pll-y-perm-alt",
@@ -1042,26 +943,9 @@
     "category": "PLL",
     "difficulty": "advanced",
     "description": "Alternative Y-Perm without cube rotation",
-    "nicknames": ["Y-Perm Alt"]
+    "nicknames": []
   },
-  {
-    "id": "utility-sexy-move",
-    "name": "Sexy Move",
-    "notation": "R U R' U'",
-    "category": "Utility",
-    "difficulty": "beginner",
-    "description": "Basic utility move used in many algorithms",
-    "nicknames": ["Sexy Move", "Right Trigger"]
-  },
-  {
-    "id": "utility-left-sexy",
-    "name": "Left Sexy Move",
-    "notation": "L' U' L U",
-    "category": "Utility",
-    "difficulty": "beginner",
-    "description": "Left-handed version of sexy move",
-    "nicknames": ["Left Sexy Move", "Left Trigger"]
-  },
+
   {
     "id": "utility-sledgehammer",
     "name": "Sledgehammer",
@@ -1069,7 +953,7 @@
     "category": "Utility",
     "difficulty": "beginner",
     "description": "Basic utility move for edge orientation",
-    "nicknames": ["Sledgehammer"]
+    "nicknames": []
   },
   {
     "id": "utility-left-sledgehammer",
@@ -1078,7 +962,7 @@
     "category": "Utility",
     "difficulty": "beginner",
     "description": "Left-handed version of sledgehammer",
-    "nicknames": ["Left Sledgehammer"]
+    "nicknames": []
   },
   {
     "id": "utility-j-perm",
@@ -1087,7 +971,7 @@
     "category": "Utility",
     "difficulty": "intermediate",
     "description": "Useful utility algorithm for edge swapping",
-    "nicknames": ["J-Perm"]
+    "nicknames": []
   },
   {
     "id": "utility-t-perm",
@@ -1096,7 +980,7 @@
     "category": "Utility",
     "difficulty": "intermediate",
     "description": "Useful utility algorithm for edge swapping",
-    "nicknames": ["T-Perm"]
+    "nicknames": []
   },
   {
     "id": "fish-kite",
@@ -1105,7 +989,9 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL algorithm that creates a cross pattern on the top face",
-    "nicknames": ["Kite"]
+    "nicknames": [
+      "Kite"
+    ]
   },
   {
     "id": "t-perm-setup",
@@ -1114,6 +1000,15 @@
     "category": "Utility",
     "difficulty": "intermediate",
     "description": "Setup move for T-Perm algorithm",
-    "nicknames": ["T-Perm Setup"]
+    "nicknames": []
+  },
+  {
+    "id": "daisy-edge-flipper",
+    "name": "Daisy Edge Flipper",
+    "notation": "F U' R",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Simple algorithm for flipping edges in daisy pattern",
+    "nicknames": []
   }
 ]

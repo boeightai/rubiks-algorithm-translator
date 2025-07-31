@@ -21,8 +21,11 @@ import VisualSequence from '../VisualSequence'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
 function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
-  const { isMobile } = useMobileDetection()
+  const { isMobile, isTablet } = useMobileDetection()
   const currentAlgorithm = algorithms[currentIndex]
+  
+  // Determine if we're on desktop for compact layout
+  const isDesktop = !isMobile && !isTablet
   
   if (!currentAlgorithm) {
     return <div>No algorithms available</div>
@@ -32,7 +35,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
     <div style={{
       backgroundColor: colors.background.secondary,
       borderRadius: borderRadius.xl,
-      padding: spacing[6],
+      padding: isDesktop ? spacing[4] : spacing[6], // Reduced padding for desktop
       boxShadow: shadows.md,
       border: `1px solid ${colors.border.light}`,
     }}>
@@ -41,7 +44,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: spacing[6],
+        marginBottom: isDesktop ? spacing[4] : spacing[6], // Reduced margin for desktop
         flexWrap: 'wrap',
         gap: spacing[3],
       }}>
@@ -88,7 +91,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: spacing[2],
+            marginBottom: isDesktop ? spacing[1] : spacing[2], // Reduced margin for desktop
           }}>
             <h2 style={{
               fontSize: isMobile ? typography.fontSize.xl : typography.fontSize['2xl'],
@@ -105,7 +108,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
               <div style={{
                 position: 'absolute',
                 left: 'calc(50% + ' + (currentAlgorithm.name.length * 0.6) + 'ch)',
-                marginLeft: spacing[2],
+                marginLeft: spacing[4],
                 display: 'flex',
                 gap: spacing[2],
                 flexWrap: 'wrap',
@@ -131,21 +134,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
             )}
           </div>
           
-          {/* Progress indicator */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: spacing[1],
-            marginTop: spacing[2],
-          }}>
-            <span style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.neutral[600],
-            }}>
-              {currentIndex + 1} of {algorithms.length}
-            </span>
-          </div>
+
         </div>
         
         {/* Next button */}
@@ -188,7 +177,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
         display: 'flex',
         justifyContent: 'center',
         gap: spacing[2],
-        marginTop: spacing[6],
+        marginTop: isDesktop ? spacing[4] : spacing[6], // Reduced margin for desktop
       }}>
         {algorithms.map((_, index) => (
           <div
