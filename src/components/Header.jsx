@@ -25,8 +25,6 @@ const Header = ({
   title = "Bo and Hailey's Visual Notation System",
   subtitle = "An Alternate Visual Notation System for Solving Rubik's Cubes",
   style = {},
-  selectedCategory,
-  setSelectedCategory,
   onModeToggle,
   currentMode
 }) => {
@@ -49,51 +47,6 @@ const Header = ({
     document.documentElement.setAttribute('data-theme', newTheme)
     localStorage.setItem('theme', newTheme)
   }
-  const handleWiredButtonClick = () => {
-    if (selectedCategory === 'Wired') {
-      // If Wired is currently selected, switch back to All Categories
-      setSelectedCategory('all')
-    } else {
-      // If any other category is selected, switch to Wired
-      setSelectedCategory('Wired')
-    }
-  }
-
-  const handleYouTubeButtonClick = () => {
-    // Enhanced YouTube button click handler with mobile-friendly fallbacks
-    const youtubeVideoUrl = 'https://youtu.be/R-R0KrXvWbc?feature=shared'
-    
-    try {
-      // Method 1: Try window.open() first (works on most mobile browsers with user gesture)
-      const newWindow = window.open(youtubeVideoUrl, '_blank')
-      
-      if (newWindow) {
-        // Success - window opened
-        return
-      }
-      
-      // Method 2: Fallback - create and click a link element (more reliable on mobile)
-      const link = document.createElement('a')
-      link.href = youtubeVideoUrl
-      link.target = '_blank'
-      link.rel = 'noopener noreferrer'
-      link.style.display = 'none'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      
-    } catch {
-      // Method 3: Final fallback - redirect current tab
-      try {
-        window.location.href = youtubeVideoUrl
-      } catch {
-        // Show user-friendly error message
-        alert('Unable to open YouTube video. Please copy this link and open it manually: ' + youtubeVideoUrl)
-      }
-    }
-  }
-
-  const isWiredSelected = selectedCategory === 'Wired'
 
   return (
     <div 
@@ -314,125 +267,6 @@ const Header = ({
             }}>
               {subtitle}
             </p>
-            
-            {/* Button Container */}
-            <div style={{
-              display: 'flex',
-              gap: spacing[3],
-              marginTop: spacing[4],
-              flexWrap: 'wrap',
-            }}>
-              {/* Wired Magazine Button */}
-              <button
-                onClick={handleWiredButtonClick}
-                style={{
-                  padding: `${spacing[3]} ${spacing[4]}`,
-                  border: isWiredSelected ? `2px solid ${colors.neutral[500]}` : `1px solid ${colors.border.medium}`,
-                  borderRadius: '12px',
-                  background: isWiredSelected ? colors.neutral[50] : colors.background.primary,
-                  color: isWiredSelected ? colors.neutral[700] : colors.neutral[700],
-                  fontWeight: typography.fontWeight.medium,
-                  fontSize: typography.fontSize.sm,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: spacing[2],
-                  outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
-                  boxShadow: shadows.sm,
-                  minHeight: '44px',
-                  minWidth: '44px',
-                  whiteSpace: 'nowrap',
-                }}
-                onFocus={(e) => {
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
-                }}
-                onBlur={(e) => {
-                  e.target.style.boxShadow = shadows.sm
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = isWiredSelected ? colors.neutral[100] : colors.neutral[50]
-                  e.target.style.borderColor = isWiredSelected ? colors.neutral[600] : colors.border.dark
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = isWiredSelected ? colors.neutral[50] : colors.background.primary
-                  e.target.style.borderColor = isWiredSelected ? colors.neutral[500] : colors.border.medium
-                }}
-                aria-label={isWiredSelected ? "Switch back to all categories" : "Filter to Wired Magazine algorithms"}
-                aria-pressed={isWiredSelected}
-              >
-                Algorithms Used in the Wired Magazine's YouTube Video
-              </button>
-
-              {/* YouTube Button */}
-              <button
-                onClick={handleYouTubeButtonClick}
-                className="youtube-button"
-                style={{
-                  padding: `${spacing[3]} ${spacing[4]}`,
-                  border: `1px solid ${colors.border.medium}`,
-                  borderRadius: '12px',
-                  background: colors.background.primary,
-                  color: colors.neutral[700],
-                  fontWeight: typography.fontWeight.medium,
-                  fontSize: typography.fontSize.sm,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: spacing[2],
-                  outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
-                  boxShadow: shadows.sm,
-                  minHeight: '44px',
-                  minWidth: '44px',
-                  whiteSpace: 'nowrap',
-                }}
-                onFocus={(e) => {
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
-                }}
-                onBlur={(e) => {
-                  e.target.style.boxShadow = shadows.sm
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = colors.neutral[50]
-                  e.target.style.borderColor = colors.border.dark
-                  e.target.style.transform = 'translateY(-1px)'
-                  e.target.style.boxShadow = shadows.md
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = colors.background.primary
-                  e.target.style.borderColor = colors.border.medium
-                  e.target.style.transform = 'translateY(0)'
-                  e.target.style.boxShadow = shadows.sm
-                }}
-                onTouchStart={(e) => {
-                  // Add touch feedback
-                  e.target.style.transform = 'scale(0.98)'
-                  e.target.style.background = colors.neutral[100]
-                }}
-                onTouchEnd={(e) => {
-                  // Remove touch feedback
-                  e.target.style.transform = 'scale(1)'
-                  e.target.style.background = colors.background.primary
-                }}
-                aria-label="Open YouTube tutorial video"
-                title="Watch the Wired Magazine Rubik's Cube tutorial"
-              >
-                <svg 
-                  width="20" 
-                  height="20" 
-                  viewBox="0 0 24 24" 
-                  fill="currentColor"
-                  style={{ flexShrink: 0 }}
-                  aria-hidden="true"
-                >
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                <span className="youtube-button-text">Click to Watch</span>
-              </button>
-            </div>
           </div>
         </div>
 
@@ -677,20 +511,6 @@ const Header = ({
 
       {/* Mobile-responsive styles */}
       <style>{`
-        /* YouTube button specific styles */
-        .youtube-button {
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .youtube-button:active {
-          transform: scale(0.98);
-        }
-        
-        .youtube-button-text {
-          transition: all 0.2s ease;
-        }
-        
         /* iPhone vertical orientation specific styles */
         @media (max-width: 768px) and (orientation: portrait) {
           .responsive-header {
@@ -755,19 +575,6 @@ const Header = ({
             flex-shrink: 0 !important;
           }
           
-          /* Enhanced mobile YouTube button */
-          .youtube-button {
-            min-height: 44px !important;
-            min-width: 44px !important;
-            padding: 10px 14px !important;
-            font-size: 0.875rem !important;
-            border-radius: 10px !important;
-          }
-          
-          .youtube-button svg {
-            width: 18px !important;
-            height: 18px !important;
-          }
         }
         
         /* Desktop and tablet styles */
@@ -807,19 +614,6 @@ const Header = ({
             margin-top: 1rem !important;
           }
           
-          /* Enhanced mobile YouTube button */
-          .youtube-button {
-            min-height: 48px !important;
-            min-width: 48px !important;
-            padding: 12px 16px !important;
-            font-size: 0.875rem !important;
-            border-radius: 10px !important;
-          }
-          
-          .youtube-button svg {
-            width: 18px !important;
-            height: 18px !important;
-          }
         }
         
         @media (max-width: 480px) {

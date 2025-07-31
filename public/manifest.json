@@ -1,0 +1,39 @@
+{
+  "name": "Rubik's Cube Algorithm Translator",
+  "short_name": "Cube Translator",
+  "description": "Learn and practice Rubik's Cube algorithms with visual guides and tutorials",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Tutorial Mode",
+      "short_name": "Tutorial",
+      "description": "Start tutorial mode",
+      "url": "/?mode=tutorial",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+} 

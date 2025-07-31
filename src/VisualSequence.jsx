@@ -231,7 +231,12 @@ function VisualSequence({ notation }) {
     }
 
     const handleLoad = () => {
-      // Image loaded successfully
+      // Image loaded successfully - remove from error set if it was there
+      setImageErrors(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(move)
+        return newSet
+      })
     }
 
     // Handle missing move in moves.json

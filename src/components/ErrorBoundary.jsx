@@ -16,195 +16,175 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
+import { Component } from 'react'
+import { colors, typography, spacing, borderRadius } from '../styles/designSystem'
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
     this.state = { 
       hasError: false, 
       error: null, 
-      errorInfo: null,
-      isDesktop: typeof window !== 'undefined' ? window.innerWidth > 768 : true
+      errorInfo: null 
     }
   }
 
-  static getDerivedStateFromError() {
-    return { hasError: true }
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI
+    return { hasError: true, error }
   }
 
   componentDidCatch(error, errorInfo) {
-    // Error caught by boundary - logged for debugging
+    // Log error to console for debugging
+    console.error('Error caught by boundary:', error, errorInfo)
+    
+    // Update state with error info
     this.setState({
-      error: error,
-      errorInfo: errorInfo
+      error,
+      errorInfo
     })
     
-    // Log error to console in development
-    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-      console.error('ErrorBoundary caught an error:', error, errorInfo)
-    }
+    // In production, you might want to send this to an error reporting service
+    // Example: logErrorToService(error, errorInfo)
   }
 
-  componentDidMount() {
-    // Add resize listener for responsive error messages
-    if (typeof window !== 'undefined') {
-      this.handleResize = () => {
-        this.setState({ isDesktop: window.innerWidth > 768 })
-      }
-      window.addEventListener('resize', this.handleResize)
-    }
+  handleReload = () => {
+    window.location.reload()
   }
 
-  componentWillUnmount() {
-    // Clean up resize listener
-    if (typeof window !== 'undefined' && this.handleResize) {
-      window.removeEventListener('resize', this.handleResize)
-    }
-  }
-
-  handleRetry = () => {
-    this.setState({ 
-      hasError: false, 
-      error: null, 
-      errorInfo: null 
-    })
+  handleGoHome = () => {
+    window.location.href = '/'
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div style={{
-          maxWidth: '800px',
-          margin: '50px auto',
-          padding: spacing[6],
-          background: colors.background.primary,
-          borderRadius: borderRadius.xl,
-          boxShadow: shadows.lg,
-          border: `1px solid ${colors.border.light}`,
-          textAlign: 'center',
+          minHeight: '100vh',
+          backgroundColor: colors.background.primary,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: spacing[4],
         }}>
           <div style={{
-            fontSize: '48px',
-            marginBottom: spacing[4],
-            color: colors.warning[500],
+            maxWidth: '500px',
+            textAlign: 'center',
+            backgroundColor: colors.background.secondary,
+            padding: spacing[6],
+            borderRadius: borderRadius.xl,
+            border: `1px solid ${colors.border.light}`,
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}>
-            ⚠️
-          </div>
-          
-          <h2 style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.neutral[900],
-            marginBottom: spacing[3],
-          }}>
-            Something went wrong
-          </h2>
-          
-          <p style={{
-            fontSize: typography.fontSize.base,
-            color: colors.neutral[600],
-            marginBottom: spacing[4],
-            lineHeight: typography.lineHeight.normal,
-          }}>
-            {this.state.isDesktop 
-              ? 'There was an error displaying the algorithm on desktop. This might be related to recent mobile performance improvements.'
-              : 'There was an error displaying the algorithm on mobile.'
-            }
-          </p>
-          
-          {this.state.error && typeof window !== 'undefined' && window.location.hostname === 'localhost' && (
-            <details style={{
+            <div style={{
+              fontSize: typography.fontSize['3xl'],
               marginBottom: spacing[4],
-              textAlign: 'left',
-              background: colors.neutral[50],
-              padding: spacing[4],
-              borderRadius: borderRadius.lg,
-              border: `1px solid ${colors.border.light}`,
+              color: colors.error[500],
             }}>
-              <summary style={{
-                cursor: 'pointer',
-                fontWeight: typography.fontWeight.medium,
-                color: colors.neutral[700],
-                marginBottom: spacing[2],
-              }}>
-                Error Details (Development Only)
-              </summary>
-              <div style={{
-                fontSize: typography.fontSize.sm,
-                fontFamily: typography.fontFamily.mono,
-                color: colors.neutral[600],
-                whiteSpace: 'pre-wrap',
-                overflow: 'auto',
-                maxHeight: '200px',
-              }}>
-                {this.state.error.toString()}
-                {this.state.errorInfo && this.state.errorInfo.componentStack}
-              </div>
-            </details>
-          )}
-          
-          <div style={{
-            display: 'flex',
-            gap: spacing[3],
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}>
-            <button
-              onClick={this.handleRetry}
-              style={{
-                padding: `${spacing[3]} ${spacing[4]}`,
-                background: colors.primary[600],
-                color: 'white',
-                border: 'none',
-                borderRadius: borderRadius.lg,
-                fontSize: typography.fontSize.sm,
-                fontWeight: typography.fontWeight.medium,
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease',
-              }}
-              onMouseEnter={(e) => e.target.style.background = colors.primary[700]}
-              onMouseLeave={(e) => e.target.style.background = colors.primary[600]}
-            >
-              Try Again
-            </button>
+              ⚠️
+            </div>
             
-            <button
-              onClick={() => window.location.reload()}
-              style={{
-                padding: `${spacing[3]} ${spacing[4]}`,
-                background: colors.neutral[100],
-                color: colors.neutral[700],
-                border: `1px solid ${colors.border.medium}`,
-                borderRadius: borderRadius.lg,
-                fontSize: typography.fontSize.sm,
-                fontWeight: typography.fontWeight.medium,
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease',
-              }}
-              onMouseEnter={(e) => e.target.style.background = colors.neutral[200]}
-              onMouseLeave={(e) => e.target.style.background = colors.neutral[100]}
-            >
-              Reload Page
-            </button>
-          </div>
-          
-          <div style={{
-            marginTop: spacing[4],
-            padding: spacing[3],
-            background: colors.warning[50],
-            borderRadius: borderRadius.lg,
-            border: `1px solid ${colors.warning[200]}`,
-          }}>
+            <h1 style={{
+              fontSize: typography.fontSize.xl,
+              fontWeight: typography.fontWeight.bold,
+              color: colors.neutral[900],
+              marginBottom: spacing[3],
+            }}>
+              Something went wrong
+            </h1>
+            
             <p style={{
               fontSize: typography.fontSize.sm,
-              color: colors.warning[700],
-              margin: 0,
+              color: colors.neutral[600],
+              marginBottom: spacing[4],
+              lineHeight: typography.lineHeight.relaxed,
             }}>
-              <strong>Note:</strong> If this error persists, it may be related to recent mobile performance improvements. 
-              Please report this issue with the error details above.
+              We encountered an unexpected error. This might be due to a temporary issue or corrupted data.
             </p>
+            
+            <div style={{
+              display: 'flex',
+              gap: spacing[3],
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+            }}>
+              <button
+                onClick={this.handleReload}
+                style={{
+                  padding: `${spacing[2]} ${spacing[4]}`,
+                  backgroundColor: colors.primary[500],
+                  color: colors.white,
+                  border: 'none',
+                  borderRadius: borderRadius.md,
+                  fontSize: typography.fontSize.sm,
+                  fontWeight: typography.fontWeight.medium,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = colors.primary[600]
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = colors.primary[500]
+                }}
+              >
+                Reload Page
+              </button>
+              
+              <button
+                onClick={this.handleGoHome}
+                style={{
+                  padding: `${spacing[2]} ${spacing[4]}`,
+                  backgroundColor: colors.neutral[100],
+                  color: colors.neutral[700],
+                  border: `1px solid ${colors.border.medium}`,
+                  borderRadius: borderRadius.md,
+                  fontSize: typography.fontSize.sm,
+                  fontWeight: typography.fontWeight.medium,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = colors.neutral[200]
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = colors.neutral[100]
+                }}
+              >
+                Go Home
+              </button>
+            </div>
+            
+            {/* Development error details */}
+            {typeof window !== 'undefined' && window.location.hostname === 'localhost' && this.state.error && (
+              <details style={{
+                marginTop: spacing[4],
+                padding: spacing[3],
+                backgroundColor: colors.neutral[50],
+                borderRadius: borderRadius.md,
+                border: `1px solid ${colors.border.light}`,
+                fontSize: typography.fontSize.xs,
+                color: colors.neutral[700],
+              }}>
+                <summary style={{
+                  cursor: 'pointer',
+                  fontWeight: typography.fontWeight.medium,
+                  marginBottom: spacing[2],
+                }}>
+                  Error Details (Development)
+                </summary>
+                <pre style={{
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                  fontSize: typography.fontSize.xs,
+                  color: colors.error[600],
+                  margin: 0,
+                }}>
+                  {this.state.error.toString()}
+                  {this.state.errorInfo && this.state.errorInfo.componentStack}
+                </pre>
+              </details>
+            )}
           </div>
         </div>
       )

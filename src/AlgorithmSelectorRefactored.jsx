@@ -52,8 +52,6 @@ function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
 
   const header = (
     <Header 
-      selectedCategory={selectedCategory}
-      setSelectedCategory={setSelectedCategory}
       onModeToggle={onModeToggle}
       currentMode={currentMode}
     />

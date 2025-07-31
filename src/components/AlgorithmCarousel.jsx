@@ -22,13 +22,65 @@ import { useMobileDetection } from '../hooks/useMobileDetection'
 
 function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
   const { isMobile, isTablet } = useMobileDetection()
-  const currentAlgorithm = algorithms[currentIndex]
+  
+  // Validate inputs
+  if (!algorithms || !Array.isArray(algorithms) || algorithms.length === 0) {
+    return (
+      <div style={{
+        backgroundColor: colors.background.secondary,
+        borderRadius: borderRadius.xl,
+        padding: spacing[6],
+        boxShadow: shadows.md,
+        border: `1px solid ${colors.border.light}`,
+        textAlign: 'center',
+        color: colors.neutral[600],
+      }}>
+        <div style={{
+          fontSize: typography.fontSize.xl,
+          marginBottom: spacing[2],
+        }}>
+          📚
+        </div>
+        <div style={{
+          fontSize: typography.fontSize.sm,
+        }}>
+          No algorithms available
+        </div>
+      </div>
+    )
+  }
+  
+  // Ensure currentIndex is within bounds
+  const safeIndex = Math.max(0, Math.min(currentIndex, algorithms.length - 1))
+  const currentAlgorithm = algorithms[safeIndex]
   
   // Determine if we're on desktop for compact layout
   const isDesktop = !isMobile && !isTablet
   
   if (!currentAlgorithm) {
-    return <div>No algorithms available</div>
+    return (
+      <div style={{
+        backgroundColor: colors.background.secondary,
+        borderRadius: borderRadius.xl,
+        padding: spacing[6],
+        boxShadow: shadows.md,
+        border: `1px solid ${colors.border.light}`,
+        textAlign: 'center',
+        color: colors.error[600],
+      }}>
+        <div style={{
+          fontSize: typography.fontSize.xl,
+          marginBottom: spacing[2],
+        }}>
+          ⚠️
+        </div>
+        <div style={{
+          fontSize: typography.fontSize.sm,
+        }}>
+          Algorithm not found
+        </div>
+      </div>
+    )
   }
   
   return (
@@ -134,7 +186,14 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
             )}
           </div>
           
-
+          {/* Algorithm counter */}
+          <div style={{
+            fontSize: typography.fontSize.sm,
+            color: colors.neutral[600],
+            marginTop: spacing[1],
+          }}>
+            {safeIndex + 1} of {algorithms.length}
+          </div>
         </div>
         
         {/* Next button */}
@@ -183,20 +242,20 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
           <div
             key={index}
             style={{
-              width: index === currentIndex ? '24px' : '8px',
+              width: index === safeIndex ? '24px' : '8px',
               height: '8px',
-              backgroundColor: index === currentIndex ? colors.primary[500] : colors.neutral[300],
+              backgroundColor: index === safeIndex ? colors.primary[500] : colors.neutral[300],
               borderRadius: borderRadius.full,
               transition: 'all 0.3s ease',
               cursor: 'pointer',
             }}
             onClick={() => {
-              if (index > currentIndex) {
-                for (let i = currentIndex; i < index; i++) {
+              if (index > safeIndex) {
+                for (let i = safeIndex; i < index; i++) {
                   onNext()
                 }
-              } else if (index < currentIndex) {
-                for (let i = currentIndex; i > index; i--) {
+              } else if (index < safeIndex) {
+                for (let i = safeIndex; i > index; i--) {
                   onPrevious()
                 }
               }

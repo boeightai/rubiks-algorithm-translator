@@ -17,103 +17,46 @@
  */
 
 const CACHE_NAME = 'rubiks-translator-v1'
-const urlsToCache = [
+const STATIC_CACHE_NAME = 'rubiks-translator-static-v1'
+const DYNAMIC_CACHE_NAME = 'rubiks-translator-dynamic-v1'
+
+// Files to cache immediately
+const STATIC_FILES = [
   '/',
   '/index.html',
+  '/favicon.svg',
   '/src/main.jsx',
-  '/src/App.jsx',
-  '/src/AlgorithmSelectorRefactored.jsx',
+  '/src/AppWithModes.jsx',
+  '/src/TutorialMode.jsx',
+  '/src/components/AlgorithmCarousel.jsx',
+  '/src/components/YouTubeEmbed.jsx',
+  '/src/components/ModeToggle.jsx',
   '/src/VisualSequence.jsx',
-  '/src/data/algorithms.json',
+  '/src/data/tutorialAlgorithms.json',
   '/src/data/moves.json',
-  '/src/styles/designSystem.js'
+  '/src/data/algorithms.json',
+  '/src/styles/designSystem.js',
+  '/src/hooks/useMobileDetection.js',
+  '/src/index.css'
 ]
 
-// Install event - cache resources
+// Image files to cache
+const IMAGE_FILES = [
+  '/public/images/moves/',
+  '/public/images/icons/',
+  '/public/images/patterns/'
+]
+
+// Install event - cache static files
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(STATIC_CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(urlsToCache)
+        console.log('Caching static files')
+        return cache.addAll(STATIC_FILES)
       })
       .catch((error) => {
-        console.error('Service Worker installation failed:', error)
-      })
-  )
-})
-
-// Fetch event - serve from cache when offline with mobile optimization
-self.addEventListener('fetch', (event) => {
-  // Handle image requests with cache-first strategy for better mobile performance
-  if (event.request.destination === 'image') {
-    event.respondWith(
-      caches.match(event.request)
-        .then((response) => {
-          return response || fetch(event.request)
-            .then((fetchResponse) => {
-              if (fetchResponse.status === 200) {
-                return caches.open(CACHE_NAME)
-                  .then((cache) => {
-                    cache.put(event.request, fetchResponse.clone())
-                    return fetchResponse
-                  })
-              }
-              return fetchResponse
-            })
-            .catch(() => {
-              // Return a fallback for failed image loads
-              return new Response('', {
-                status: 404,
-                statusText: 'Image not found'
-              })
-            })
-        })
-    )
-    return
-  }
-  
-  // Handle data files with cache-first strategy
-  if (event.request.url.includes('/data/') || event.request.url.includes('/images/')) {
-    event.respondWith(
-      caches.match(event.request)
-        .then((response) => {
-          return response || fetch(event.request)
-            .then((fetchResponse) => {
-              if (fetchResponse.status === 200) {
-                return caches.open(CACHE_NAME)
-                  .then((cache) => {
-                    cache.put(event.request, fetchResponse.clone())
-                    return fetchResponse
-                  })
-              }
-              return fetchResponse
-            })
-        })
-    )
-    return
-  }
-  
-  // Handle other requests with network-first strategy
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        // Cache successful responses
-        if (response.status === 200) {
-          return caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, response.clone())
-              return response
-            })
-        }
-        return response
-      })
-      .catch(() => {
-        // Fallback to cache for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html')
-        }
-        // Return cached version if available
-        return caches.match(event.request)
+        console.error('Failed to cache static files:', error)
       })
   )
 })
@@ -121,14 +64,170 @@ self.addEventListener('fetch', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName)
-          }
-        })
-      )
-    })
+    caches.keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheName !== STATIC_CACHE_NAME && 
+                cacheName !== DYNAMIC_CACHE_NAME && 
+                cacheName !== CACHE_NAME) {
+              console.log('Deleting old cache:', cacheName)
+              return caches.delete(cacheName)
+            }
+          })
+        )
+      })
   )
+})
+
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', (event) => {
+  const { request } = event
+  const url = new URL(request.url)
+
+  // Skip non-GET requests
+  if (request.method !== 'GET') {
+    return
+  }
+
+  // Skip chrome-extension and other non-http requests
+  if (!url.protocol.startsWith('http')) {
+    return
+  }
+
+  // Handle different types of requests
+  if (url.pathname === '/' || url.pathname === '/index.html') {
+    // Main page - serve from cache first
+    event.respondWith(
+      caches.match(request)
+        .then((response) => {
+          return response || fetch(request)
+        })
+        .catch(() => {
+          return caches.match('/index.html')
+        })
+    )
+  } else if (url.pathname.includes('/src/data/') || url.pathname.includes('.json')) {
+    // JSON data files - cache and serve
+    event.respondWith(
+      caches.open(DYNAMIC_CACHE_NAME)
+        .then((cache) => {
+          return cache.match(request)
+            .then((response) => {
+              if (response) {
+                return response
+              }
+              return fetch(request)
+                .then((networkResponse) => {
+                  cache.put(request, networkResponse.clone())
+                  return networkResponse
+                })
+            })
+        })
+    )
+  } else if (url.pathname.includes('/images/') || url.pathname.includes('.png') || url.pathname.includes('.svg')) {
+    // Images - cache and serve with fallback
+    event.respondWith(
+      caches.open(DYNAMIC_CACHE_NAME)
+        .then((cache) => {
+          return cache.match(request)
+            .then((response) => {
+              if (response) {
+                return response
+              }
+              return fetch(request)
+                .then((networkResponse) => {
+                  if (networkResponse.ok) {
+                    cache.put(request, networkResponse.clone())
+                  }
+                  return networkResponse
+                })
+                .catch(() => {
+                  // Return a placeholder for failed image loads
+                  return new Response('', {
+                    status: 404,
+                    statusText: 'Image not found'
+                  })
+                })
+            })
+        })
+    )
+  } else if (url.pathname.includes('/src/') || url.pathname.includes('.jsx') || url.pathname.includes('.js')) {
+    // Source files - serve from cache first
+    event.respondWith(
+      caches.match(request)
+        .then((response) => {
+          return response || fetch(request)
+        })
+    )
+  } else {
+    // Other requests - network first, cache fallback
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const responseClone = response.clone()
+            caches.open(DYNAMIC_CACHE_NAME)
+              .then((cache) => {
+                cache.put(request, responseClone)
+              })
+          }
+          return response
+        })
+        .catch(() => {
+          return caches.match(request)
+        })
+    )
+  }
+})
+
+// Background sync for offline functionality
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'background-sync') {
+    event.waitUntil(
+      // Perform background sync tasks
+      console.log('Background sync triggered')
+    )
+  }
+})
+
+// Push notification handling
+self.addEventListener('push', (event) => {
+  const options = {
+    body: event.data ? event.data.text() : 'New update available',
+    icon: '/favicon.svg',
+    badge: '/favicon.svg',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    },
+    actions: [
+      {
+        action: 'explore',
+        title: 'View',
+        icon: '/favicon.svg'
+      },
+      {
+        action: 'close',
+        title: 'Close',
+        icon: '/favicon.svg'
+      }
+    ]
+  }
+
+  event.waitUntil(
+    self.registration.showNotification('Rubik\'s Cube Translator', options)
+  )
+})
+
+// Notification click handling
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+
+  if (event.action === 'explore') {
+    event.waitUntil(
+      self.clients.openWindow('/')
+    )
+  }
 }) 

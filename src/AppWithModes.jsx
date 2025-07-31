@@ -24,10 +24,10 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { colors } from './styles/designSystem'
 
 function AppWithModes() {
-  // Initialize mode from localStorage or default to 'tutorial'
+  // Initialize mode from localStorage or default to 'explorer'
   const [mode, setMode] = useState(() => {
     const savedMode = localStorage.getItem('appMode')
-    return savedMode === 'explorer' ? 'explorer' : 'tutorial'
+    return savedMode === 'tutorial' ? 'tutorial' : 'explorer'
   })
 
   // Save mode preference to localStorage

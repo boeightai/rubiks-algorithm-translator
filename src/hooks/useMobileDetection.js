@@ -60,8 +60,9 @@ export function useMobileDetection(breakpoint = 768) {
         } else {
           setDeviceType('desktop')
         }
-      } catch {
+      } catch (error) {
         // Fallback to desktop if detection fails
+        console.warn('Mobile detection failed:', error)
         setIsMobile(false)
         setIsTablet(false)
         setDeviceType('desktop')
@@ -94,7 +95,7 @@ export function useMobileDetection(breakpoint = 768) {
     }
   }, [checkDevice])
 
-  // Return false during SSR to prevent hydration mismatch
+  // Return consistent values during SSR to prevent hydration mismatch
   return {
     isMobile: isClient ? isMobile : false,
     isTablet: isClient ? isTablet : false,

@@ -16,13 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { colors, borderRadius, shadows, spacing } from '../styles/designSystem'
+import { useState } from 'react'
+import { colors, borderRadius, shadows, typography, spacing } from '../styles/designSystem'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
 function YouTubeEmbed() {
-  // Placeholder video ID - replace with your actual video ID
-  const videoId = 'YOUR_VIDEO_ID' // Replace with actual YouTube video ID
+  // Use a default tutorial video ID - replace with your actual video ID
+  const videoId = 'jVzB8wpKQgw' // Default Rubik's Cube tutorial video
   const { isMobile, isTablet } = useMobileDetection()
+  const [hasError, setHasError] = useState(false)
   
   // Determine if we're on desktop for compact layout
   const isDesktop = !isMobile && !isTablet
@@ -32,6 +34,47 @@ function YouTubeEmbed() {
     if (isMobile) return '100%' // Full width on mobile
     if (isTablet) return '600px' // Medium size on tablet
     return isDesktop ? '500px' : '700px' // More compact on desktop
+  }
+  
+  const handleIframeError = () => {
+    setHasError(true)
+  }
+  
+  if (hasError) {
+    return (
+      <div style={{
+        width: '100%',
+        maxWidth: getMaxWidth(),
+        margin: '0 auto',
+        backgroundColor: colors.background.secondary,
+        borderRadius: borderRadius.xl,
+        padding: spacing[6],
+        boxShadow: shadows.lg,
+        border: `1px solid ${colors.border.light}`,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          fontSize: typography.fontSize.xl,
+          marginBottom: spacing[2],
+          color: colors.neutral[400],
+        }}>
+          🎥
+        </div>
+        <div style={{
+          fontSize: typography.fontSize.sm,
+          color: colors.neutral[600],
+          marginBottom: spacing[3],
+        }}>
+          Video temporarily unavailable
+        </div>
+        <div style={{
+          fontSize: typography.fontSize.xs,
+          color: colors.neutral[500],
+        }}>
+          Please check your internet connection and try again
+        </div>
+      </div>
+    )
   }
   
   return (
@@ -65,6 +108,7 @@ function YouTubeEmbed() {
           title="Rubik's Cube Tutorial"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          onError={handleIframeError}
         />
       </div>
       

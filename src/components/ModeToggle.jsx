@@ -40,25 +40,47 @@ function ModeToggle({ mode, onToggle }) {
           display: 'flex',
           alignItems: 'center',
           gap: spacing[2],
-          padding: `${spacing[2]} ${spacing[4]}`,
-          backgroundColor: colors.primary[600],
+          padding: `${spacing[2]} ${spacing[3]}`,
+          backgroundColor: colors.primary[500],
           color: colors.white,
-          border: 'none',
-          borderRadius: borderRadius.full,
+          border: `1px solid ${colors.border.medium}`,
+          borderRadius: '8px',
           fontSize: typography.fontSize.sm,
           fontWeight: typography.fontWeight.medium,
           cursor: 'pointer',
           transition: 'all 0.2s ease',
-          boxShadow: shadows.md,
-          minHeight: '44px', // Accessibility
+          boxShadow: shadows.sm,
+          minHeight: '36px',
+          minWidth: '36px',
+          whiteSpace: 'nowrap',
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+          WebkitUserSelect: 'none',
+          userSelect: 'none',
+        }}
+        onFocus={(e) => {
+          e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
+        }}
+        onBlur={(e) => {
+          e.target.style.boxShadow = shadows.sm
         }}
         onMouseEnter={(e) => {
+          e.target.style.background = colors.primary[600]
           e.target.style.transform = 'translateY(-1px)'
-          e.target.style.boxShadow = shadows.lg
+          e.target.style.boxShadow = shadows.md
         }}
         onMouseLeave={(e) => {
+          e.target.style.background = colors.primary[500]
           e.target.style.transform = 'translateY(0)'
-          e.target.style.boxShadow = shadows.md
+          e.target.style.boxShadow = shadows.sm
+        }}
+        onTouchStart={(e) => {
+          e.target.style.transform = 'scale(0.98)'
+          e.target.style.background = colors.primary[600]
+        }}
+        onTouchEnd={(e) => {
+          e.target.style.transform = 'scale(1)'
+          e.target.style.background = colors.primary[500]
         }}
       >
         {/* Icon */}

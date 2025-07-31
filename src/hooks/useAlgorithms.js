@@ -17,7 +17,30 @@
  */
 
 import { useState, useMemo, useCallback } from 'react'
-import algorithms from '../data/algorithms.json'
+import algorithmsData from '../data/algorithms.json'
+
+// Validate algorithm data structure
+function validateAlgorithm(alg) {
+  return (
+    alg &&
+    typeof alg === 'object' &&
+    typeof alg.id === 'string' &&
+    typeof alg.name === 'string' &&
+    typeof alg.notation === 'string' &&
+    typeof alg.category === 'string' &&
+    typeof alg.difficulty === 'string' &&
+    Array.isArray(alg.nicknames)
+  )
+}
+
+// Filter and validate algorithms at module level
+const algorithms = algorithmsData.filter(alg => {
+  const isValid = validateAlgorithm(alg)
+  if (!isValid && import.meta.env.DEV) {
+    console.error('Invalid algorithm data:', alg)
+  }
+  return isValid
+})
 
 export function useAlgorithms(favoriteIds = [], wiredIds = []) {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)

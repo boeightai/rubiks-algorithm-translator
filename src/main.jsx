@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR ANY PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -31,14 +31,35 @@ document.documentElement.setAttribute('data-theme', initialTheme)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
-      .then(() => {
-        // Service worker registered successfully
+      .then((registration) => {
+        console.log('Service worker registered successfully:', registration.scope)
+        
+        // Check for updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New service worker available
+              console.log('New service worker available')
+            }
+          })
+        })
       })
-      .catch(() => {
-        // Service worker registration failed - handled silently in production
+      .catch((error) => {
+        console.warn('Service worker registration failed:', error)
+        // Don't show error to user in production
       })
   })
 }
+
+// Error boundary for the entire app
+window.addEventListener('error', (event) => {
+  console.error('Global error:', event.error)
+})
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason)
+})
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
