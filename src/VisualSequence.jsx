@@ -78,7 +78,7 @@ function VisualSequence({ notation }) {
         }
       })
     }
-  }, [notation, isIPad])
+  }, [notation, isIPad, parseNotation])
 
   // Memoized move list and pattern detection
   const { moveList, highlightedMoves, leftTriggerMoves, triggerGroups } = useMemo(() => {
@@ -363,7 +363,7 @@ function VisualSequence({ notation }) {
         draggable="false"
       />
     )
-  }, [imageErrors, getMoveImageBorder, isMobile, forceReload])
+  }, [imageErrors, getMoveImageBorder, isMobile, forceReload, isIPad])
 
   return (
     <div style={{

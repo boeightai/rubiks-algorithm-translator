@@ -60,9 +60,9 @@ export function useMobileDetection(breakpoint = 768) {
         } else {
           setDeviceType('desktop')
         }
-      } catch (error) {
+      } catch {
         // Fallback to desktop if detection fails
-        console.warn('Mobile detection failed:', error)
+        // Mobile detection failed - use safe defaults
         setIsMobile(false)
         setIsTablet(false)
         setDeviceType('desktop')

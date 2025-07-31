@@ -32,22 +32,18 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        console.log('Service worker registered successfully:', registration.scope)
-        
         // Check for updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New service worker available
-              console.log('New service worker available')
+              // New service worker available - could show update notification here
             }
           })
         })
       })
-      .catch((error) => {
-        console.warn('Service worker registration failed:', error)
-        // Don't show error to user in production
+      .catch(() => {
+        // Service worker registration failed - continue without offline support
       })
   })
 }

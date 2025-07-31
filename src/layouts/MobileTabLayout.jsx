@@ -18,6 +18,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
+import { debounce } from '../utils/performance'
 import TabNavigation from '../components/ui/TabNavigation'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
@@ -35,11 +36,11 @@ const MobileTabLayout = ({
   const { isMobile, isTablet } = useMobileDetection()
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
   
-  // Update window width on resize
+  // Update window width on resize with debouncing
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = debounce(() => {
       setWindowWidth(window.innerWidth)
-    }
+    }, 150)
     
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', handleResize)
