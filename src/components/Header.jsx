@@ -277,6 +277,7 @@ const Header = ({
           gap: spacing[2],
           marginLeft: spacing[4],
           flexShrink: 0,
+          flexWrap: 'wrap',
         }}>
           {/* Theme Toggle Button */}
           <button
@@ -397,6 +398,7 @@ const Header = ({
                 WebkitTapHighlightColor: 'transparent',
                 WebkitUserSelect: 'none',
                 userSelect: 'none',
+
               }}
               onFocus={(e) => {
                 e.target.style.boxShadow = `0 0 0 3px ${colors.primary[100]}`
