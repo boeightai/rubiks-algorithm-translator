@@ -426,7 +426,7 @@ const Header = ({
               title="Switch to Tutorial mode"
             >
               <span style={{ fontSize: '14px' }}>📚</span>
-              <span>Tutorial</span>
+              <span>How to Solve a Rubik's Cube</span>
             </button>
           )}
 
