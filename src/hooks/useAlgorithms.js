@@ -42,7 +42,7 @@ const algorithms = algorithmsData.filter(alg => {
   return isValid
 })
 
-export function useAlgorithms(favoriteIds = [], wiredIds = []) {
+export function useAlgorithms(favoriteIds = []) {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -50,7 +50,7 @@ export function useAlgorithms(favoriteIds = [], wiredIds = []) {
 
   // Get unique categories - memoized to prevent recalculation
   const categories = useMemo(() => {
-    return ['all', 'Wired', ...new Set(algorithms.map(alg => alg.category))]
+    return ['all', ...new Set(algorithms.map(alg => alg.category))]
   }, [])
 
   // Memoized search term for case-insensitive comparison
@@ -72,15 +72,8 @@ export function useAlgorithms(favoriteIds = [], wiredIds = []) {
       }
 
       // Early return for category filter
-      if (selectedCategory !== 'all') {
-        if (selectedCategory === 'Wired') {
-          // Filter for algorithms with wired tag
-          if (!wiredIds.includes(alg.id)) {
-            return false
-          }
-        } else if (alg.category !== selectedCategory) {
-          return false
-        }
+      if (selectedCategory !== 'all' && alg.category !== selectedCategory) {
+        return false
       }
 
       // Search filter - only run if there's a search term
@@ -105,7 +98,7 @@ export function useAlgorithms(favoriteIds = [], wiredIds = []) {
       ...alg,
       isSelected: selectedAlgorithm && selectedAlgorithm.id === alg.id
     }))
-  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, wiredIds, selectedAlgorithm])
+  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, selectedAlgorithm])
 
   // Memoized setters to prevent unnecessary re-renders
   const memoizedSetSearchTerm = useCallback((value) => {

@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
+import { colors, spacing, typography, borderRadius, transitions } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import WiredButton from './ui/WiredButton'
 import ImageModal from './ui/ImageModal'
 import { useState } from 'react'
 
@@ -26,7 +25,6 @@ const AlgorithmDetails = ({
   selectedAlgorithm,
   isFavorite,
   onToggleFavorite,
-  isWired,
   tutorialImageExists,
   tutorialImageSrc,
   patternImageExists,
@@ -171,10 +169,6 @@ const AlgorithmDetails = ({
               {selectedAlgorithm.name}
             </h2>
             <div style={{ display: 'flex', gap: spacing[2], alignItems: 'center' }}>
-              <WiredButton
-                isWired={isWired(selectedAlgorithm.id)}
-                size={20}
-              />
               <StarButton
                 isFavorite={isFavorite(selectedAlgorithm.id)}
                 onToggle={() => onToggleFavorite(selectedAlgorithm.id)}

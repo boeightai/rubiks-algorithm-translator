@@ -299,8 +299,8 @@ const SearchFilters = ({
           
           {selectedCategory !== 'all' && (
             <div style={{
-              background: selectedCategory === 'Wired' ? colors.neutral[100] : colors.success[100],
-              color: selectedCategory === 'Wired' ? colors.neutral[700] : colors.success[700],
+              background: colors.success[100],
+              color: colors.success[700],
               padding: `${spacing[1]} ${spacing[2]}`,
               borderRadius: borderRadius.full,
               fontSize: typography.fontSize.xs,
@@ -331,7 +331,7 @@ const SearchFilters = ({
                   minHeight: '20px',
                 }}
                 onFocus={(e) => {
-                  e.target.style.background = selectedCategory === 'Wired' ? colors.neutral[200] : colors.success[200]
+                  e.target.style.background = colors.success[200]
                 }}
                 onBlur={(e) => {
                   e.target.style.background = 'none'

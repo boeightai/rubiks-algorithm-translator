@@ -9,6 +9,8 @@ A modern web application for learning and practicing Rubik's Cube algorithms wit
 - **Mobile Optimized**: Responsive design with touch-friendly controls
 - **Offline Support**: Progressive Web App (PWA) with service worker
 - **Cross-Platform**: Works on desktop, tablet, and mobile devices
+- **Search & Filter**: Find algorithms by category, difficulty, and favorites
+- **Visual Learning**: Move-by-move visual sequences with move images
 
 ## 🛠️ Technology Stack
 
@@ -16,7 +18,7 @@ A modern web application for learning and practicing Rubik's Cube algorithms wit
 - **Styling**: CSS-in-JS with design system
 - **Build Tool**: Vite
 - **PWA**: Service Worker for offline functionality
-- **Deployment**: Vercel-ready
+- **Analytics**: Vercel Analytics integration
 
 ## 📦 Installation
 
@@ -37,35 +39,6 @@ npm run build
 # Preview production build
 npm run preview
 ```
-
-## 🐛 Recent Bug Fixes
-
-### Critical Issues Resolved
-
-1. **Tutorial Mode Algorithm Loading**: Fixed issue where only 2 algorithms were showing instead of 8
-   - Added proper loading states and error handling
-   - Implemented validation for algorithm data
-   - Added algorithm counter display
-
-2. **YouTube Embed**: Fixed placeholder video ID causing iframe errors
-   - Added default tutorial video
-   - Implemented error handling for video loading
-   - Added fallback UI for failed video loads
-
-3. **Mobile Detection**: Fixed hydration mismatches
-   - Improved SSR compatibility
-   - Added better error handling
-   - Enhanced device type detection
-
-4. **Image Loading**: Improved mobile image loading performance
-   - Added cache busting for mobile devices
-   - Implemented better error handling for failed image loads
-   - Enhanced image loading states
-
-5. **Service Worker**: Enhanced caching strategy
-   - Implemented proper cache management
-   - Added offline support for critical resources
-   - Improved error handling for network failures
 
 ## 🚀 Production Deployment
 
@@ -124,7 +97,7 @@ npm run preview
 
 ## 📊 Performance
 
-- **Bundle Size**: ~308KB (gzipped: ~81KB)
+- **Bundle Size**: ~309KB (gzipped: ~82KB)
 - **First Contentful Paint**: < 1.5s
 - **Largest Contentful Paint**: < 2.5s
 - **Cumulative Layout Shift**: < 0.1

@@ -18,7 +18,6 @@
 
 import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import WiredButton from './ui/WiredButton'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useImageLoader } from '../hooks/useImageLoader'
 
@@ -27,8 +26,7 @@ const AlgorithmList = ({
   selectedAlgorithm,
   onSelectAlgorithm,
   isFavorite,
-  onToggleFavorite,
-  isWired
+  onToggleFavorite
 }) => {
   // Track which algorithms have pattern images
   const [patternImageStatus, setPatternImageStatus] = useState({})
@@ -430,7 +428,7 @@ const AlgorithmList = ({
                     </div>
                   </div>
 
-                  {/* Wired and Star buttons */}
+                  {/* Star button */}
                   <div style={{
                     flexShrink: 0,
                     marginTop: spacing[1],
@@ -438,10 +436,6 @@ const AlgorithmList = ({
                     gap: spacing[2],
                     alignItems: 'center',
                   }}>
-                    <WiredButton
-                      isWired={isWired(algorithm.id)}
-                      size={16}
-                    />
                     <StarButton
                       isFavorite={algorithm.isFav}
                       onToggle={(e) => {
