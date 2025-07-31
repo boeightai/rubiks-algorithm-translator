@@ -29,7 +29,7 @@ export function useImageLoader(imageSrc, options = {}) {
   const {
     maxRetries = 3,
     retryDelay = 1000,
-    mobileOptimized = false, // Default to false for desktop
+    mobileOptimized = true, // Default to true for mobile compatibility
     preload = false
   } = options
 

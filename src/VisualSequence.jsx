@@ -249,7 +249,6 @@ function VisualSequence({ notation }) {
 
 
     const handleError = () => {
-      console.error(`Failed to load image for move: ${move}`)
       setImageErrors(prev => new Set([...prev, move]))
       
       // For iPad, try multiple reload strategies
@@ -273,17 +272,11 @@ function VisualSequence({ notation }) {
 
     const handleLoad = () => {
       // Image loaded successfully - remove from error set if it was there
-      console.log(`Successfully loaded image for move: ${move}`)
       setImageErrors(prev => {
         const newSet = new Set(prev)
         newSet.delete(move)
         return newSet
       })
-      
-      // For iPad, log successful loading for debugging
-      if (isIPad) {
-        console.log(`iPad: Successfully loaded image for move: ${move}`)
-      }
     }
 
     // Handle missing move in moves.json
@@ -325,13 +318,10 @@ function VisualSequence({ notation }) {
       )
     }
 
-    // Add cache busting for mobile and iPad to force reload
-    // For iPad, use a more aggressive cache busting strategy
-    const imageUrl = isIPad 
-      ? `${imageSrc}?ipad=${Date.now()}&reload=${forceReload}` 
-      : (isMobile && forceReload > 0) 
-        ? `${imageSrc}?reload=${forceReload}` 
-        : imageSrc
+    // Add cache busting for mobile devices to force reload
+    const imageUrl = (isMobile || isIPad) && forceReload > 0
+      ? `${imageSrc}?v=${forceReload}`
+      : imageSrc
 
     return (
       <img
@@ -357,9 +347,9 @@ function VisualSequence({ notation }) {
         }}
         onError={handleError}
         onLoad={handleLoad}
-        loading={isIPad ? "eager" : "eager"} // Always eager on iPad to ensure loading
+        loading="eager"
         decoding="async"
-        crossOrigin={isIPad ? undefined : "anonymous"} // Remove crossOrigin for iPad to avoid issues
+        crossOrigin="anonymous"
         draggable="false"
       />
     )
