@@ -139,11 +139,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
         }}>
           {/* Title and Nicknames Container */}
           <div style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: isMobile ? spacing[2] : spacing[3],
+            position: 'relative',
             marginBottom: isDesktop ? spacing[1] : spacing[2], // Reduced margin for desktop
           }}>
             <h2 style={{
@@ -156,13 +152,19 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
               {currentAlgorithm.name}
             </h2>
             
-            {/* Nicknames */}
+            {/* Nicknames - positioned below on mobile, to the side on desktop */}
             {currentAlgorithm.nicknames && currentAlgorithm.nicknames.length > 0 && (
               <div style={{
                 display: 'flex',
                 gap: spacing[2],
                 flexWrap: 'wrap',
                 justifyContent: 'center',
+                marginTop: isMobile ? spacing[2] : 0,
+                position: isMobile ? 'static' : 'absolute',
+                left: isMobile ? 'auto' : 'calc(50% + 120px)',
+                top: isMobile ? 'auto' : '50%',
+                transform: isMobile ? 'none' : 'translateY(-50%)',
+                maxWidth: isMobile ? '100%' : '200px',
               }}>
                 {currentAlgorithm.nicknames.map((nickname, index) => (
                   <span
