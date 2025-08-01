@@ -22,8 +22,9 @@ import AlgorithmCarousel from './components/AlgorithmCarousel'
 import tutorialAlgorithms from './data/tutorialAlgorithms.json'
 import { colors, spacing, typography } from './styles/designSystem'
 import { useMobileDetection } from './hooks/useMobileDetection'
+import Header from './components/Header'
 
-function TutorialMode() {
+function TutorialMode({ onModeToggle }) {
   const [currentAlgorithmIndex, setCurrentAlgorithmIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -175,13 +176,27 @@ function TutorialMode() {
     <div style={{
       backgroundColor: colors.background.primary,
       minHeight: '100vh',
-      paddingTop: isDesktop ? spacing[16] : spacing[20], // Reduced top padding for desktop
     }}>
-      {/* Container */}
+      {/* Header */}
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: `${spacing[4]} ${spacing[4]} 0`,
+      }}>
+        <Header 
+          title="Learn to Solve a Rubik's Cube"
+          subtitle="Step-by-step tutorial using Bo and Hailey's Visual Notation System"
+          onModeToggle={onModeToggle}
+          currentMode="tutorial"
+        />
+      </div>
+      
+      {/* Content Container */}
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
         padding: `0 ${spacing[4]}`,
+        paddingTop: isDesktop ? spacing[8] : spacing[12], // Adjusted padding after header
       }}>
         {/* YouTube Video Section */}
         <div style={{

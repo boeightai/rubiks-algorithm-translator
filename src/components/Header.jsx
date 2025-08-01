@@ -424,11 +424,11 @@ const Header = ({
                 e.target.style.transform = 'scale(1)'
                 e.target.style.background = colors.primary[500]
               }}
-              aria-label="Switch to Tutorial mode"
-              title="Switch to Tutorial mode"
+              aria-label={currentMode === 'tutorial' ? "Switch to Explorer mode" : "Switch to Tutorial mode"}
+              title={currentMode === 'tutorial' ? "Switch to Explorer mode" : "Switch to Tutorial mode"}
             >
-              <span style={{ fontSize: '14px' }}>📚</span>
-              <span>How to Solve a Rubik's Cube</span>
+              <span style={{ fontSize: '14px' }}>{currentMode === 'tutorial' ? '🔍' : '📚'}</span>
+              <span>{currentMode === 'tutorial' ? 'Full Algorithms List' : 'How to Solve a Rubik\'s Cube'}</span>
             </button>
           )}
 

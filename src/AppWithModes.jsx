@@ -19,7 +19,6 @@
 import { useState, useEffect } from 'react'
 import AlgorithmSelectorRefactored from './AlgorithmSelectorRefactored'
 import TutorialMode from './TutorialMode'
-import ModeToggle from './components/ModeToggle'
 import ErrorBoundary from './components/ErrorBoundary'
 import { colors } from './styles/designSystem'
 
@@ -46,21 +45,13 @@ function AppWithModes() {
         backgroundColor: colors.background.primary,
         position: 'relative',
       }}>
-        {/* Mode toggle button - only show floating version in Tutorial mode */}
-        {mode === 'tutorial' && (
-          <ModeToggle 
-            mode={mode} 
-            onToggle={toggleMode}
-          />
-        )}
-        
         {/* Mode content with transition */}
         <div style={{
           opacity: 1,
           transition: 'opacity 0.3s ease-in-out',
         }}>
           {mode === 'tutorial' ? (
-            <TutorialMode />
+            <TutorialMode onModeToggle={toggleMode} />
           ) : (
             <AlgorithmSelectorRefactored onModeToggle={toggleMode} currentMode={mode} />
           )}
