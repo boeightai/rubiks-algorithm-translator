@@ -22,9 +22,9 @@
   },
   {
     "id": "fish-kite",
-    "name": "Fish",
+    "name": "Kite OLL",
     "notation": "F U R U' R' F'",
-    "nicknames": ["Kite"],
+    "nicknames": ["Front Face Trigger"],
     "description": "OLL algorithm that creates a cross pattern on the top face"
   },
   {
