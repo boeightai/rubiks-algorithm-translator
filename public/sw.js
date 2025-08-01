@@ -16,9 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const CACHE_NAME = 'rubiks-translator-v1'
-const STATIC_CACHE_NAME = 'rubiks-translator-static-v1'
-const DYNAMIC_CACHE_NAME = 'rubiks-translator-dynamic-v1'
+// Update version number to force cache refresh on deployment
+const CACHE_VERSION = 'v3'
+const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
+const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
+const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
 
 // Files to cache immediately
 const STATIC_FILES = [
@@ -49,6 +51,9 @@ const IMAGE_FILES = [
 
 // Install event - cache static files
 self.addEventListener('install', (event) => {
+  // Skip waiting to activate new service worker immediately
+  self.skipWaiting()
+  
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME)
       .then((cache) => {
@@ -64,8 +69,11 @@ self.addEventListener('install', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys()
-      .then((cacheNames) => {
+    Promise.all([
+      // Take control of all pages immediately
+      self.clients.claim(),
+      // Clean up old caches
+      caches.keys().then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== STATIC_CACHE_NAME && 
@@ -77,6 +85,7 @@ self.addEventListener('activate', (event) => {
           })
         )
       })
+    ])
   )
 })
 
@@ -229,5 +238,12 @@ self.addEventListener('notificationclick', (event) => {
     event.waitUntil(
       self.clients.openWindow('/')
     )
+  }
+})
+
+// Listen for skip waiting message
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting()
   }
 }) 

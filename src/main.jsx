@@ -32,14 +32,33 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
+        // Check for updates periodically
+        setInterval(() => {
+          registration.update()
+        }, 60000) // Check every minute
+        
         // Check for updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New service worker available - could show update notification here
+              // New service worker available - automatically reload
+              console.log('New version available! Reloading...')
+              // Send skip waiting message to new service worker
+              newWorker.postMessage({ type: 'SKIP_WAITING' })
+              // Reload the page once the new service worker takes control
+              navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload()
+              })
             }
           })
+        })
+        
+        // Also check for updates on page focus
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) {
+            registration.update()
+          }
         })
       })
       .catch(() => {

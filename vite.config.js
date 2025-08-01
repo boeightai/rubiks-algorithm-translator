@@ -28,6 +28,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        // Add content-based hashing to all output files
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')
           const ext = info[info.length - 1]
@@ -38,6 +41,8 @@ export default defineConfig({
         }
       }
     },
+    // Generate manifest for tracking file versions
+    manifest: true,
     // Security optimizations
     target: 'es2015',
     minify: 'terser',

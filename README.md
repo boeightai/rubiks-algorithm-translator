@@ -42,11 +42,31 @@ npm run preview
 
 ## 🚀 Production Deployment
 
+### Important: Cache Refresh for Updates
+
+To ensure users always get the latest version without needing a hard refresh:
+
+```bash
+# Before each deployment, update the service worker version
+npm run update-version
+
+# Then build the application
+npm run build
+
+# Deploy as usual
+```
+
+This process ensures:
+- Automatic detection of new versions
+- Immediate activation of updates (no waiting)
+- Automatic page reload when updates are available
+- No manual browser refresh required by users
+
 ### Vercel Deployment
 
 1. **Connect Repository**: Link your GitHub repository to Vercel
 2. **Build Settings**: 
-   - Build Command: `npm run build`
+   - Build Command: `npm run update-version && npm run build`
    - Output Directory: `dist`
    - Install Command: `npm install`
 3. **Environment Variables**: No additional environment variables required
@@ -55,6 +75,9 @@ npm run preview
 ### Manual Deployment
 
 ```bash
+# Update service worker version for cache refresh
+npm run update-version
+
 # Build the application
 npm run build
 

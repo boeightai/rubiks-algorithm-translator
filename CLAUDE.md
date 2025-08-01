@@ -68,11 +68,55 @@ This ensures iPads in portrait orientation get the mobile tabbed interface.
 - **iPad Landscape/Desktop**: Use viewport > 1024px
 
 ### Build and Deployment
+
+#### Important: Always Update Service Worker Version Before Deployment
+
+To ensure users get the latest version without needing a hard refresh:
+
 ```bash
-npm run build   # Production build
+# STEP 1: Update service worker version (REQUIRED before every deployment)
+npm run update-version
+
+# STEP 2: Build the application
+npm run build
+
+# STEP 3: Deploy as usual (git push for Vercel)
+```
+
+**Why this is critical:**
+- The service worker caches files aggressively for offline support
+- Without version update, users may see old cached content
+- The update-version script increments the cache version automatically
+- This triggers automatic reload for all users when they visit the site
+
+**For Vercel deployments:**
+Update the build command in Vercel settings to:
+```
+npm run update-version && npm run build
+```
+
+#### Development Commands
+```bash
 npm run dev     # Development server
 npm run lint    # Run ESLint
+npm run preview # Preview production build locally
 ```
+
+## Cache Refresh Mechanism
+
+The application implements an aggressive cache refresh system to ensure users always get the latest version:
+
+1. **Version-based Service Worker Caching**: Cache names include version numbers (e.g., `v2`, `v3`)
+2. **Automatic Skip Waiting**: New service workers activate immediately without waiting
+3. **Auto-reload on Update**: Page automatically reloads when a new version is detected
+4. **Content-based Hashing**: All JS/CSS files include hash in filename for cache busting
+5. **Update Checks**: Service worker checks for updates every minute and on page focus
+
+**Files involved:**
+- `/public/sw.js` - Service worker with version-based caching
+- `/src/main.jsx` - Auto-reload logic for updates
+- `/vite.config.js` - Content hashing configuration
+- `/update-sw-version.js` - Script to increment version number
 
 ## Known Issues & Solutions
 
