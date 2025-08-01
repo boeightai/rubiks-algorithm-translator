@@ -139,10 +139,11 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
         }}>
           {/* Title and Nicknames Container */}
           <div style={{
-            position: 'relative',
             display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
             justifyContent: 'center',
             alignItems: 'center',
+            gap: isMobile ? spacing[2] : spacing[3],
             marginBottom: isDesktop ? spacing[1] : spacing[2], // Reduced margin for desktop
           }}>
             <h2 style={{
@@ -155,16 +156,13 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
               {currentAlgorithm.name}
             </h2>
             
-            {/* Nicknames positioned to the right */}
+            {/* Nicknames */}
             {currentAlgorithm.nicknames && currentAlgorithm.nicknames.length > 0 && (
               <div style={{
-                position: 'absolute',
-                left: 'calc(50% + ' + (currentAlgorithm.name.length * 0.6) + 'ch)',
-                marginLeft: spacing[4],
                 display: 'flex',
                 gap: spacing[2],
                 flexWrap: 'wrap',
-                whiteSpace: 'nowrap',
+                justifyContent: 'center',
               }}>
                 {currentAlgorithm.nicknames.map((nickname, index) => (
                   <span
@@ -184,15 +182,6 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
                 ))}
               </div>
             )}
-          </div>
-          
-          {/* Algorithm counter */}
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.neutral[600],
-            marginTop: spacing[1],
-          }}>
-            {safeIndex + 1} of {algorithms.length}
           </div>
         </div>
         

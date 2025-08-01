@@ -196,7 +196,7 @@ function TutorialMode({ onModeToggle }) {
         maxWidth: '1200px',
         margin: '0 auto',
         padding: `0 ${spacing[4]}`,
-        paddingTop: isDesktop ? spacing[8] : spacing[12], // Adjusted padding after header
+        paddingTop: isDesktop ? spacing[4] : spacing[6], // Reduced padding after header
       }}>
         {/* YouTube Video Section */}
         <div style={{
