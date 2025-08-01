@@ -32,10 +32,10 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        // Check for updates periodically
+        // Check for updates periodically - less frequent to avoid disrupting image loading
         setInterval(() => {
           registration.update()
-        }, 60000) // Check every minute
+        }, 300000) // Check every 5 minutes instead of every minute
         
         // Check for updates
         registration.addEventListener('updatefound', () => {
@@ -54,10 +54,16 @@ if ('serviceWorker' in navigator) {
           })
         })
         
-        // Also check for updates on page focus
+        // Also check for updates on page focus - but throttled to avoid disrupting user experience
+        let lastUpdateCheck = 0
         document.addEventListener('visibilitychange', () => {
           if (!document.hidden) {
-            registration.update()
+            const now = Date.now()
+            // Only check for updates if it's been at least 2 minutes since last check
+            if (now - lastUpdateCheck > 120000) {
+              registration.update()
+              lastUpdateCheck = now
+            }
           }
         })
       })
