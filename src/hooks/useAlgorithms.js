@@ -42,7 +42,7 @@ const algorithms = algorithmsData.filter(alg => {
   return isValid
 })
 
-export function useAlgorithms(favoriteIds = []) {
+export function useAlgorithms(favoriteIds = [], currentMode = 'explorer') {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -65,7 +65,7 @@ export function useAlgorithms(favoriteIds = []) {
       return []
     }
 
-    return algorithms.filter(alg => {
+    const filtered = algorithms.filter(alg => {
       // Early return for favorites filter
       if (showFavoritesOnly && !favoriteIds.includes(alg.id)) {
         return false
@@ -98,7 +98,28 @@ export function useAlgorithms(favoriteIds = []) {
       ...alg,
       isSelected: selectedAlgorithm && selectedAlgorithm.id === alg.id
     }))
-  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, selectedAlgorithm])
+
+    // Custom ordering for Explorer Mode
+    if (currentMode === 'explorer' && !normalizedSearchTerm && selectedCategory === 'all' && !showFavoritesOnly) {
+      // Find the Right Trigger and Left Trigger algorithms
+      const rightTrigger = filtered.find(alg => alg.id === 'white-corners-1')
+      const leftTrigger = filtered.find(alg => alg.id === 'white-corners-2')
+      
+      // Filter out these algorithms from the main list
+      const otherAlgorithms = filtered.filter(alg => 
+        alg.id !== 'white-corners-1' && alg.id !== 'white-corners-2'
+      )
+      
+      // Create new ordered list with Right Trigger first, Left Trigger second
+      const orderedList = []
+      if (rightTrigger) orderedList.push(rightTrigger)
+      if (leftTrigger) orderedList.push(leftTrigger)
+      
+      return [...orderedList, ...otherAlgorithms]
+    }
+
+    return filtered
+  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, selectedAlgorithm, currentMode])
 
   // Memoized setters to prevent unnecessary re-renders
   const memoizedSetSearchTerm = useCallback((value) => {

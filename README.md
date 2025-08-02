@@ -162,4 +162,4 @@ For issues or questions:
 
 ---
 
-**Built with ❤️ by Bo Nam**
+**Built with ❤️ by Bo and Hailey**

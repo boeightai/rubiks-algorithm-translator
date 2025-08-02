@@ -40,7 +40,7 @@ function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
     categories,
     filteredAlgorithms,
     algorithms
-  } = useAlgorithms(favoriteIds)
+  } = useAlgorithms(favoriteIds, currentMode)
   
   const { tutorialImageExists, tutorialImageSrc, patternImageExists, patternImageSrc } = useTutorialImage(selectedAlgorithm)
 

@@ -3,7 +3,7 @@
     "id": "white-cross-1",
     "name": "White Cross Edge 1",
     "notation": "F D R F' D'",
-    "category": "Beginner Cross",
+    "category": "Cross",
     "difficulty": "beginner",
     "description": "Basic white cross formation",
     "nicknames": []
@@ -12,7 +12,7 @@
     "id": "white-cross-2",
     "name": "White Cross Edge 2",
     "notation": "R D' R' D",
-    "category": "Beginner Cross",
+    "category": "Cross",
     "difficulty": "beginner",
     "description": "Alternative white cross",
     "nicknames": []
@@ -21,7 +21,7 @@
     "id": "white-corners-1",
     "name": "Right Hand Algorithm",
     "notation": "R U R' U'",
-    "category": "Beginner Corners",
+    "category": "F2L",
     "difficulty": "beginner",
     "description": "Basic corner insertion",
     "nicknames": [
@@ -33,7 +33,7 @@
     "id": "white-corners-2",
     "name": "Left Hand Algorithm",
     "notation": "L' U' L U",
-    "category": "Beginner Corners",
+    "category": "F2L",
     "difficulty": "beginner",
     "description": "Left-handed corner insertion",
     "nicknames": [
@@ -45,7 +45,7 @@
     "id": "second-layer-right",
     "name": "Second Layer Right",
     "notation": "U R U' R' U' F' U F",
-    "category": "Beginner F2L",
+    "category": "F2L",
     "difficulty": "beginner",
     "description": "Insert edge to the right",
     "nicknames": [
@@ -56,7 +56,7 @@
     "id": "second-layer-left",
     "name": "Second Layer Left",
     "notation": "U' L' U L U F U' F'",
-    "category": "Beginner F2L",
+    "category": "F2L",
     "difficulty": "beginner",
     "description": "Insert edge to the left",
     "nicknames": [
@@ -67,7 +67,7 @@
     "id": "beginner-pll-edges",
     "name": "Beginner Edge Permutation",
     "notation": "R U' R F' R F R' F R F' R' F' R U R'",
-    "category": "Beginner PLL",
+    "category": "PLL",
     "difficulty": "beginner",
     "description": "Permute edges",
     "nicknames": []
@@ -212,7 +212,7 @@
     "id": "2look-oll-1",
     "name": "2-Look OLL Case 1 - Sune",
     "notation": "R U R' U R U2 R'",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "All corners oriented except front-right",
     "nicknames": []
@@ -221,7 +221,7 @@
     "id": "2look-oll-2",
     "name": "2-Look OLL Case 2 - Anti-Sune",
     "notation": "R' U' R U' R' U2 R",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "All corners oriented except front-left",
     "nicknames": []
@@ -230,7 +230,7 @@
     "id": "2look-oll-3",
     "name": "2-Look OLL Case 3 - Pi",
     "notation": "R U2 R2 F R F' U2 R' F R F'",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "Two adjacent corners need orienting",
     "nicknames": []
@@ -239,7 +239,7 @@
     "id": "2look-oll-4",
     "name": "2-Look OLL Case 4 - U",
     "notation": "R2 D R' U2 R D' R' U2 R'",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "Two diagonal corners need orienting",
     "nicknames": [
@@ -252,7 +252,7 @@
     "id": "2look-oll-5",
     "name": "2-Look OLL Case 5 - T",
     "notation": "R U R' U' R' F R F'",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "Front two corners need orienting",
     "nicknames": []
@@ -261,7 +261,7 @@
     "id": "2look-oll-6",
     "name": "2-Look OLL Case 6 - L",
     "notation": "F' L' U' L U L' U' L U F",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "Left two corners need orienting",
     "nicknames": []
@@ -270,7 +270,7 @@
     "id": "2look-oll-7",
     "name": "2-Look OLL Case 7 - H",
     "notation": "R U R' U R U' R' U R U2 R'",
-    "category": "2-Look OLL",
+    "category": "OLL",
     "difficulty": "intermediate",
     "description": "All four corners need orienting",
     "nicknames": []
