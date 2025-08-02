@@ -120,12 +120,16 @@ export function loadImageWithRetry(src, options = {}) {
         
         retryCount++
         
-        if (retryCount < maxRetries) {
-          // Exponential backoff for retries
-          const delay = retryDelay * Math.pow(2, retryCount - 1)
+        // Check if we're on localhost and reduce retry attempts
+        const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+        const effectiveMaxRetries = isLocalhost ? Math.min(maxRetries, 1) : maxRetries
+        
+        if (retryCount < effectiveMaxRetries) {
+          // Exponential backoff for retries (reduced delay for localhost)
+          const delay = isLocalhost ? retryDelay : retryDelay * Math.pow(2, retryCount - 1)
           timeoutId = setTimeout(attemptLoad, delay)
         } else {
-          reject(new Error(`Failed to load image after ${maxRetries} attempts: ${src}`))
+          reject(new Error(`Failed to load image after ${effectiveMaxRetries} attempts: ${src}`))
         }
       }
 

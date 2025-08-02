@@ -34,6 +34,13 @@ function VisualSequence({ notation }) {
 
   // Handle visibility change to reload images when returning to the app
   useEffect(() => {
+    const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+    
+    // Skip visibility change handlers for localhost to prevent glitching
+    if (isLocalhost) {
+      return
+    }
+    
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible' && (isMobile || isIPad)) {
         // Clear image errors and force reload when becoming visible
@@ -67,8 +74,15 @@ function VisualSequence({ notation }) {
     return notation.split(' ').filter(move => move.trim() !== '')
   }, [])
 
-  // Preload images for iPad to ensure they're available
+  // Preload images for iPad to ensure they're available (only in production)
   useEffect(() => {
+    const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+    
+    // Skip preloading for localhost to prevent glitching
+    if (isLocalhost) {
+      return
+    }
+    
     if (isIPad && notation) {
       const parsedMoves = parseNotation(notation)
       parsedMoves.forEach(move => {
@@ -251,8 +265,12 @@ function VisualSequence({ notation }) {
     const handleError = () => {
       setImageErrors(prev => new Set([...prev, move]))
       
-      // For iPad Safari, use more aggressive retry strategies
-      if (isIPad) {
+      // Only use aggressive retry strategies in production, not localhost
+      const isProduction = window.location.protocol === 'https:' && !window.location.hostname.includes('localhost')
+      const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+      
+      // Skip aggressive retry logic for localhost to prevent glitching
+      if (isIPad && isProduction && !isLocalhost) {
         // Immediate retry for iPad Safari cache issues
         setTimeout(() => {
           setForceReload(prev => prev + 1)
@@ -323,16 +341,19 @@ function VisualSequence({ notation }) {
       )
     }
 
-    // iPad Safari specific cache busting - use timestamp for aggressive cache bypass
-    const imageUrl = isIPad && forceReload > 0
-      ? `${imageSrc}?safari=${Date.now()}&v=${forceReload}`
-      : (isMobile && forceReload > 0)
-        ? `${imageSrc}?v=${forceReload}`
-        : imageSrc
+    // Cache busting logic - only use aggressive cache busting in production
+    const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+    const imageUrl = isLocalhost 
+      ? imageSrc // No cache busting for localhost to prevent glitching
+      : (isIPad && forceReload > 0)
+        ? `${imageSrc}?safari=${Date.now()}&v=${forceReload}`
+        : (isMobile && forceReload > 0)
+          ? `${imageSrc}?v=${forceReload}`
+          : imageSrc
 
     return (
       <img
-        key={`${move}-${forceReload}-${isIPad ? Date.now() : ''}`} // Force remount on reload with timestamp for iPad
+        key={isLocalhost ? move : `${move}-${forceReload}-${isIPad ? Date.now() : ''}`} // Stable key for localhost, dynamic for production
         src={imageUrl}
         alt={move}
         className="responsive-cube-image"
@@ -342,11 +363,11 @@ function VisualSequence({ notation }) {
           backgroundColor: 'var(--move-image-bg)',
           padding: 'var(--move-image-padding)',
           boxShadow: shadows.sm,
-          transition: 'transform 0.2s ease',
+          transition: isLocalhost ? 'none' : 'transform 0.2s ease',
           transform: 'scale(1)',
           maxWidth: '100%',
-          // iPad-specific optimizations
-          ...(isIPad && {
+          // iPad-specific optimizations (only in production)
+          ...(isIPad && !isLocalhost && {
             imageRendering: 'crisp-edges',
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
@@ -357,9 +378,9 @@ function VisualSequence({ notation }) {
         }}
         onError={handleError}
         onLoad={handleLoad}
-        loading="eager"
-        decoding="async"
-        crossOrigin={isIPad ? undefined : "anonymous"} // Remove crossOrigin for iPad Safari to avoid CORS issues
+        loading={isLocalhost ? "lazy" : "eager"}
+        decoding={isLocalhost ? "sync" : "async"}
+        crossOrigin={isLocalhost ? undefined : (isIPad ? undefined : "anonymous")} // Remove crossOrigin for localhost and iPad Safari
         draggable="false"
       />
     )
@@ -844,8 +865,9 @@ function VisualSequence({ notation }) {
           backface-visibility: hidden;
           -webkit-transform: translateZ(0);
           transform: translateZ(0);
-          will-change: transform;
-          contain: layout style paint;
+          /* Disable will-change and contain for localhost to prevent glitching */
+          will-change: auto;
+          contain: none;
         }
         
         /* Mobile-specific image optimizations */

@@ -137,9 +137,14 @@ export function useImageLoader(imageSrc, options = {}) {
     }
   }, [imageSrc, mobileOptimized])
 
-  // Auto-retry on error
+  // Auto-retry on error (with localhost detection to prevent excessive retries)
   useEffect(() => {
-    if (loadingState.hasError && loadingState.retryCount < maxRetries) {
+    const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+    
+    // Reduce retry attempts for localhost to prevent glitching
+    const maxRetriesForLocalhost = isLocalhost ? 1 : maxRetries
+    
+    if (loadingState.hasError && loadingState.retryCount < maxRetriesForLocalhost) {
       retry()
     }
   }, [loadingState.hasError, loadingState.retryCount, maxRetries, retry])
