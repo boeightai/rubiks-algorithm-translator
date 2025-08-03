@@ -17,7 +17,7 @@
  */
 
 // Update version number to force cache refresh on deployment
-const CACHE_VERSION = 'v4'
+const CACHE_VERSION = 'v5'
 const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
 const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
@@ -96,6 +96,12 @@ self.addEventListener('fetch', (event) => {
 
   // Skip non-GET requests
   if (request.method !== 'GET') {
+    return
+  }
+  
+  // In development, don't cache JSON files to allow for live updates
+  const isDevelopment = url.hostname.includes('localhost') || url.hostname.includes('127.0.0.1')
+  if (isDevelopment && (url.pathname.endsWith('.json') || url.pathname.includes('/src/data/'))) {
     return
   }
 

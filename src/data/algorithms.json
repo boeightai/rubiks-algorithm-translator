@@ -1010,5 +1010,23 @@
     "difficulty": "beginner",
     "description": "Simple algorithm for flipping edges in daisy pattern",
     "nicknames": []
+  },
+  {
+    "id": "ideal-case-right-edge",
+    "name": "Ideal Case Right Edge",
+    "notation": "U R U R' U'",
+    "category": "Beginner F2L",
+    "difficulty": "beginner",
+    "description": "Ideal case for inserting right edge in F2L",
+    "nicknames": []
+  },
+  {
+    "id": "ideal-case-left-edge",
+    "name": "Ideal Case Left Edge",
+    "notation": "U' L' U' L U",
+    "category": "Beginner F2L",
+    "difficulty": "beginner",
+    "description": "Ideal case for inserting left edge in F2L",
+    "nicknames": []
   }
 ]

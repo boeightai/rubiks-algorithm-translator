@@ -9,12 +9,19 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR ANY PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+// Centralized environment detection
+const isLocalhost = () => {
+  return window.location.hostname.includes('localhost') || 
+         window.location.hostname.includes('127.0.0.1') ||
+         window.location.hostname.includes('0.0.0.0')
+}
 
 /**
  * Performance utility functions
@@ -121,12 +128,11 @@ export function loadImageWithRetry(src, options = {}) {
         retryCount++
         
         // Check if we're on localhost and reduce retry attempts
-        const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
-        const effectiveMaxRetries = isLocalhost ? Math.min(maxRetries, 1) : maxRetries
+        const effectiveMaxRetries = isLocalhost() ? Math.min(maxRetries, 1) : maxRetries
         
         if (retryCount < effectiveMaxRetries) {
           // Exponential backoff for retries (reduced delay for localhost)
-          const delay = isLocalhost ? retryDelay : retryDelay * Math.pow(2, retryCount - 1)
+          const delay = isLocalhost() ? retryDelay : retryDelay * Math.pow(2, retryCount - 1)
           timeoutId = setTimeout(attemptLoad, delay)
         } else {
           reject(new Error(`Failed to load image after ${effectiveMaxRetries} attempts: ${src}`))

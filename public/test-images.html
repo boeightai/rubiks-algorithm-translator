@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-image {
+            width: 64px;
+            height: 64px;
+            border: 2px solid #ccc;
+            margin: 10px;
+            display: inline-block;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div id="results"></div>
+    
+    <h2>Test Images:</h2>
+    <div>
+        <img src="/images/moves/R.png" alt="R" class="test-image" onload="logSuccess('R')" onerror="logError('R')">
+        <img src="/images/moves/U.png" alt="U" class="test-image" onload="logSuccess('U')" onerror="logError('U')">
+        <img src="/images/moves/R-prime.png" alt="R'" class="test-image" onload="logSuccess('R\'')" onerror="logError('R\'')">
+        <img src="/images/moves/U-prime.png" alt="U'" class="test-image" onload="logSuccess('U\'')" onerror="logError('U\'')">
+    </div>
+
+    <script>
+        function logSuccess(move) {
+            console.log(`✅ Image loaded: ${move}`);
+            document.getElementById('results').innerHTML += `<div class="status success">✅ ${move} loaded successfully</div>`;
+        }
+        
+        function logError(move) {
+            console.error(`❌ Image failed: ${move}`);
+            document.getElementById('results').innerHTML += `<div class="status error">❌ ${move} failed to load</div>`;
+        }
+        
+        // Test image accessibility
+        const testImages = ['/images/moves/R.png', '/images/moves/U.png', '/images/moves/R-prime.png', '/images/moves/U-prime.png'];
+        
+        testImages.forEach(src => {
+            fetch(src)
+                .then(response => {
+                    if (response.ok) {
+                        console.log(`✅ Fetch successful: ${src}`);
+                    } else {
+                        console.error(`❌ Fetch failed: ${src} - ${response.status}`);
+                    }
+                })
+                .catch(error => {
+                    console.error(`❌ Fetch error: ${src} - ${error}`);
+                });
+        });
+    </script>
+</body>
+</html> 

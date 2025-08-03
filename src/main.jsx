@@ -27,8 +27,8 @@ const savedTheme = localStorage.getItem('theme')
 const initialTheme = savedTheme || 'light'
 document.documentElement.setAttribute('data-theme', initialTheme)
 
-// Register service worker for offline support
-if ('serviceWorker' in navigator) {
+// Register service worker for offline support (disabled in development)
+if ('serviceWorker' in navigator && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {

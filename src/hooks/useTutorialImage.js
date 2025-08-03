@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR ANY PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -18,10 +18,18 @@
 
 import { useState, useEffect, useRef } from 'react'
 
+// Centralized environment detection
+const isLocalhost = () => {
+  return window.location.hostname.includes('localhost') || 
+         window.location.hostname.includes('127.0.0.1') ||
+         window.location.hostname.includes('0.0.0.0')
+}
+
 export function useTutorialImage(selectedAlgorithm) {
   const [tutorialImageExists, setTutorialImageExists] = useState(false)
   const [patternImageExists, setPatternImageExists] = useState(false)
   const abortControllerRef = useRef(null)
+  const isLocalhostEnv = useRef(isLocalhost())
 
   // Check if tutorial image exists for selected algorithm
   useEffect(() => {
@@ -34,7 +42,7 @@ export function useTutorialImage(selectedAlgorithm) {
     abortControllerRef.current = new AbortController()
 
     if (selectedAlgorithm) {
-      // Create tutorial image
+      // Create tutorial image with optimized loading for localhost
       const tutorialImg = new Image()
       tutorialImg.onload = () => {
         if (!abortControllerRef.current?.signal.aborted) {
@@ -46,9 +54,19 @@ export function useTutorialImage(selectedAlgorithm) {
           setTutorialImageExists(false)
         }
       }
+      
+      // Optimize loading for localhost
+      if (isLocalhostEnv.current) {
+        tutorialImg.loading = 'lazy'
+        tutorialImg.decoding = 'sync'
+      } else {
+        tutorialImg.loading = 'eager'
+        tutorialImg.decoding = 'async'
+      }
+      
       tutorialImg.src = `/images/moves/${selectedAlgorithm.id}-tutorial.png`
       
-      // Create pattern image
+      // Create pattern image with optimized loading for localhost
       const patternImg = new Image()
       patternImg.onload = () => {
         if (!abortControllerRef.current?.signal.aborted) {
@@ -60,6 +78,16 @@ export function useTutorialImage(selectedAlgorithm) {
           setPatternImageExists(false)
         }
       }
+      
+      // Optimize loading for localhost
+      if (isLocalhostEnv.current) {
+        patternImg.loading = 'lazy'
+        patternImg.decoding = 'sync'
+      } else {
+        patternImg.loading = 'eager'
+        patternImg.decoding = 'async'
+      }
+      
       patternImg.src = `/images/patterns/${selectedAlgorithm.id}-pattern.png`
     } else {
       setTutorialImageExists(false)

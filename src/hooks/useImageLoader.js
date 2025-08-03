@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR ANY PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -18,6 +18,13 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { loadImageWithRetry, checkImageExists } from '../utils/performance'
+
+// Centralized environment detection
+const isLocalhost = () => {
+  return window.location.hostname.includes('localhost') || 
+         window.location.hostname.includes('127.0.0.1') ||
+         window.location.hostname.includes('0.0.0.0')
+}
 
 /**
  * Custom hook for enhanced image loading with mobile optimization
@@ -44,6 +51,7 @@ export function useImageLoader(imageSrc, options = {}) {
   const [imageElement, setImageElement] = useState(null)
   const abortControllerRef = useRef(null)
   const retryTimeoutRef = useRef(null)
+  const isLocalhostEnv = useRef(isLocalhost())
 
   // Cleanup function
   const cleanup = useCallback(() => {
@@ -139,10 +147,8 @@ export function useImageLoader(imageSrc, options = {}) {
 
   // Auto-retry on error (with localhost detection to prevent excessive retries)
   useEffect(() => {
-    const isLocalhost = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
-    
     // Reduce retry attempts for localhost to prevent glitching
-    const maxRetriesForLocalhost = isLocalhost ? 1 : maxRetries
+    const maxRetriesForLocalhost = isLocalhostEnv.current ? 1 : maxRetries
     
     if (loadingState.hasError && loadingState.retryCount < maxRetriesForLocalhost) {
       retry()
