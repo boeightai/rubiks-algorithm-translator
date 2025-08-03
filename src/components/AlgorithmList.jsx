@@ -16,10 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { colors, typography, spacing, borderRadius, shadows, transitions } from '../styles/designSystem'
+import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useImageLoader } from '../hooks/useImageLoader'
+import { useMemo, useCallback } from 'react'
 
 const AlgorithmList = ({
   algorithms,
@@ -28,54 +27,11 @@ const AlgorithmList = ({
   isFavorite,
   onToggleFavorite
 }) => {
-  // Track which algorithms have pattern images
-  const [patternImageStatus, setPatternImageStatus] = useState({})
-  // Track hover state for each algorithm
-  const [hoveredAlgorithm, setHoveredAlgorithm] = useState(null)
-
-  // Memoized function to check pattern images
-  const checkPatternImages = useCallback(async (algorithmList) => {
-    const status = {}
-    const imagePromises = []
-    
-    for (const algorithm of algorithmList) {
-      const img = new Image()
-      const promise = new Promise((resolve) => {
-        img.onload = () => {
-          status[algorithm.id] = true
-          resolve()
-        }
-        img.onerror = () => {
-          status[algorithm.id] = false
-          resolve()
-        }
-        img.src = `/images/patterns/${algorithm.id}-pattern.png`
-      })
-      imagePromises.push(promise)
-    }
-    
-    await Promise.all(imagePromises)
-    return status
-  }, [])
-
-  // Check for pattern images for each algorithm
-  useEffect(() => {
-    if (algorithms.length > 0) {
-      checkPatternImages(algorithms).then(setPatternImageStatus)
-    } else {
-      setPatternImageStatus({})
-    }
-  }, [algorithms, checkPatternImages])
-
-  // Enhanced pattern image component with retry logic
-  const EnhancedPatternImage = ({ algorithmId, algorithmName }) => {
+  // Memoized Enhanced pattern image component to prevent re-renders
+  const EnhancedPatternImage = useCallback(({ algorithmId, algorithmName }) => {
     const imageSrc = `/images/patterns/${algorithmId}-pattern.png`
-    const { isLoading, isLoaded, hasError, retry } = useImageLoader(imageSrc, {
-      mobileOptimized: false, // Disable mobile optimizations for desktop
-      maxRetries: 2,
-      retryDelay: 500
-    })
-
+    
+    // Simplified image loading without complex state management
     const handleError = (e) => {
       e.target.style.display = 'none'
       if (e.target.nextSibling) {
@@ -83,36 +39,9 @@ const AlgorithmList = ({
       }
     }
 
-    const handleRetry = () => {
-      retry()
-    }
-
     return (
       <div style={{ position: 'relative' }}>
-        {/* Loading state */}
-        {isLoading && (
-          <div style={{
-            width: '70px',
-            height: '70px',
-            border: `1px solid ${colors.border.light}`,
-            borderRadius: borderRadius.base,
-            background: colors.background.primary,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <div style={{
-              width: '16px',
-              height: '16px',
-              border: `2px solid ${colors.neutral[300]}`,
-              borderTop: `2px solid ${colors.primary[500]}`,
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-            }} />
-          </div>
-        )}
-
-        {/* Main image */}
+        {/* Main image with simplified loading */}
         <img
           src={imageSrc}
           alt={`${algorithmName} pattern`}
@@ -124,45 +53,42 @@ const AlgorithmList = ({
             borderRadius: borderRadius.base,
             background: colors.background.primary,
             maxWidth: '100%',
-            display: isLoaded ? 'block' : 'none',
-            loading: 'eager',
+            display: 'block',
+            loading: 'lazy',
           }}
           onError={handleError}
         />
 
         {/* Fallback for failed images */}
         <div style={{
-          display: hasError ? 'block' : 'none',
+          display: 'none', // Hidden by default, shown on error
           fontSize: typography.fontSize.xs,
           color: colors.neutral[500],
           textAlign: 'center',
           cursor: 'pointer',
           padding: spacing[2],
         }}
-        onClick={handleRetry}
-        title="Click to retry loading image"
+        title="Image unavailable"
         >
           Image unavailable
         </div>
       </div>
     )
-  }
+  }, [])
 
   // Memoized algorithm list to prevent unnecessary re-renders
   const algorithmItems = useMemo(() => {
     return algorithms.map(algorithm => {
       const isSelected = selectedAlgorithm?.id === algorithm.id
       const isFav = isFavorite(algorithm.id)
-      const hasPatternImage = patternImageStatus[algorithm.id]
       
       return {
         ...algorithm,
         isSelected,
-        isFav,
-        hasPatternImage
+        isFav
       }
     })
-  }, [algorithms, selectedAlgorithm, isFavorite, patternImageStatus])
+  }, [algorithms, selectedAlgorithm, isFavorite])
 
   // Memoized empty state to prevent re-renders
   const emptyState = useMemo(() => (
@@ -212,14 +138,10 @@ const AlgorithmList = ({
           gap: spacing[3],
         }}>
           {algorithmItems.map(algorithm => {
-            const isHovered = hoveredAlgorithm === algorithm.id
-            
             return (
               <div
                 key={algorithm.id}
                 onClick={() => onSelectAlgorithm(algorithm)}
-                onMouseEnter={() => setHoveredAlgorithm(algorithm.id)}
-                onMouseLeave={() => setHoveredAlgorithm(null)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
@@ -230,20 +152,22 @@ const AlgorithmList = ({
                 role="button"
                 aria-label={`Select ${algorithm.name} algorithm`}
                 aria-describedby={`algorithm-${algorithm.id}-description`}
+                className={`algorithm-item ${algorithm.isSelected ? 'selected' : ''}`}
                 style={{
                   background: algorithm.isSelected ? colors.primary[50] : colors.background.primary,
                   border: algorithm.isSelected ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.light}`,
                   borderRadius: borderRadius.xl,
                   padding: spacing[4],
                   cursor: 'pointer',
-                  transition: transitions.normal,
+                  transition: 'border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease',
                   position: 'relative',
                   overflow: 'hidden',
-                  transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-                  boxShadow: isHovered ? shadows.lg : (algorithm.isSelected ? shadows.lg : shadows.sm),
-                  borderColor: isHovered ? (algorithm.isSelected ? colors.primary[600] : colors.border.medium) : (algorithm.isSelected ? colors.primary[500] : colors.border.light),
+                  transform: 'translateZ(0)', // Force hardware acceleration
+                  willChange: 'border-color, box-shadow, background-color', // Optimize for animations
+                  boxShadow: algorithm.isSelected ? shadows.lg : shadows.sm,
+                  borderColor: algorithm.isSelected ? colors.primary[500] : colors.border.light,
                   outline: 'none',
-                  minHeight: '44px', // Touch target optimization
+                  minHeight: '44px',
                 }}
               >
                 <div style={{
@@ -332,77 +256,45 @@ const AlgorithmList = ({
                         minHeight: '120px',
                       }}
                     >
-                      {algorithm.hasPatternImage ? (
-                        <div 
-                          className="responsive-pattern-layout"
-                          style={{
-                            display: 'flex',
-                            gap: spacing[4],
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}
-                        >
-                          {/* Pattern Image Section */}
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: spacing[2],
-                            flex: '0 0 auto',
-                          }}>
-                            <div style={{
-                              fontSize: typography.fontSize.xs,
-                              color: colors.neutral[500],
-                              fontWeight: typography.fontWeight.medium,
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.05em',
-                            }}>
-                              Pattern
-                            </div>
-                            <EnhancedPatternImage 
-                              algorithmId={algorithm.id}
-                              algorithmName={algorithm.name}
-                            />
-                          </div>
-                          
-                          {/* Notation Section */}
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: spacing[2],
-                            flex: '1 1 auto',
-                          }}>
-                            <div style={{
-                              fontSize: typography.fontSize.xs,
-                              color: colors.neutral[500],
-                              fontWeight: typography.fontWeight.medium,
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.05em',
-                            }}>
-                              Notation
-                            </div>
-                            <div style={{
-                              fontSize: typography.fontSize.sm,
-                              fontFamily: typography.fontFamily.mono,
-                              color: colors.neutral[800],
-                              fontWeight: typography.fontWeight.medium,
-                              textAlign: 'center',
-                              lineHeight: typography.lineHeight.normal,
-                            }}>
-                              {algorithm.notation}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
+                      <div 
+                        className="responsive-pattern-layout"
+                        style={{
+                          display: 'flex',
+                          gap: spacing[4],
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        {/* Pattern Image Section */}
                         <div style={{
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
-                          justifyContent: 'center',
                           gap: spacing[2],
-                          width: '100%',
-                          height: '100%',
+                          flex: '0 0 auto',
+                        }}>
+                          <div style={{
+                            fontSize: typography.fontSize.xs,
+                            color: colors.neutral[500],
+                            fontWeight: typography.fontWeight.medium,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                          }}>
+                            Pattern
+                          </div>
+                          <EnhancedPatternImage 
+                            algorithmId={algorithm.id}
+                            algorithmName={algorithm.name}
+                          />
+                        </div>
+                        
+                        {/* Notation Section */}
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: spacing[2],
+                          flex: '1 1 auto',
                         }}>
                           <div style={{
                             fontSize: typography.fontSize.xs,
@@ -424,7 +316,7 @@ const AlgorithmList = ({
                             {algorithm.notation}
                           </div>
                         </div>
-                      )}
+                      </div>
                     </div>
                   </div>
 
@@ -454,9 +346,21 @@ const AlgorithmList = ({
 
       {/* Mobile-responsive styles */}
       <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+        /* CSS-only hover effects to prevent JavaScript state glitching */
+        .algorithm-item {
+          transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+        
+        .algorithm-item:hover {
+          background-color: var(--neutral-50) !important;
+          border-color: var(--border-medium) !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        }
+        
+        .algorithm-item.selected:hover {
+          background-color: var(--primary-100) !important;
+          border-color: var(--primary-600) !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
         }
         
         @media (max-width: 768px) {

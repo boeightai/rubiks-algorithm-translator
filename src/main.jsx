@@ -32,39 +32,23 @@ if ('serviceWorker' in navigator && !window.location.hostname.includes('localhos
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        // Check for updates periodically - less frequent to avoid disrupting image loading
+        // Check for updates every 5 minutes
         setInterval(() => {
           registration.update()
-        }, 300000) // Check every 5 minutes instead of every minute
+        }, 300000)
         
-        // Check for updates
+        // Handle updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New service worker available - automatically reload
-              console.log('New version available! Reloading...')
-              // Send skip waiting message to new service worker
+              // Auto-reload when new version is available
               newWorker.postMessage({ type: 'SKIP_WAITING' })
-              // Reload the page once the new service worker takes control
               navigator.serviceWorker.addEventListener('controllerchange', () => {
                 window.location.reload()
               })
             }
           })
-        })
-        
-        // Also check for updates on page focus - but throttled to avoid disrupting user experience
-        let lastUpdateCheck = 0
-        document.addEventListener('visibilitychange', () => {
-          if (!document.hidden) {
-            const now = Date.now()
-            // Only check for updates if it's been at least 2 minutes since last check
-            if (now - lastUpdateCheck > 120000) {
-              registration.update()
-              lastUpdateCheck = now
-            }
-          }
         })
       })
       .catch(() => {

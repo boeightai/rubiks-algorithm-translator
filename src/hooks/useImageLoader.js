@@ -34,10 +34,9 @@ const isLocalhost = () => {
  */
 export function useImageLoader(imageSrc, options = {}) {
   const {
-    maxRetries = 3,
+    maxRetries = 2,
     retryDelay = 1000,
-    mobileOptimized = true, // Default to true for mobile compatibility
-    preload = false
+    mobileOptimized = true
   } = options
 
   const [loadingState, setLoadingState] = useState({
@@ -51,7 +50,6 @@ export function useImageLoader(imageSrc, options = {}) {
   const [imageElement, setImageElement] = useState(null)
   const abortControllerRef = useRef(null)
   const retryTimeoutRef = useRef(null)
-  const isLocalhostEnv = useRef(isLocalhost())
 
   // Cleanup function
   const cleanup = useCallback(() => {
@@ -140,15 +138,13 @@ export function useImageLoader(imageSrc, options = {}) {
     try {
       return await checkImageExists(imageSrc, { mobileOptimized })
     } catch {
-      // Silently handle image existence check errors to avoid console spam
       return false
     }
   }, [imageSrc, mobileOptimized])
 
-  // Auto-retry on error (with localhost detection to prevent excessive retries)
+  // Auto-retry on error
   useEffect(() => {
-    // Reduce retry attempts for localhost to prevent glitching
-    const maxRetriesForLocalhost = isLocalhostEnv.current ? 1 : maxRetries
+    const maxRetriesForLocalhost = isLocalhost() ? 1 : maxRetries
     
     if (loadingState.hasError && loadingState.retryCount < maxRetriesForLocalhost) {
       retry()
@@ -164,12 +160,12 @@ export function useImageLoader(imageSrc, options = {}) {
 
   // Load image when src changes
   useEffect(() => {
-    if (preload || imageSrc) {
+    if (imageSrc) {
       loadImage()
     }
 
     return cleanup
-  }, [imageSrc, preload, loadImage, cleanup])
+  }, [imageSrc, loadImage, cleanup])
 
   return {
     ...loadingState,

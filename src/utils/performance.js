@@ -61,21 +61,16 @@ export function throttle(func, limit) {
 }
 
 /**
- * Enhanced image loading with retry logic and mobile optimization
+ * Enhanced image loading with retry logic
  * @param {string} src - The image source URL
  * @param {Object} options - Loading options
- * @param {number} options.maxRetries - Maximum number of retry attempts (default: 3)
- * @param {number} options.retryDelay - Delay between retries in ms (default: 1000)
- * @param {boolean} options.mobileOptimized - Whether to use mobile-specific optimizations
- * @param {boolean} options.preload - Whether to preload the image
  * @returns {Promise<HTMLImageElement>} - Promise that resolves with the loaded image
  */
 export function loadImageWithRetry(src, options = {}) {
   const {
-    maxRetries = 3,
+    maxRetries = 2,
     retryDelay = 1000,
-    mobileOptimized = true,
-    preload = false
+    mobileOptimized = true
   } = options
 
   return new Promise((resolve, reject) => {
@@ -84,21 +79,12 @@ export function loadImageWithRetry(src, options = {}) {
     let abortController = null
 
     const attemptLoad = () => {
-      // Create abort controller for cleanup
       abortController = new AbortController()
       
       const img = new Image()
       
-      // Mobile-specific optimizations
       if (mobileOptimized) {
-        // Set loading priority for mobile
-        img.loading = preload ? 'eager' : 'lazy'
-        // Add crossOrigin for better mobile compatibility - except iPad Safari
-        const isIPadSafari = /iPad|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document
-        if (!isIPadSafari) {
-          img.crossOrigin = 'anonymous'
-        }
-        // Add decoding hint for better performance
+        img.loading = 'lazy'
         img.decoding = 'async'
       }
 
@@ -127,11 +113,9 @@ export function loadImageWithRetry(src, options = {}) {
         
         retryCount++
         
-        // Check if we're on localhost and reduce retry attempts
         const effectiveMaxRetries = isLocalhost() ? Math.min(maxRetries, 1) : maxRetries
         
         if (retryCount < effectiveMaxRetries) {
-          // Exponential backoff for retries (reduced delay for localhost)
           const delay = isLocalhost() ? retryDelay : retryDelay * Math.pow(2, retryCount - 1)
           timeoutId = setTimeout(attemptLoad, delay)
         } else {
@@ -139,19 +123,17 @@ export function loadImageWithRetry(src, options = {}) {
         }
       }
 
-      // Set a timeout for the entire loading process
       timeoutId = setTimeout(() => {
         abortController.abort()
         cleanup()
         reject(new Error(`Image loading timeout: ${src}`))
-      }, 10000) // 10 second timeout
+      }, 10000)
 
       img.src = src
     }
 
     attemptLoad()
 
-    // Return abort function for cleanup
     return () => {
       if (abortController) {
         abortController.abort()
@@ -164,7 +146,7 @@ export function loadImageWithRetry(src, options = {}) {
 }
 
 /**
- * Check if an image exists at the given URL with enhanced mobile support
+ * Check if an image exists at the given URL
  * @param {string} url - The image URL to check
  * @param {Object} options - Checking options
  * @returns {Promise<boolean>} - Whether the image exists
@@ -183,11 +165,6 @@ export function checkImageExists(url, options = {}) {
     
     if (mobileOptimized) {
       img.loading = 'eager'
-      // Check for iPad Safari specifically
-      const isIPadSafari = /iPad|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document
-      if (!isIPadSafari) {
-        img.crossOrigin = 'anonymous'
-      }
     }
     
     const cleanup = () => {
@@ -209,11 +186,10 @@ export function checkImageExists(url, options = {}) {
       resolve(false)
     }
     
-    // Add timeout for mobile browsers
     timeoutId = setTimeout(() => {
       cleanup()
       resolve(false)
-    }, 5000) // 5 second timeout for mobile
+    }, 5000)
     
     try {
       img.src = url
