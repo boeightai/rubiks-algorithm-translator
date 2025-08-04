@@ -22,14 +22,14 @@
   },
   {
     "id": "ideal-case-right-edge",
-    "name": "Ideal Case Right Edge",
+    "name": "Second Layer Right Edge",
     "notation": "U R U R' U'",
     "nicknames": [],
     "description": "Ideal case for inserting right edge in F2L - perfect for beginners learning F2L"
   },
   {
     "id": "ideal-case-left-edge",
-    "name": "Ideal Case Left Edge",
+    "name": "Second Layer Left Edge",
     "notation": "U' L' U' L U",
     "nicknames": [],
     "description": "Ideal case for inserting left edge in F2L - perfect for beginners learning F2L"

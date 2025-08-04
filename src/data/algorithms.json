@@ -1013,7 +1013,7 @@
   },
   {
     "id": "ideal-case-right-edge",
-    "name": "Ideal Case Right Edge",
+    "name": "Second Layer Right Edge",
     "notation": "U R U R' U'",
     "category": "Beginner F2L",
     "difficulty": "beginner",
@@ -1022,7 +1022,7 @@
   },
   {
     "id": "ideal-case-left-edge",
-    "name": "Ideal Case Left Edge",
+    "name": "Second Layer Left Edge",
     "notation": "U' L' U' L U",
     "category": "Beginner F2L",
     "difficulty": "beginner",
