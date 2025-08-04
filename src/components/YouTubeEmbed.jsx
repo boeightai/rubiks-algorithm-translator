@@ -16,15 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState } from 'react'
 import { colors, borderRadius, shadows, typography, spacing } from '../styles/designSystem'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
 function YouTubeEmbed() {
-  // Use a default tutorial video ID - replace with your actual video ID
-  const videoId = 'jVzB8wpKQgw' // Default Rubik's Cube tutorial video
   const { isMobile, isTablet } = useMobileDetection()
-  const [hasError, setHasError] = useState(false)
   
   // Determine if we're on desktop for compact layout
   const isDesktop = !isMobile && !isTablet
@@ -34,47 +30,6 @@ function YouTubeEmbed() {
     if (isMobile) return '100%' // Full width on mobile
     if (isTablet) return '600px' // Medium size on tablet
     return isDesktop ? '500px' : '700px' // More compact on desktop
-  }
-  
-  const handleIframeError = () => {
-    setHasError(true)
-  }
-  
-  if (hasError) {
-    return (
-      <div style={{
-        width: '100%',
-        maxWidth: getMaxWidth(),
-        margin: '0 auto',
-        backgroundColor: colors.background.secondary,
-        borderRadius: borderRadius.xl,
-        padding: spacing[6],
-        boxShadow: shadows.lg,
-        border: `1px solid ${colors.border.light}`,
-        textAlign: 'center',
-      }}>
-        <div style={{
-          fontSize: typography.fontSize.xl,
-          marginBottom: spacing[2],
-          color: colors.neutral[400],
-        }}>
-          🎥
-        </div>
-        <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.neutral[600],
-          marginBottom: spacing[3],
-        }}>
-          Video temporarily unavailable
-        </div>
-        <div style={{
-          fontSize: typography.fontSize.xs,
-          color: colors.neutral[500],
-        }}>
-          Please check your internet connection and try again
-        </div>
-      </div>
-    )
   }
   
   return (
@@ -94,24 +49,35 @@ function YouTubeEmbed() {
         paddingBottom: '56.25%', // 16:9 aspect ratio
         height: 0,
         overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.neutral[100],
       }}>
-        <iframe
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            border: 'none',
-          }}
-          src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
-          title="Rubik's Cube Tutorial"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          onError={handleIframeError}
-        />
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          textAlign: 'center',
+          padding: spacing[4],
+        }}>
+          <div style={{
+            fontSize: typography.fontSize.xl,
+            marginBottom: spacing[3],
+            color: colors.neutral[400],
+          }}>
+            🎥
+          </div>
+          <div style={{
+            fontSize: typography.fontSize.lg,
+            color: colors.neutral[700],
+            fontWeight: '600',
+          }}>
+            Video Tutorial Coming Soon
+          </div>
+        </div>
       </div>
-      
     </div>
   )
 }
