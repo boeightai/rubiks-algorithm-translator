@@ -137,7 +137,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
           textAlign: 'center',
           minWidth: '200px',
         }}>
-          {/* Title and Nicknames Container */}
+          {/* Title Container */}
           <div style={{
             position: 'relative',
             marginBottom: isDesktop ? spacing[1] : spacing[2], // Reduced margin for desktop
@@ -151,39 +151,6 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
             }}>
               {currentAlgorithm.name}
             </h2>
-            
-            {/* Nicknames - positioned below on mobile, to the side on desktop */}
-            {currentAlgorithm.nicknames && currentAlgorithm.nicknames.length > 0 && (
-              <div style={{
-                display: 'flex',
-                gap: spacing[2],
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                marginTop: isMobile ? spacing[2] : 0,
-                position: isMobile ? 'static' : 'absolute',
-                left: isMobile ? 'auto' : 'calc(50% + 120px)',
-                top: isMobile ? 'auto' : '50%',
-                transform: isMobile ? 'none' : 'translateY(-50%)',
-                maxWidth: isMobile ? '100%' : '200px',
-              }}>
-                {currentAlgorithm.nicknames.map((nickname, index) => (
-                  <span
-                    key={index}
-                    style={{
-                      backgroundColor: colors.neutral[100],
-                      color: colors.neutral[700],
-                      padding: `${spacing[1]} ${spacing[2]}`,
-                      borderRadius: borderRadius.full,
-                      fontSize: typography.fontSize.xs,
-                      fontWeight: typography.fontWeight.medium,
-                      border: `1px solid ${colors.neutral[200]}`,
-                    }}
-                  >
-                    {nickname}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </div>
         
