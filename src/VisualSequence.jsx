@@ -165,101 +165,6 @@ function VisualSequence({ notation }) {
       padding: isDesktop ? spacing[4] : spacing[6],
       boxShadow: shadows.sm,
     }}>
-      <div style={{
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: spacing[2], 
-        marginBottom: isDesktop ? spacing[3] : spacing[4], 
-        paddingBottom: isDesktop ? spacing[2] : spacing[3], 
-        borderBottom: `1px solid ${colors.border.light}`, 
-        flexWrap: 'wrap',
-      }}>
-        <div style={{ 
-          width: '24px', 
-          height: '24px', 
-          background: `linear-gradient(135deg, ${colors.primary[500]}, ${colors.primary[600]})`, 
-          borderRadius: '6px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          flexShrink: 0 
-        }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        <h3 style={{ 
-          color: colors.neutral[900], 
-          margin: 0, 
-          fontWeight: typography.fontWeight.semibold, 
-          fontSize: typography.fontSize.lg, 
-          flex: '1 1 auto' 
-        }}>
-          Visual Sequence
-        </h3>
-        <div style={{ 
-          background: colors.neutral[100], 
-          color: colors.neutral[600], 
-          padding: `${spacing[1]} ${spacing[2]}`, 
-          borderRadius: borderRadius.full, 
-          fontSize: typography.fontSize.xs, 
-          fontWeight: typography.fontWeight.medium, 
-          flexShrink: 0 
-        }}>
-          {moveList.length} moves
-        </div>
-        {highlightedMoves.size > 0 && leftTriggerMoves.size > 0 && (
-          <div style={{ 
-            background: colors.neutral[100], 
-            color: colors.neutral[700], 
-            padding: `${spacing[1]} ${spacing[2]}`, 
-            borderRadius: borderRadius.full, 
-            fontSize: typography.fontSize.xs, 
-            fontWeight: typography.fontWeight.medium, 
-            border: `1px solid ${colors.neutral[200]}`, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: spacing[1], 
-            flexShrink: 0 
-          }}>
-            <span style={{ fontSize: '10px' }}>🎯</span>Both Triggers
-          </div>
-        )}
-        {highlightedMoves.size > 0 && leftTriggerMoves.size === 0 && (
-          <div style={{ 
-            background: colors.success[100], 
-            color: colors.success[700], 
-            padding: `${spacing[1]} ${spacing[2]}`, 
-            borderRadius: borderRadius.full, 
-            fontSize: typography.fontSize.xs, 
-            fontWeight: typography.fontWeight.medium, 
-            border: `1px solid ${colors.success[200]}`, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: spacing[1], 
-            flexShrink: 0 
-          }}>
-            <span style={{ fontSize: '10px' }}>🎯</span>Right Trigger
-          </div>
-        )}
-        {leftTriggerMoves.size > 0 && highlightedMoves.size === 0 && (
-          <div style={{ 
-            background: colors.info[100], 
-            color: colors.info[700], 
-            padding: `${spacing[1]} ${spacing[2]}`, 
-            borderRadius: borderRadius.full, 
-            fontSize: typography.fontSize.xs, 
-            fontWeight: typography.fontWeight.medium, 
-            border: `1px solid ${colors.info[200]}`, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: spacing[1], 
-            flexShrink: 0 
-          }}>
-            <span style={{ fontSize: '10px' }}>🎯</span>Left Trigger
-          </div>
-        )}
-      </div>
       
       {moveList.length === 0 ? (
         <div style={{ 
@@ -369,16 +274,42 @@ function VisualSequence({ notation }) {
                 renderedMoves.push(
                   <div key={`trigger-${i}`} style={{ 
                     display: 'flex', 
-                    gap: isDesktop ? spacing[1] : spacing[2], 
-                    padding: isDesktop ? spacing[2] : spacing[3], 
-                    background: triggerBackground, 
-                    border: `3px solid ${triggerColor}`, 
-                    borderRadius: borderRadius.lg, 
-                    boxShadow: shadows.md, 
-                    flexWrap: 'wrap', 
-                    justifyContent: 'center' 
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: spacing[2]
                   }}>
-                    {triggerMoves}
+                    {/* Trigger label above the colored box */}
+                    <div style={{ 
+                      background: triggerType === 'right' ? colors.success[100] : colors.info[100], 
+                      color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
+                      padding: `${spacing[1]} ${spacing[2]}`, 
+                      borderRadius: borderRadius.full, 
+                      fontSize: typography.fontSize.xs, 
+                      fontWeight: typography.fontWeight.medium, 
+                      border: `1px solid ${triggerType === 'right' ? colors.success[200] : colors.info[200]}`, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: spacing[1], 
+                      flexShrink: 0 
+                    }}>
+                      <span style={{ fontSize: '10px' }}>🎯</span>
+                      {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
+                    </div>
+                    
+                    {/* Colored trigger box */}
+                    <div style={{ 
+                      display: 'flex', 
+                      gap: isDesktop ? spacing[1] : spacing[2], 
+                      padding: isDesktop ? spacing[2] : spacing[3], 
+                      background: triggerBackground, 
+                      border: `3px solid ${triggerColor}`, 
+                      borderRadius: borderRadius.lg, 
+                      boxShadow: shadows.md, 
+                      flexWrap: 'wrap', 
+                      justifyContent: 'center' 
+                    }}>
+                      {triggerMoves}
+                    </div>
                   </div>
                 )
                 i = endIndex + 1

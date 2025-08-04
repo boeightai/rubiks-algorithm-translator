@@ -1,6 +1,6 @@
 # Rubik's Cube Algorithm Translator
 
-A modern web application for learning and practicing Rubik's Cube algorithms with visual notation translation. Convert algorithm notation to step-by-step visual move sequences.
+A modern web application for learning and practicing Rubik's Cube algorithms with visual notation translation. Convert algorithm notation to step-by-step visual move sequences for those that struggle to learn and internalize the traditional notation system used in speedcubing communities.
 
 ## 🚀 Features
 
@@ -162,4 +162,4 @@ For issues or questions:
 
 ---
 
-**Built with ❤️ by Bo Nam**
+**Built with ❤️ by Bo and Hailey Nam**

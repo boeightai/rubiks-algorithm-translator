@@ -184,7 +184,7 @@ function TutorialMode({ onModeToggle }) {
         padding: `${spacing[4]} ${spacing[4]} 0`,
       }}>
         <Header 
-          title="Learn to Solve a Rubik's Cube"
+          title="A Visual Way to Solve Rubik's Cubes"
           subtitle="Step-by-step tutorial using Bo and Hailey's Visual Notation System"
           onModeToggle={onModeToggle}
           currentMode="tutorial"

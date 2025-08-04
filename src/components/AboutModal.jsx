@@ -236,11 +236,11 @@ const AboutModal = ({ isOpen, onClose }) => {
             }}>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
                 Welcome to our Rubik's Cube Algorithm Translator. This project was born from a shared passion 
-                between my 9 year old daughter Hailey and I - our love of solving Rubik's Cubes and learning to code.
+                between my 9 year old daughter Hailey and me - our love of solving Rubik's Cubes and learning to code.
               </p>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
                 We're excited to share our ongoing development with both the speedcubing and coding communities. 
-                We also hope to attract new people to learn how to solve Rubik's Cubes with our visual system!
+                We also hope to attract new people to learn how to solve Rubik's Cubes with our visual notationsystem!
               </p>
             </div>
 
