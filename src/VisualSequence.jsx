@@ -24,6 +24,7 @@ import { useMobileDetection } from './hooks/useMobileDetection'
 function VisualSequence({ notation }) {
   const { isMobile, isTablet } = useMobileDetection()
   const isDesktop = !isMobile && !isTablet
+  const isMobileDevice = isMobile || isTablet
 
   // Parse the notation string into individual moves
   const parseNotation = useCallback((notation) => {
@@ -116,14 +117,26 @@ function VisualSequence({ notation }) {
     return colors.neutral[900]
   }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
-  // Simple, robust image component
-  const MoveImage = ({ move, index }) => {
+  // Mobile-specific image size for trigger boxes
+  const getTriggerImageSize = useCallback(() => {
+    return isMobileDevice ? '48px' : '64px'
+  }, [isMobileDevice])
+
+  // Mobile-specific gap for trigger boxes
+  const getTriggerGap = useCallback(() => {
+    return isMobileDevice ? spacing[1] : spacing[2]
+  }, [isMobileDevice])
+
+  // Enhanced MoveImage component with mobile trigger sizing
+  const MoveImage = ({ move, index, isInTrigger = false }) => {
     const imageSrc = moves[move]
+    const imageSize = isInTrigger ? getTriggerImageSize() : '64px'
+    
     if (!move || !imageSrc) {
       return (
         <div style={{
-          width: '64px', 
-          height: '64px', 
+          width: imageSize, 
+          height: imageSize, 
           border: '2px solid red', 
           display: 'flex', 
           alignItems: 'center', 
@@ -141,8 +154,8 @@ function VisualSequence({ notation }) {
         src={imageSrc}
         alt={move}
         style={{
-          width: '64px', 
-          height: '64px', 
+          width: imageSize, 
+          height: imageSize, 
           border: `2px solid ${getMoveImageBorder(index)}`, 
           objectFit: 'contain', 
           borderRadius: borderRadius.lg, 
@@ -237,7 +250,8 @@ function VisualSequence({ notation }) {
                       flexDirection: 'column', 
                       alignItems: 'center', 
                       gap: isDesktop ? spacing[1] : spacing[2], 
-                      position: 'relative' 
+                      position: 'relative',
+                      flexShrink: 0
                     }}>
                       <div style={{ 
                         background: getMoveNumberBackground(j), 
@@ -254,14 +268,14 @@ function VisualSequence({ notation }) {
                       }}>
                         {j + 1}
                       </div>
-                      <MoveImage move={moveList[j]} index={j} />
+                      <MoveImage move={moveList[j]} index={j} isInTrigger={true} />
                       <div style={{ 
-                        fontSize: typography.fontSize.xl, 
+                        fontSize: isMobileDevice ? typography.fontSize.lg : typography.fontSize.xl, 
                         color: getMoveLabelColor(j), 
                         fontWeight: typography.fontWeight.bold, 
                         fontFamily: typography.fontFamily.mono, 
                         letterSpacing: '0.05em', 
-                        maxWidth: '80px', 
+                        maxWidth: isMobileDevice ? '60px' : '80px', 
                         textAlign: 'center', 
                         lineHeight: typography.lineHeight.tight 
                       }}>
@@ -276,7 +290,9 @@ function VisualSequence({ notation }) {
                     display: 'flex', 
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: spacing[2]
+                    gap: spacing[2],
+                    width: '100%',
+                    flexShrink: 0
                   }}>
                     {/* Trigger label above the colored box */}
                     <div style={{ 
@@ -296,17 +312,20 @@ function VisualSequence({ notation }) {
                       {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
                     </div>
                     
-                    {/* Colored trigger box */}
+                    {/* Colored trigger box - forced single line on mobile */}
                     <div style={{ 
                       display: 'flex', 
-                      gap: isDesktop ? spacing[1] : spacing[2], 
+                      gap: getTriggerGap(), 
                       padding: isDesktop ? spacing[2] : spacing[3], 
                       background: triggerBackground, 
                       border: `3px solid ${triggerColor}`, 
                       borderRadius: borderRadius.lg, 
                       boxShadow: shadows.md, 
-                      flexWrap: 'wrap', 
-                      justifyContent: 'center' 
+                      flexWrap: isMobileDevice ? 'nowrap' : 'wrap', 
+                      justifyContent: 'center',
+                      width: '100%',
+                      overflow: isMobileDevice ? 'hidden' : 'visible',
+                      minWidth: isMobileDevice ? 'fit-content' : 'auto'
                     }}>
                       {triggerMoves}
                     </div>
