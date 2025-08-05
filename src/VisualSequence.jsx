@@ -291,7 +291,7 @@ function VisualSequence({ notation }) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: spacing[2],
-                    width: '100%',
+                    width: isMobileDevice ? '100%' : 'fit-content',
                     flexShrink: 0
                   }}>
                     {/* Trigger label above the colored box */}
@@ -323,7 +323,7 @@ function VisualSequence({ notation }) {
                       boxShadow: shadows.md, 
                       flexWrap: isMobileDevice ? 'nowrap' : 'wrap', 
                       justifyContent: 'center',
-                      width: '100%',
+                      width: isMobileDevice ? '100%' : 'fit-content',
                       overflow: isMobileDevice ? 'hidden' : 'visible',
                       minWidth: isMobileDevice ? 'fit-content' : 'auto'
                     }}>
