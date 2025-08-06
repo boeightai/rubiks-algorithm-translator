@@ -1,5 +1,12 @@
 [
   {
+    "id": "daisy-edge-flipper",
+    "name": "Daisy Edge Flipper",
+    "notation": "F U' R",
+    "nicknames": [],
+    "description": "Simple algorithm for flipping edges in daisy pattern"
+  },
+  {
     "id": "right-trigger",
     "name": "Right Trigger",
     "notation": "R U R' U'",
@@ -12,13 +19,6 @@
     "notation": "L' U' L U",
     "nicknames": ["Left Sexy Move"],
     "description": "The left-hand counterpart to the Right Trigger"
-  },
-  {
-    "id": "daisy-edge-flipper",
-    "name": "Daisy Edge Flipper",
-    "notation": "F U' R",
-    "nicknames": [],
-    "description": "Simple algorithm for flipping edges in daisy pattern"
   },
   {
     "id": "ideal-case-right-edge",
