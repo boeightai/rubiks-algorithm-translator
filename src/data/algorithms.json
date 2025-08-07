@@ -1,5 +1,38 @@
 [
   {
+    "id": "daisy-edge-flipper",
+    "name": "Daisy Edge Flipper",
+    "notation": "F U' R",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Simple algorithm for flipping edges in daisy pattern",
+    "nicknames": []
+  },
+  {
+    "id": "white-corners-1",
+    "name": "Right Hand Algorithm",
+    "notation": "R U R' U'",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Basic corner insertion",
+    "nicknames": [
+      "Right Trigger",
+      "Sexy Move"
+    ]
+  },
+  {
+    "id": "white-corners-2",
+    "name": "Left Hand Algorithm",
+    "notation": "L' U' L U",
+    "category": "Utility",
+    "difficulty": "beginner",
+    "description": "Left-handed corner insertion",
+    "nicknames": [
+      "Left Trigger",
+      "Left Sexy Move"
+    ]
+  },
+  {
     "id": "utility-sledgehammer",
     "name": "Sledgehammer",
     "notation": "R' F R F'",
@@ -43,39 +76,6 @@
     "difficulty": "intermediate",
     "description": "Setup move for T-Perm algorithm",
     "nicknames": []
-  },
-  {
-    "id": "daisy-edge-flipper",
-    "name": "Daisy Edge Flipper",
-    "notation": "F U' R",
-    "category": "Utility",
-    "difficulty": "beginner",
-    "description": "Simple algorithm for flipping edges in daisy pattern",
-    "nicknames": []
-  },
-  {
-    "id": "white-corners-1",
-    "name": "Right Hand Algorithm",
-    "notation": "R U R' U'",
-    "category": "Utility",
-    "difficulty": "beginner",
-    "description": "Basic corner insertion",
-    "nicknames": [
-      "Right Trigger",
-      "Sexy Move"
-    ]
-  },
-  {
-    "id": "white-corners-2",
-    "name": "Left Hand Algorithm",
-    "notation": "L' U' L U",
-    "category": "Utility",
-    "difficulty": "beginner",
-    "description": "Left-handed corner insertion",
-    "nicknames": [
-      "Left Trigger",
-      "Left Sexy Move"
-    ]
   },
   {
     "id": "second-layer-right",
