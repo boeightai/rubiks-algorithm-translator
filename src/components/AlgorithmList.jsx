@@ -18,7 +18,7 @@
 
 import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useState, useEffect } from 'react'
 
 const AlgorithmList = ({
   algorithms,
@@ -27,54 +27,61 @@ const AlgorithmList = ({
   isFavorite,
   onToggleFavorite
 }) => {
+  // Track which algorithms have loadable pattern images
+  const [patternImageStatus, setPatternImageStatus] = useState({})
+
   // Memoized Enhanced pattern image component to prevent re-renders
   const EnhancedPatternImage = useCallback(({ algorithmId, algorithmName }) => {
     const imageSrc = `/images/patterns/${algorithmId}-pattern.png`
     
-    // Simplified image loading without complex state management
-    const handleError = (e) => {
-      e.target.style.display = 'none'
-      if (e.target.nextSibling) {
-        e.target.nextSibling.style.display = 'block'
-      }
-    }
-
     return (
-      <div style={{ position: 'relative' }}>
-        {/* Main image with simplified loading */}
-        <img
-          src={imageSrc}
-          alt={`${algorithmName} pattern`}
-          className="responsive-pattern-image"
-          style={{
-            width: '70px',
-            height: '70px',
-            border: `1px solid ${colors.border.light}`,
-            borderRadius: borderRadius.base,
-            background: colors.background.primary,
-            maxWidth: '100%',
-            display: 'block',
-            loading: 'lazy',
-          }}
-          onError={handleError}
-        />
-
-        {/* Fallback for failed images */}
-        <div style={{
-          display: 'none', // Hidden by default, shown on error
-          fontSize: typography.fontSize.xs,
-          color: colors.neutral[500],
-          textAlign: 'center',
-          cursor: 'pointer',
-          padding: spacing[2],
+      <img
+        src={imageSrc}
+        alt={`${algorithmName} pattern`}
+        className="responsive-pattern-image"
+        loading="lazy"
+        style={{
+          width: '70px',
+          height: '70px',
+          border: `1px solid ${colors.border.light}`,
+          borderRadius: borderRadius.base,
+          background: colors.background.primary,
+          maxWidth: '100%',
+          display: 'block',
         }}
-        title="Image unavailable"
-        >
-          Image unavailable
-        </div>
-      </div>
+      />
     )
   }, [])
+
+  // Pre-check pattern images for all algorithms with proper cleanup
+  useEffect(() => {
+    const images = []
+    const uncheckedAlgorithms = algorithms.filter(
+      algorithm => patternImageStatus[algorithm.id] === undefined
+    )
+    
+    uncheckedAlgorithms.forEach(algorithm => {
+      const img = new Image()
+      images.push(img)
+      
+      img.onload = () => {
+        setPatternImageStatus(prev => ({ ...prev, [algorithm.id]: true }))
+      }
+      img.onerror = () => {
+        setPatternImageStatus(prev => ({ ...prev, [algorithm.id]: false }))
+      }
+      img.src = `/images/patterns/${algorithm.id}-pattern.png`
+    })
+    
+    // Cleanup function to prevent memory leaks
+    return () => {
+      images.forEach(img => {
+        img.onload = null
+        img.onerror = null
+        img.src = ''
+      })
+    }
+  }, [algorithms, patternImageStatus])
 
   // Memoized algorithm list to prevent unnecessary re-renders
   const algorithmItems = useMemo(() => {
@@ -262,39 +269,43 @@ const AlgorithmList = ({
                           display: 'flex',
                           gap: spacing[4],
                           alignItems: 'center',
-                          justifyContent: 'space-between',
+                          justifyContent: patternImageStatus[algorithm.id] ? 'space-between' : 'center',
                         }}
                       >
-                        {/* Pattern Image Section */}
-                        <div style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: spacing[2],
-                          flex: '0 0 auto',
-                        }}>
+                        {/* Only show Pattern Image Section if image exists */}
+                        {patternImageStatus[algorithm.id] && (
                           <div style={{
-                            fontSize: typography.fontSize.xs,
-                            color: colors.neutral[500],
-                            fontWeight: typography.fontWeight.medium,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: spacing[2],
+                            flex: '0 0 auto',
                           }}>
-                            Pattern
+                            <div style={{
+                              fontSize: typography.fontSize.xs,
+                              color: colors.neutral[500],
+                              fontWeight: typography.fontWeight.medium,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em',
+                            }}>
+                              Pattern
+                            </div>
+                            <EnhancedPatternImage 
+                              algorithmId={algorithm.id}
+                              algorithmName={algorithm.name}
+                            />
                           </div>
-                          <EnhancedPatternImage 
-                            algorithmId={algorithm.id}
-                            algorithmName={algorithm.name}
-                          />
-                        </div>
+                        )}
                         
-                        {/* Notation Section */}
+                        {/* Notation Section - always shown, centered when no pattern */}
                         <div style={{
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
                           gap: spacing[2],
-                          flex: '1 1 auto',
+                          flex: patternImageStatus[algorithm.id] ? '1 1 auto' : '0 0 auto',
+                          width: patternImageStatus[algorithm.id] ? 'calc(100% - 90px)' : '100%',
+                          minWidth: 0, // Important for flex children to respect width constraints
                         }}>
                           <div style={{
                             fontSize: typography.fontSize.xs,
@@ -312,6 +323,11 @@ const AlgorithmList = ({
                             fontWeight: typography.fontWeight.medium,
                             textAlign: 'center',
                             lineHeight: typography.lineHeight.normal,
+                            wordBreak: 'break-word',
+                            overflowWrap: 'break-word',
+                            width: '100%',
+                            padding: '0 8px',
+                            boxSizing: 'border-box',
                           }}>
                             {algorithm.notation}
                           </div>

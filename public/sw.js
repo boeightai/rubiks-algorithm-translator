@@ -17,7 +17,7 @@
  */
 
 // Update version number to force cache refresh on deployment
-const CACHE_VERSION = 'v5'
+const CACHE_VERSION = 'v6'
 const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
 const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
