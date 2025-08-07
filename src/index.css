@@ -90,6 +90,18 @@
   --warning-500: #f59e0b;
   --warning-600: #d97706;
   --warning-700: #b45309;
+
+  /* Error colors */
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-200: #fecaca;
+  --error-300: #fca5a5;
+  --error-400: #f87171;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  --error-700: #b91c1c;
+  --error-800: #991b1b;
+  --error-900: #7f1d1d;
   
   /* Special for move images */
   --move-image-bg: transparent;
@@ -183,6 +195,18 @@
   --warning-500: #fbbf24;
   --warning-600: #fcd34d;
   --warning-700: #fde68a;
+
+  /* Error colors (adjusted for dark) */
+  --error-50: #7f1d1d;
+  --error-100: #991b1b;
+  --error-200: #b91c1c;
+  --error-300: #dc2626;
+  --error-400: #ef4444;
+  --error-500: #f87171;
+  --error-600: #fca5a5;
+  --error-700: #fecaca;
+  --error-800: #fee2e2;
+  --error-900: #fef2f2;
   
   /* Special for move images - white background in dark mode */
   --move-image-bg: rgba(255, 255, 255, 0.9);

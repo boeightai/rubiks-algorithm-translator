@@ -33,7 +33,7 @@ const MobileTabLayout = ({
   const [activeTab, setActiveTab] = useState('algorithms')
   const [showNotification, setShowNotification] = useState(false)
   const autoSwitchTimeoutRef = useRef(null)
-  const { isMobile, isTablet } = useMobileDetection()
+  const { isMobile, isTablet, isPortrait } = useMobileDetection()
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
   
   // Update window width on resize with debouncing
@@ -49,8 +49,9 @@ const MobileTabLayout = ({
   }, [])
   
   // Determine if we should use mobile layout
-  // Include iPads in portrait mode (width <= 1024px)
-  const shouldUseMobileLayout = isMobile || (isTablet && windowWidth <= 1024)
+  // iPad portrait behaves like mobile; iPad landscape behaves like desktop
+  const isIPadPortrait = isTablet && isPortrait
+  const shouldUseMobileLayout = isMobile || isIPadPortrait || (isTablet && windowWidth <= 1024 && isPortrait)
 
   // Handle tab changes and clear selection when switching to algorithms tab
   const handleTabChange = useCallback((newTab) => {

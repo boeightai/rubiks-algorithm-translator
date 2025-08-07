@@ -28,11 +28,14 @@ export function useMobileDetection(breakpoint = 768) {
   const [isTablet, setIsTablet] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const [deviceType, setDeviceType] = useState('desktop')
+  const [isPortrait, setIsPortrait] = useState(true)
+  const [isLandscape, setIsLandscape] = useState(false)
 
   const checkDevice = useCallback(() => {
     if (typeof window !== 'undefined') {
       try {
         const width = window.innerWidth
+        const height = window.innerHeight
         const userAgent = navigator.userAgent.toLowerCase()
         
         // Check for iPad specifically
@@ -49,6 +52,8 @@ export function useMobileDetection(breakpoint = 768) {
         
         setIsMobile(isMobileDevice)
         setIsTablet(isTabletDevice || isIPad)
+        setIsPortrait(height >= width)
+        setIsLandscape(width > height)
         
         // Set device type for more specific targeting
         if (isIPad) {
@@ -65,6 +70,8 @@ export function useMobileDetection(breakpoint = 768) {
         // Mobile detection failed - use safe defaults
         setIsMobile(false)
         setIsTablet(false)
+        setIsPortrait(true)
+        setIsLandscape(false)
         setDeviceType('desktop')
       }
     }
@@ -99,6 +106,8 @@ export function useMobileDetection(breakpoint = 768) {
   return {
     isMobile: isClient ? isMobile : false,
     isTablet: isClient ? isTablet : false,
+    isPortrait: isClient ? isPortrait : true,
+    isLandscape: isClient ? isLandscape : false,
     isClient,
     deviceType: isClient ? deviceType : 'desktop'
   }

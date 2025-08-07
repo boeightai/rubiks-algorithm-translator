@@ -74,6 +74,20 @@ export const colors = {
     800: 'var(--warning-800, #92400e)',
     900: 'var(--warning-900, #78350f)',
   },
+
+  // Error colors
+  error: {
+    50: 'var(--error-50, #fef2f2)',
+    100: 'var(--error-100, #fee2e2)',
+    200: 'var(--error-200, #fecaca)',
+    300: 'var(--error-300, #fca5a5)',
+    400: 'var(--error-400, #f87171)',
+    500: 'var(--error-500, #ef4444)',
+    600: 'var(--error-600, #dc2626)',
+    700: 'var(--error-700, #b91c1c)',
+    800: 'var(--error-800, #991b1b)',
+    900: 'var(--error-900, #7f1d1d)'
+  },
   
   // Info colors (blue)
   info: {
