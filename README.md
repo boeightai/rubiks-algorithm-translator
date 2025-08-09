@@ -15,20 +15,21 @@ A modern web application for learning and practicing Rubik's Cube algorithms wit
 - **Pattern Recognition**: Visual pattern images for algorithms (where available)
 - **Smart Search**: Find algorithms by name, notation, category, or nicknames
 - **Favorites System**: Star and save your frequently used algorithms
+- **Theme Toggle**: Light/Dark mode with persistent preference
 - **Mobile Optimized**: Responsive design with touch-friendly controls and tabbed interface on mobile
 - **Offline Support**: Progressive Web App (PWA) with intelligent caching
 - **Cross-Platform**: Works seamlessly on desktop, iPad, and iPhone devices
 
 ### Algorithm Categories
-- **Utility**: Basic algorithms for beginners (Daisy Edge Flipper, Right/Left Hand Algorithm, etc.)
-- **F2L (First Two Layers)**: 41 cases for solving F2L efficiently
-- **OLL (Orientation of Last Layer)**: 57 algorithms for orienting the last layer
-- **PLL (Permutation of Last Layer)**: 21 algorithms for final permutation
+- **Utility**: Basic algorithms for beginners (Daisy Edge Flipper, Right/Left Hand Algorithm, etc.) — 8 entries
+- **F2L (First Two Layers)**: 13 entries
+- **OLL (Orientation of Last Layer)**: 64 entries
+- **PLL (Permutation of Last Layer)**: 24 entries
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: React 19, Vite 7
-- **Styling**: CSS-in-JS with comprehensive design system
+- **Styling**: Inline styles with a shared design system and CSS variables
 - **State Management**: React hooks with optimized re-renders
 - **Build Tool**: Vite with optimized production builds
 - **PWA**: Service Worker v6 for offline functionality
@@ -140,7 +141,9 @@ npm run build
 1. Create tutorial image: `public/images/moves/[algorithm-id]-tutorial.png`
 2. Place in appropriate directory
 
-## 📊 Performance Metrics
+## 📊 Performance Targets
+
+These are indicative targets; actual results may vary by device, network conditions, and content changes.
 
 - **Bundle Size**: ~294KB (78.6KB gzipped)
 - **Lighthouse Score**: 95+ Performance
@@ -151,12 +154,14 @@ npm run build
 
 ## 🔒 Security Features
 
-- **Content Security Policy**: Strict CSP headers configured
-- **XSS Protection**: Enabled with mode=block
-- **Frame Options**: DENY to prevent clickjacking
-- **Content Type Options**: nosniff
-- **Referrer Policy**: strict-origin-when-cross-origin
-- **HTTPS**: Enforced with upgrade-insecure-requests
+Note: A CSP is configured via a meta tag in `index.html`, and additional headers are applied in the local dev server. For production environments (e.g., Vercel), configure your hosting platform to send equivalent HTTP headers.
+
+- **Content Security Policy**: Configured via meta tag
+- **XSS Protection**: `X-XSS-Protection: 1; mode=block` (legacy; configure on host if desired)
+- **Frame Options**: `X-Frame-Options: DENY` (configure on host)
+- **Content Type Options**: `X-Content-Type-Options: nosniff` (configure on host)
+- **Referrer Policy**: `strict-origin-when-cross-origin` (configure on host)
+- **HTTPS**: `upgrade-insecure-requests` directive in CSP
 
 ## 🧪 Development Guidelines
 
@@ -165,7 +170,6 @@ npm run build
 - Proper error boundaries for graceful failure
 - Memory leak prevention with cleanup in useEffect
 - Optimized re-renders with useMemo and useCallback
-- Type-safe prop validation
 
 ### Testing Checklist
 - [ ] Desktop browsers (Chrome, Firefox, Safari, Edge)
@@ -215,7 +219,7 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## 📞 Support
 
 For issues or questions:
-- Open an issue on [GitHub Issues](https://github.com/your-repo/issues)
+- Open an issue in this repository's Issues tab
 - Include browser/device information for bug reports
 - Provide steps to reproduce any issues
 - Check existing issues before creating new ones
