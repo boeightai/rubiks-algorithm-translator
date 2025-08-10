@@ -240,7 +240,7 @@ const AboutModal = ({ isOpen, onClose }) => {
               </p>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
                 We're excited to share our ongoing development with both the speedcubing and coding communities. 
-                We also hope to attract new people to learn how to solve Rubik's Cubes with our visual notationsystem!
+                We hope to attract new people to learn how to solve Rubik's Cubes with our visual notation system!
               </p>
             </div>
 
