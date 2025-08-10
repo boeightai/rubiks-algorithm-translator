@@ -254,7 +254,7 @@ const AlgorithmDetails = ({
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               marginBottom: spacing[3],
             }}>
               <h3 style={{
@@ -265,13 +265,6 @@ const AlgorithmDetails = ({
               }}>
                 Pattern to Look For
               </h3>
-              <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.neutral[500],
-                fontStyle: 'italic',
-              }}>
-                Recognition pattern
-              </div>
             </div>
             <div style={{
               display: 'flex',
