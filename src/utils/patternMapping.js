@@ -24,7 +24,9 @@ const PATTERN_MAPPING = {
   ],
   'oll-case-24': ['/images/patterns/oll-case-24-pattern.png'],
   'oll-case-25': ['/images/patterns/oll-case-25-pattern.png'],
-  '2look-oll-4': ['/images/patterns/2look-oll-4-pattern.png']
+  '2look-oll-4': ['/images/patterns/2look-oll-4-pattern.png'],
+  'kite-oll': ['/images/patterns/kite-oll-pattern.png'],
+  't-perm-setup': ['/images/patterns/t-perm-setup-pattern.png']
 }
 
 /**
