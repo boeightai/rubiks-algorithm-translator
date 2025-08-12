@@ -209,7 +209,13 @@
     "category": "OLL",
     "difficulty": "intermediate",
     "description": "OLL Case 27 - Sune pattern",
-    "nicknames": []
+    "nicknames": [],
+    "additionalPatterns": [
+      {
+        "filename": "sune-pattern-2.png",
+        "label": "Alternative view"
+      }
+    ]
   },
   {
     "id": "antisune",

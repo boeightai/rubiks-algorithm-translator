@@ -293,6 +293,58 @@ const AlgorithmDetails = ({
           </div>
         )}
 
+        {/* Additional Pattern Images */}
+        {selectedAlgorithm?.additionalPatterns?.map((pattern, index) => (
+          <div 
+            key={pattern.filename}
+            className="responsive-image-container"
+            style={{ flex: '1 1 250px', minWidth: '200px' }}
+          >
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: spacing[3],
+            }}>
+              <h3 style={{
+                fontSize: typography.fontSize.lg,
+                fontWeight: typography.fontWeight.semibold,
+                color: colors.neutral[900],
+                margin: 0,
+              }}>
+                {pattern.label || `Pattern ${index + 2}`}
+              </h3>
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              background: colors.neutral[50],
+              borderRadius: borderRadius.xl,
+              padding: spacing[4],
+              border: `1px solid ${colors.border.light}`,
+            }}>
+              <img
+                src={`/images/patterns/${pattern.filename}`}
+                alt={`${selectedAlgorithm.name} ${pattern.label || `pattern ${index + 2}`}`}
+                className="responsive-pattern-image"
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '200px',
+                  width: 'auto',
+                  height: 'auto',
+                  borderRadius: borderRadius.lg,
+                  boxShadow: shadows.md,
+                  border: `1px solid ${colors.border.light}`,
+                  background: colors.background.primary,
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
+          </div>
+        ))}
+
         {/* Tutorial Image Section */}
         {tutorialImageExists && (
           <div 
