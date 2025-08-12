@@ -19,7 +19,9 @@
 import { useState, useEffect } from 'react'
 import YouTubeEmbed from './components/YouTubeEmbed'
 import AlgorithmCarousel from './components/AlgorithmCarousel'
+import PatternDisplay from './components/PatternDisplay'
 import tutorialAlgorithms from './data/tutorialAlgorithms.json'
+import { getPatternImages } from './utils/patternMapping'
 import { colors, spacing, typography } from './styles/designSystem'
 import { useMobileDetection } from './hooks/useMobileDetection'
 import Header from './components/Header'
@@ -64,6 +66,17 @@ function TutorialMode({ onModeToggle }) {
   
   // Determine if we're on desktop for compact layout
   const isDesktop = !isMobile && !isTablet
+  
+  // Get current algorithm and pattern information
+  const currentAlgorithm = tutorialAlgorithms && tutorialAlgorithms.length > 0 
+    ? tutorialAlgorithms[currentAlgorithmIndex] 
+    : null
+  
+  const patternImages = currentAlgorithm ? getPatternImages(currentAlgorithm.id) : null
+  const hasMultiplePatterns = patternImages && patternImages.length > 1
+  
+  // Simple responsive layout decision
+  const shouldUseHorizontalLayout = !isMobile && !isTablet && patternImages
   
   // Loading state
   if (isLoading) {
@@ -198,13 +211,32 @@ function TutorialMode({ onModeToggle }) {
         padding: `0 ${spacing[4]}`,
         paddingTop: isDesktop ? spacing[4] : spacing[6], // Reduced padding after header
       }}>
-        {/* YouTube Video Section */}
-        <div style={{
-          marginBottom: isDesktop ? spacing[4] : spacing[8], // Reduced margin for desktop
-          padding: `0 ${spacing[2]}`,
-        }}>
-          <YouTubeEmbed />
-        </div>
+        {/* Pattern Display and YouTube Video Section */}
+        {shouldUseHorizontalLayout && currentAlgorithm ? (
+          // Desktop/Tablet Landscape: pattern + video + pattern (if multiple patterns)
+          <div className="horizontal-layout">
+            {hasMultiplePatterns ? (
+              <>
+                <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
+                <YouTubeEmbed />
+                <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
+              </>
+            ) : (
+              <>
+                <PatternDisplay algorithmId={currentAlgorithm.id} position="left" />
+                <YouTubeEmbed />
+              </>
+            )}
+          </div>
+        ) : (
+          // Mobile/Tablet Portrait: pattern above video (if patterns exist)
+          <div className="vertical-layout">
+            {patternImages && currentAlgorithm && (
+              <PatternDisplay algorithmId={currentAlgorithm.id} position="top" />
+            )}
+            <YouTubeEmbed />
+          </div>
+        )}
         
         {/* Algorithm Carousel Section */}
         <AlgorithmCarousel

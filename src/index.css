@@ -492,6 +492,83 @@ input, select, textarea {
   }
 }
 
+/* Pattern Display Styles */
+.horizontal-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+.horizontal-layout > *:nth-child(2) {
+  justify-self: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.vertical-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.pattern-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.pattern-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.025em;
+}
+
+.pattern-image {
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  display: block;
+}
+
+/* Responsive adjustments for pattern display */
+@media (max-width: 768px) {
+  .pattern-image {
+    max-width: 150px;
+  }
+  
+  .pattern-label {
+    font-size: 0.8rem;
+  }
+  
+  .horizontal-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pattern-image {
+    max-width: 120px;
+  }
+  
+  .pattern-label {
+    font-size: 0.75rem;
+  }
+}
+
 /* Print styles */
 @media print {
   body {
