@@ -523,6 +523,17 @@ input, select, textarea {
   min-height: 200px;
   width: 200px;
   flex-shrink: 0;
+  /* Center the pattern content within its column */
+  justify-self: center;
+  /* Ensure perfect centering within the grid column */
+  align-self: center;
+  text-align: center;
+  /* Module box styling to match carousel UI */
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-light);
 }
 
 .pattern-label {
