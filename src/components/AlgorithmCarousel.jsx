@@ -135,9 +135,10 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
         <div style={{
           flex: '1 1 auto',
           textAlign: 'center',
-          minWidth: isMobile ? '120px' : '200px',
+          minWidth: isMobile ? '180px' : '200px',
           maxWidth: '100%',
-          overflow: 'hidden',
+          overflow: 'visible',
+          padding: `0 ${spacing[2]}`,
         }}>
           {/* Title Container */}
           <div style={{
@@ -146,16 +147,17 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             width: '100%',
           }}>
             <h2 style={{
-              fontSize: isMobile ? typography.fontSize.base : typography.fontSize['2xl'],
+              fontSize: isMobile ? typography.fontSize.sm : typography.fontSize['2xl'],
               fontWeight: typography.fontWeight.bold,
               color: colors.neutral[900],
               margin: 0,
               textAlign: 'center',
-              lineHeight: '1.2',
+              lineHeight: '1.3',
               wordWrap: 'break-word',
               hyphens: 'auto',
-              overflow: 'hidden',
+              overflow: 'visible',
               whiteSpace: 'normal',
+              display: 'block',
             }}>
               {currentAlgorithm.name}
             </h2>

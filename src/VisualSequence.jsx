@@ -52,21 +52,26 @@ function VisualSequence({ notation }) {
     
     const arraysEqual = (a, b) => a.length === b.length && a.every((v, i) => v === b[i])
     
-    // Check for right triggers
-    for (let i = 0; i <= parsedMoves.length - 4; i++) {
-      const sequence = parsedMoves.slice(i, i + 4)
-      if (arraysEqual(sequence, rightTriggerPattern)) {
-        for (let j = 0; j < 4; j++) highlighted.add(i + j)
-        groups.push({ type: 'right', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
-      }
-    }
+    // Only detect triggers in longer algorithms (6+ moves) to avoid grouping short tutorial sequences
+    const shouldDetectTriggers = parsedMoves.length >= 6
     
-    // Check for left triggers
-    for (let i = 0; i <= parsedMoves.length - 4; i++) {
-      const sequence = parsedMoves.slice(i, i + 4)
-      if (arraysEqual(sequence, leftTriggerPattern)) {
-        for (let j = 0; j < 4; j++) leftTrigger.add(i + j)
-        groups.push({ type: 'left', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
+    if (shouldDetectTriggers) {
+      // Check for right triggers
+      for (let i = 0; i <= parsedMoves.length - 4; i++) {
+        const sequence = parsedMoves.slice(i, i + 4)
+        if (arraysEqual(sequence, rightTriggerPattern)) {
+          for (let j = 0; j < 4; j++) highlighted.add(i + j)
+          groups.push({ type: 'right', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
+        }
+      }
+      
+      // Check for left triggers
+      for (let i = 0; i <= parsedMoves.length - 4; i++) {
+        const sequence = parsedMoves.slice(i, i + 4)
+        if (arraysEqual(sequence, leftTriggerPattern)) {
+          for (let j = 0; j < 4; j++) leftTrigger.add(i + j)
+          groups.push({ type: 'left', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
+        }
       }
     }
     
