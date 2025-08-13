@@ -217,6 +217,17 @@ function VisualSequence({ notation, algorithmId }) {
     )
   }
 
+  // Ensure the container reserves enough vertical space for the special 3+3 layout
+  const specialKiteMinHeight = useMemo(() => {
+    if (!(isMobileDevice && isKiteOLL)) return null
+    // If there are 6 moves, compute min height for two rows with gap
+    const moveCount = notation ? notation.split(' ').filter(Boolean).length : 0
+    if (moveCount !== 6) return null
+    const movePx = parseInt(getMobileImageSize()) || 48
+    const tileMin = movePx + 64 // image + number + label spacing
+    return tileMin * 2 + 32 // two rows + row gap
+  }, [isMobileDevice, isKiteOLL, notation, getMobileImageSize])
+
   return (
     <div style={{
       background: colors.background.primary,
@@ -271,7 +282,7 @@ function VisualSequence({ notation, algorithmId }) {
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
           justifyContent: 'center', // Always center for consistent layout
           alignItems: 'flex-start', // Default to flex-start; we'll center individual items as needed
-          minHeight: isDesktop ? '100px' : '120px', 
+          minHeight: specialKiteMinHeight ? `${specialKiteMinHeight}px` : (isDesktop ? '100px' : '120px'), 
           width: '100%',
           // Mobile-specific layout constraints
           ...(isMobileDevice && {
@@ -284,7 +295,7 @@ function VisualSequence({ notation, algorithmId }) {
           {(() => {
             // Special 3x3 mobile layout for Kite OLL only in tutorial carousel
             if (isMobileDevice && isKiteOLL && moveList.length === 6) {
-              const tileMinHeight = parseInt(getMobileImageSize()) + 64
+              const tileMinHeight = parseInt(getMobileImageSize()) + 80 // Increased height for better separation
               const renderTile = (i) => (
                 <div key={i} style={{ 
                   textAlign: 'center', 
@@ -293,7 +304,7 @@ function VisualSequence({ notation, algorithmId }) {
                   alignItems: 'center', 
                   gap: isDesktop ? spacing[1] : spacing[2], 
                   position: 'relative',
-                  minHeight: tileMinHeight + 'px',
+                  height: tileMinHeight + 'px', // Fixed height instead of minHeight
                   minWidth: 'fit-content'
                 }}>
                   <div style={{ 
@@ -334,14 +345,14 @@ function VisualSequence({ notation, algorithmId }) {
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: spacing[4],
                     alignItems: 'center'
                   }}>
                     {/* First row: moves 1, 2, 3 */}
                     <div style={{
                       display: 'flex',
                       gap: spacing[2],
-                      justifyContent: 'center'
+                      justifyContent: 'center',
+                      marginBottom: '32px' // Explicit margin to prevent overlap
                     }}>
                       {renderTile(0)}
                       {renderTile(1)}
