@@ -183,7 +183,9 @@ function VisualSequence({ notation, algorithmId }) {
   // Approximate height of the trigger label + gap between label and box
   // 12px text height (xs) * 1.5 line-height ≈ 18px
   // + 8px vertical padding + 4px border + 8px gap ⇒ ~38px
-  const desktopTopNudgePx = 40
+  // Total offset approximates: label (≈28) + gap (8) + border (3) + box padding top (16) ≈ 55
+  // Use a rounded value to ensure the trigger tiles' number badges align with standalone tiles
+  const desktopTopNudgePx = 56
 
   // Enhanced MoveImage component with mobile trigger sizing
   const MoveImage = ({ move, index, isInTrigger = false }) => {
