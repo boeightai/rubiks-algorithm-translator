@@ -332,15 +332,31 @@ function VisualSequence({ notation, algorithmId }) {
               return (
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                   <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, max-content)',
-                    columnGap: spacing[2],
-                    rowGap: spacing[4],
-                    justifyItems: 'center',
-                    alignItems: 'start',
-                    width: 'max-content'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: spacing[4],
+                    alignItems: 'center'
                   }}>
-                    {Array.from({ length: 6 }, (_, i) => renderTile(i))}
+                    {/* First row: moves 1, 2, 3 */}
+                    <div style={{
+                      display: 'flex',
+                      gap: spacing[2],
+                      justifyContent: 'center'
+                    }}>
+                      {renderTile(0)}
+                      {renderTile(1)}
+                      {renderTile(2)}
+                    </div>
+                    {/* Second row: moves 4, 5, 6 */}
+                    <div style={{
+                      display: 'flex',
+                      gap: spacing[2],
+                      justifyContent: 'center'
+                    }}>
+                      {renderTile(3)}
+                      {renderTile(4)}
+                      {renderTile(5)}
+                    </div>
                   </div>
                 </div>
               )
