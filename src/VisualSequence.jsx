@@ -153,14 +153,13 @@ function VisualSequence({ notation }) {
       <img
         src={imageSrc}
         alt={move}
+        className="move-image"
         style={{
           width: imageSize, 
           height: imageSize, 
           border: `2px solid ${getMoveImageBorder(index)}`, 
           objectFit: 'contain', 
           borderRadius: borderRadius.lg, 
-          backgroundColor: 'transparent', 
-          padding: 0, 
           boxShadow: shadows.sm, 
           display: 'block', 
           flexShrink: 0,

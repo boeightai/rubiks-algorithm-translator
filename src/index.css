@@ -550,8 +550,23 @@ input, select, textarea {
   height: auto;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--move-image-border-color);
+  background: var(--move-image-bg);
+  padding: var(--move-image-padding);
   display: block;
+}
+
+/* Ensure responsive pattern images also adopt theme-aware styles */
+.responsive-pattern-image {
+  background: var(--move-image-bg);
+  padding: var(--move-image-padding);
+  border: 1px solid var(--move-image-border-color);
+}
+
+/* Theme-aware styles for move images used in visual sequence */
+.move-image {
+  background: var(--move-image-bg);
+  padding: var(--move-image-padding);
 }
 
 /* Responsive adjustments for pattern display */

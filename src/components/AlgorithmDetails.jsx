@@ -285,8 +285,9 @@ const AlgorithmDetails = ({
                   height: 'auto',
                   borderRadius: borderRadius.lg,
                   boxShadow: shadows.md,
-                  border: `1px solid ${colors.border.light}`,
-                  background: colors.background.primary,
+                  border: `1px solid var(--move-image-border-color)`,
+                  background: 'var(--move-image-bg)',
+                  padding: 'var(--move-image-padding)',
                 }}
               />
             </div>
@@ -334,8 +335,9 @@ const AlgorithmDetails = ({
                   height: 'auto',
                   borderRadius: borderRadius.lg,
                   boxShadow: shadows.md,
-                  border: `1px solid ${colors.border.light}`,
-                  background: colors.background.primary,
+                  border: `1px solid var(--move-image-border-color)`,
+                  background: 'var(--move-image-bg)',
+                  padding: 'var(--move-image-padding)',
                 }}
                 onError={(e) => {
                   e.target.style.display = 'none';

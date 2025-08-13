@@ -43,9 +43,10 @@ const AlgorithmList = ({
         style={{
           width: '70px',
           height: '70px',
-          border: `1px solid ${colors.border.light}`,
+            border: `1px solid var(--move-image-border-color)`,
           borderRadius: borderRadius.base,
-          background: colors.background.primary,
+            background: 'var(--move-image-bg)',
+            padding: 'var(--move-image-padding)',
           maxWidth: '100%',
           display: 'block',
         }}
