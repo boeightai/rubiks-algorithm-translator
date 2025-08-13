@@ -269,14 +269,15 @@ function VisualSequence({ notation }) {
           flexWrap: 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
           justifyContent: 'center', // Always center for consistent layout
-          alignItems: 'flex-end', 
+          alignItems: 'flex-start', // Changed to flex-start to prevent overlap
           minHeight: isDesktop ? '100px' : '120px', 
           width: '100%',
           // Mobile-specific layout constraints
           ...(isMobileDevice && {
             maxWidth: '100%',
             padding: '0 8px', // Increased padding for better mobile spacing
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            position: 'relative' // Ensure proper positioning context
           })
         }}>
           {(() => {
@@ -307,7 +308,9 @@ function VisualSequence({ notation }) {
                       // Ensure consistent sizing for trigger moves in mobile layout
                       ...(isMobileDevice && {
                         flex: '0 0 auto',
-                        minWidth: 'fit-content'
+                        minWidth: 'fit-content',
+                        margin: '0',
+                        padding: '0'
                       })
                     }}>
                       <div style={{ 
@@ -414,7 +417,9 @@ function VisualSequence({ notation }) {
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
                       minWidth: 'fit-content',
-                      maxWidth: 'fit-content'
+                      maxWidth: 'fit-content',
+                      margin: '0',
+                      padding: '0'
                     })
                   }}>
                     <div style={{ 

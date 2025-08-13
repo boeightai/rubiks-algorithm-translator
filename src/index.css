@@ -568,6 +568,10 @@ input, select, textarea {
 .move-image {
   background: var(--move-image-bg);
   padding: var(--move-image-padding);
+  /* Prevent overlapping */
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
 /* Mobile pattern container for side-by-side display */
@@ -620,32 +624,34 @@ input, select, textarea {
   }
 }
 
-@media (max-width: 380px) {
-  /* Extra small mobile phones - ensure move images are compact */
-  .move-image {
-    max-width: 40px !important;
-    max-height: 40px !important;
-    width: 40px !important;
-    height: 40px !important;
-  }
-}
-
-/* Mobile move image sizing */
+/* Mobile move image sizing - consolidated and fixed */
 @media (max-width: 1024px) {
   .move-image {
-    max-width: 48px !important;
-    max-height: 48px !important;
-    width: 48px !important;
-    height: 48px !important;
+    max-width: 48px;
+    max-height: 48px;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
   }
 }
 
 @media (max-width: 480px) {
   .move-image {
-    max-width: 44px !important;
-    max-height: 44px !important;
-    width: 44px !important;
-    height: 44px !important;
+    max-width: 44px;
+    max-height: 44px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .move-image {
+    max-width: 40px;
+    max-height: 40px;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
   }
 }
 
@@ -655,9 +661,10 @@ input, select, textarea {
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
   /* Debug: Add border to see grid boundaries */
   /* border: 1px solid red; */
 }
@@ -669,13 +676,19 @@ input, select, textarea {
     gap: 8px;
     padding: 0 8px;
     flex-wrap: wrap;
+    align-items: flex-start;
   }
   
-  /* Ensure all move containers have consistent sizing */
+  /* Ensure all move containers have consistent sizing and NO OVERLAP */
   .responsive-cube-grid > div {
     flex: 0 0 auto;
     min-width: fit-content;
     max-width: fit-content;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    /* Prevent overlapping */
+    z-index: 1;
   }
   
   /* Trigger box styling */
@@ -684,6 +697,10 @@ input, select, textarea {
     min-width: fit-content;
     max-width: 100%;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 2;
   }
   
   /* Trigger box content container */
@@ -695,12 +712,18 @@ input, select, textarea {
     width: fit-content;
     max-width: 100%;
     overflow: visible;
+    margin: 0;
+    padding: 0;
   }
   
   /* Individual move containers within trigger boxes */
   .responsive-cube-grid .trigger-box > div:last-child > div {
     flex: 0 0 auto;
     min-width: fit-content;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 3;
   }
 }
 
@@ -749,6 +772,11 @@ input, select, textarea {
   .responsive-cube-grid > div {
     /* Ensure consistent spacing between move elements */
     gap: 4px !important;
+    /* Prevent overlapping */
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
   
   /* Move number circles */
@@ -756,6 +784,7 @@ input, select, textarea {
     width: 20px !important;
     height: 20px !important;
     font-size: 0.6rem !important;
+    flex-shrink: 0 !important;
   }
   
   /* Move labels */
@@ -763,6 +792,14 @@ input, select, textarea {
     font-size: 0.75rem !important;
     line-height: 1.2 !important;
     max-width: 50px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Ensure move images don't overlap */
+  .responsive-cube-grid .move-image {
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
   }
 }
 
