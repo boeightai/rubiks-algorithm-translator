@@ -310,8 +310,8 @@ function VisualSequence({ notation }) {
                       padding: '0',
                       // Center singleton tiles vertically against taller trigger groups
                       alignSelf: 'center',
-                      // Nudge down slightly when a trigger group is present for visual alignment
-                      marginTop: hasTriggerGroups ? spacing[3] : '0'
+                        // No nudge on mobile; we hide trigger labels so tops align naturally
+                        marginTop: '0'
                     })
                   }}>
                     <div style={{ 
@@ -426,23 +426,25 @@ function VisualSequence({ notation }) {
                     alignSelf: 'center'
                   })
                 }}>
-                  {/* Trigger label above the colored box */}
-                  <div style={{ 
-                    background: triggerType === 'right' ? colors.success[50] : colors.info[50], 
-                    color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
-                    padding: `${spacing[1]} ${spacing[2]}`, 
-                    borderRadius: borderRadius.full, 
-                    fontSize: typography.fontSize.xs, 
-                    fontWeight: typography.fontWeight.medium, 
-                    border: `2px solid ${triggerType === 'right' ? colors.success[300] : colors.info[300]}`, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: spacing[1], 
-                    flexShrink: 0 
-                  }}>
-                    <span style={{ fontSize: '10px' }}>🎯</span>
-                    {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
-                  </div>
+                  {/* Trigger label above the colored box (desktop only for simpler mobile alignment) */}
+                  {!isMobileDevice && (
+                    <div style={{ 
+                      background: triggerType === 'right' ? colors.success[50] : colors.info[50], 
+                      color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
+                      padding: `${spacing[1]} ${spacing[2]}`, 
+                      borderRadius: borderRadius.full, 
+                      fontSize: typography.fontSize.xs, 
+                      fontWeight: typography.fontWeight.medium, 
+                      border: `2px solid ${triggerType === 'right' ? colors.success[300] : colors.info[300]}`, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: spacing[1], 
+                      flexShrink: 0 
+                    }}>
+                      <span style={{ fontSize: '10px' }}>🎯</span>
+                      {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
+                    </div>
+                  )}
                   
                   {/* Colored trigger box - optimized for mobile 5-moves-per-row layout */}
                   <div style={{ 
