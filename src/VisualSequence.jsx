@@ -226,8 +226,8 @@ function VisualSequence({ notation, algorithmId }) {
     const movePx = parseInt(getMobileImageSize()) || 48
     // Match the exact tile height used in the renderer (image + number + label spacing)
     const tileHeight = movePx + 80
-    // Two rows of tiles plus the explicit 32px row gap
-    return tileHeight * 2 + 32
+    // Two rows of tiles plus the reduced 16px row gap
+    return tileHeight * 2 + 16
   }, [isMobileDevice, isKiteOLL, notation, getMobileImageSize])
 
   return (
@@ -356,7 +356,7 @@ function VisualSequence({ notation, algorithmId }) {
                       display: 'flex',
                       gap: spacing[2],
                       justifyContent: 'center',
-                      marginBottom: '32px' // Explicit margin to prevent overlap
+                      marginBottom: '16px' // Reduced gap between rows
                     }}>
                       {renderTile(0)}
                       {renderTile(1)}
