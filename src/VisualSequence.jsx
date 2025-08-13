@@ -224,8 +224,10 @@ function VisualSequence({ notation, algorithmId }) {
     const moveCount = notation ? notation.split(' ').filter(Boolean).length : 0
     if (moveCount !== 6) return null
     const movePx = parseInt(getMobileImageSize()) || 48
-    const tileMin = movePx + 64 // image + number + label spacing
-    return tileMin * 2 + 32 // two rows + row gap
+    // Match the exact tile height used in the renderer (image + number + label spacing)
+    const tileHeight = movePx + 80
+    // Two rows of tiles plus the explicit 32px row gap
+    return tileHeight * 2 + 32
   }, [isMobileDevice, isKiteOLL, notation, getMobileImageSize])
 
   return (
@@ -281,8 +283,10 @@ function VisualSequence({ notation, algorithmId }) {
           flexWrap: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'nowrap' : 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
           justifyContent: 'center', // Always center horizontally
-          alignItems: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'center' : 'flex-start', // Center vertically for 3x2 layout
-          minHeight: specialKiteMinHeight ? `${specialKiteMinHeight}px` : (isDesktop ? '100px' : '120px'), 
+          // Top-align contents so two-row mobile layout doesn't sit too low in the card
+          alignItems: 'flex-start',
+          // Reserve enough vertical space for the 3x2 Kite layout on mobile
+          minHeight: specialKiteMinHeight ? `${specialKiteMinHeight}px` : (isDesktop ? '100px' : 'auto'), 
           width: '100%',
           // Mobile-specific layout constraints
           ...(isMobileDevice && {
