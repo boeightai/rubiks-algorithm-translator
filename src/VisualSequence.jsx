@@ -56,11 +56,13 @@ function VisualSequence({ notation }) {
     for (let i = 0; i <= parsedMoves.length - 4; i++) {
       const sequence = parsedMoves.slice(i, i + 4)
       if (arraysEqual(sequence, rightTriggerPattern)) {
-        // Only group as trigger if it's not the entire algorithm (leave at least 1 move ungrouped)
+        // Always highlight trigger moves
+        for (let j = 0; j < 4; j++) highlighted.add(i + j)
+        
+        // Only group as trigger box if it's not almost the entire algorithm
         const wouldGroupEntireAlgorithm = (parsedMoves.length === 5 && i === 1)
         
         if (!wouldGroupEntireAlgorithm) {
-          for (let j = 0; j < 4; j++) highlighted.add(i + j)
           groups.push({ type: 'right', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
         }
       }
@@ -70,11 +72,16 @@ function VisualSequence({ notation }) {
     for (let i = 0; i <= parsedMoves.length - 4; i++) {
       const sequence = parsedMoves.slice(i, i + 4)
       if (arraysEqual(sequence, leftTriggerPattern)) {
-        // Only group as trigger if it's not the entire algorithm (leave at least 1 move ungrouped)
+        // Always highlight trigger moves
+        for (let j = 0; j < 4; j++) {
+          highlighted.add(i + j)
+          leftTrigger.add(i + j)
+        }
+        
+        // Only group as trigger box if it's not almost the entire algorithm
         const wouldGroupEntireAlgorithm = (parsedMoves.length === 5 && i === 1)
         
         if (!wouldGroupEntireAlgorithm) {
-          for (let j = 0; j < 4; j++) leftTrigger.add(i + j)
           groups.push({ type: 'left', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
         }
       }

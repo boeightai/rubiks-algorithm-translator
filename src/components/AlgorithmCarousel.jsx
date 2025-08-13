@@ -161,6 +161,18 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             }}>
               {currentAlgorithm.name}
             </h2>
+            
+            {/* Show contained algorithms if they exist */}
+            {currentAlgorithm.containedAlgorithms && currentAlgorithm.containedAlgorithms.length > 0 && (
+              <div style={{
+                marginTop: spacing[2],
+                fontSize: isMobile ? typography.fontSize.xs : typography.fontSize.sm,
+                color: colors.primary[600],
+                fontWeight: typography.fontWeight.medium,
+              }}>
+                Contains: {currentAlgorithm.containedAlgorithms.map(algo => algo.name).join(', ')}
+              </div>
+            )}
           </div>
         </div>
         

@@ -25,14 +25,28 @@
     "name": "Second Layer Right Edge",
     "notation": "U R U R' U'",
     "nicknames": [],
-    "description": "Ideal case for inserting right edge in F2L - perfect for beginners learning F2L"
+    "description": "Ideal case for inserting right edge in F2L - contains the Right Trigger (R U R' U')",
+    "containedAlgorithms": [
+      {
+        "name": "Right Trigger",
+        "notation": "R U R' U'",
+        "description": "The fundamental right-hand algorithm contained within this sequence"
+      }
+    ]
   },
   {
     "id": "ideal-case-left-edge",
     "name": "Second Layer Left Edge",
     "notation": "U' L' U' L U",
     "nicknames": [],
-    "description": "Ideal case for inserting left edge in F2L - perfect for beginners learning F2L"
+    "description": "Ideal case for inserting left edge in F2L - contains the Left Trigger (L' U' L U)",
+    "containedAlgorithms": [
+      {
+        "name": "Left Trigger",
+        "notation": "L' U' L U",
+        "description": "The fundamental left-hand algorithm contained within this sequence"
+      }
+    ]
   },
   {
     "id": "kite-oll",
