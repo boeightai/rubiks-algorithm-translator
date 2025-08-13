@@ -283,6 +283,7 @@ function VisualSequence({ notation }) {
           {(() => {
             const renderedMoves = []
             // Render standalone moves first, then grouped trigger sequences
+            const hasTriggerGroups = triggerGroups && triggerGroups.length > 0
             
             // First, render all moves that are not part of trigger groups
             for (let i = 0; i < moveList.length; i++) {
@@ -308,7 +309,9 @@ function VisualSequence({ notation }) {
                       margin: '0',
                       padding: '0',
                       // Center singleton tiles vertically against taller trigger groups
-                      alignSelf: 'center'
+                      alignSelf: 'center',
+                      // Nudge down slightly when a trigger group is present for visual alignment
+                      marginTop: hasTriggerGroups ? spacing[3] : '0'
                     })
                   }}>
                     <div style={{ 
