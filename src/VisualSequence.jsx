@@ -294,7 +294,7 @@ function VisualSequence({ notation, algorithmId }) {
                   gap: isDesktop ? spacing[1] : spacing[2], 
                   position: 'relative',
                   minHeight: tileMinHeight + 'px',
-                  ...(isMobileDevice && { flex: '0 0 auto', minWidth: 'fit-content', maxWidth: 'fit-content' })
+                  minWidth: 'fit-content'
                 }}>
                   <div style={{ 
                     background: getMoveNumberBackground(i), 
@@ -330,17 +330,15 @@ function VisualSequence({ notation, algorithmId }) {
               )
 
               return (
-                <div style={{ width: '100%' }}>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: spacing[2], marginBottom: spacing[4] }}>
-                    {renderTile(0)}
-                    {renderTile(1)}
-                    {renderTile(2)}
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: spacing[2] }}>
-                    {renderTile(3)}
-                    {renderTile(4)}
-                    {renderTile(5)}
-                  </div>
+                <div style={{ 
+                  width: '100%',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, max-content)',
+                  justifyContent: 'center',
+                  columnGap: spacing[2],
+                  rowGap: spacing[4]
+                }}>
+                  {Array.from({ length: 6 }, (_, i) => renderTile(i))}
                 </div>
               )
             }
