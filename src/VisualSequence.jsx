@@ -330,15 +330,18 @@ function VisualSequence({ notation, algorithmId }) {
               )
 
               return (
-                <div style={{ 
-                  width: '100%',
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, max-content)',
-                  justifyContent: 'center',
-                  columnGap: spacing[2],
-                  rowGap: spacing[4]
-                }}>
-                  {Array.from({ length: 6 }, (_, i) => renderTile(i))}
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, max-content)',
+                    columnGap: spacing[2],
+                    rowGap: spacing[4],
+                    justifyItems: 'center',
+                    alignItems: 'start',
+                    width: 'max-content'
+                  }}>
+                    {Array.from({ length: 6 }, (_, i) => renderTile(i))}
+                  </div>
                 </div>
               )
             }
