@@ -91,191 +91,107 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
       boxShadow: shadows.md,
       border: `1px solid ${colors.border.light}`,
     }}>
-      {/* Header with navigation - responsive layout */}
+      {/* Header with navigation */}
       <div style={{
-        display: isDesktop ? 'flex' : 'block',
-        alignItems: isDesktop ? 'center' : 'initial',
-        justifyContent: isDesktop ? 'space-between' : 'initial',
-        marginBottom: isDesktop ? spacing[4] : spacing[4],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: isDesktop ? spacing[4] : spacing[6],
+        flexWrap: 'wrap',
+        gap: spacing[3],
       }}>
-        {isDesktop ? (
-          <>
-            {/* Desktop: Previous button */}
-            <button
-              onClick={onPrevious}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '48px',
-                height: '48px',
-                backgroundColor: colors.white,
-                border: `2px solid ${colors.border.medium}`,
-                borderRadius: borderRadius.full,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                flexShrink: 0,
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = colors.neutral[50]
-                e.target.style.borderColor = colors.primary[500]
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = colors.white
-                e.target.style.borderColor = colors.border.medium
-              }}
-              aria-label="Previous algorithm"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            
-            {/* Desktop: Algorithm title centered */}
-            <div style={{
-              flex: '1 1 auto',
+        {/* Previous button */}
+        <button
+          onClick={onPrevious}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: isMobile ? '44px' : '48px',
+            height: isMobile ? '44px' : '48px',
+            backgroundColor: colors.white,
+            border: `2px solid ${colors.border.medium}`,
+            borderRadius: borderRadius.full,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = colors.neutral[50]
+            e.target.style.borderColor = colors.primary[500]
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = colors.white
+            e.target.style.borderColor = colors.border.medium
+          }}
+          aria-label="Previous algorithm"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        
+        {/* Algorithm info */}
+        <div style={{
+          flex: '1 1 auto',
+          textAlign: 'center',
+          minWidth: isMobile ? '120px' : '200px',
+          maxWidth: '100%',
+          overflow: 'hidden',
+        }}>
+          {/* Title Container */}
+          <div style={{
+            position: 'relative',
+            marginBottom: isDesktop ? spacing[1] : spacing[2],
+            width: '100%',
+          }}>
+            <h2 style={{
+              fontSize: isMobile ? typography.fontSize.base : typography.fontSize['2xl'],
+              fontWeight: typography.fontWeight.bold,
+              color: colors.neutral[900],
+              margin: 0,
               textAlign: 'center',
-              minWidth: '200px',
-              maxWidth: '100%',
+              lineHeight: '1.2',
+              wordWrap: 'break-word',
+              hyphens: 'auto',
               overflow: 'hidden',
-              padding: `0 ${spacing[3]}`,
+              whiteSpace: 'normal',
             }}>
-              <h2 style={{
-                fontSize: typography.fontSize['2xl'],
-                fontWeight: typography.fontWeight.bold,
-                color: colors.neutral[900],
-                margin: 0,
-                lineHeight: '1.3',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}>
-                {currentAlgorithm.name}
-              </h2>
-            </div>
-            
-            {/* Desktop: Next button */}
-            <button
-              onClick={onNext}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '48px',
-                height: '48px',
-                backgroundColor: colors.white,
-                border: `2px solid ${colors.border.medium}`,
-                borderRadius: borderRadius.full,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                flexShrink: 0,
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = colors.neutral[50]
-                e.target.style.borderColor = colors.primary[500]
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = colors.white
-                e.target.style.borderColor = colors.border.medium
-              }}
-              aria-label="Next algorithm"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </>
-        ) : (
-          <>
-            {/* Mobile: Algorithm title first (full width) */}
-            <div style={{
-              width: '100%',
-              textAlign: 'center',
-              marginBottom: spacing[3],
-            }}>
-              <h2 style={{
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.bold,
-                color: colors.neutral[900],
-                margin: 0,
-                lineHeight: '1.3',
-                wordWrap: 'break-word',
-              }}>
-                {currentAlgorithm.name}
-              </h2>
-            </div>
-            
-            {/* Mobile: Navigation buttons centered below title */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: spacing[4],
-            }}>
-              {/* Previous button */}
-              <button
-                onClick={onPrevious}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '44px',
-                  height: '44px',
-                  backgroundColor: colors.white,
-                  border: `2px solid ${colors.border.medium}`,
-                  borderRadius: borderRadius.full,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = colors.neutral[50]
-                  e.target.style.borderColor = colors.primary[500]
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = colors.white
-                  e.target.style.borderColor = colors.border.medium
-                }}
-                aria-label="Previous algorithm"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              
-              {/* Next button */}
-              <button
-                onClick={onNext}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '44px',
-                  height: '44px',
-                  backgroundColor: colors.white,
-                  border: `2px solid ${colors.border.medium}`,
-                  borderRadius: borderRadius.full,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = colors.neutral[50]
-                  e.target.style.borderColor = colors.primary[500]
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = colors.white
-                  e.target.style.borderColor = colors.border.medium
-                }}
-                aria-label="Next algorithm"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-            </div>
-          </>
-        )}
+              {currentAlgorithm.name}
+            </h2>
+          </div>
+        </div>
+        
+        {/* Next button */}
+        <button
+          onClick={onNext}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: isMobile ? '44px' : '48px',
+            height: isMobile ? '44px' : '48px',
+            backgroundColor: colors.white,
+            border: `2px solid ${colors.border.medium}`,
+            borderRadius: borderRadius.full,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = colors.neutral[50]
+            e.target.style.borderColor = colors.primary[500]
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = colors.white
+            e.target.style.borderColor = colors.border.medium
+          }}
+          aria-label="Next algorithm"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
       </div>
       
       {/* Visual sequence */}
