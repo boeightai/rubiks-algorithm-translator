@@ -277,11 +277,11 @@ function VisualSequence({ notation, algorithmId }) {
         </div>
       ) : (
         <div className="responsive-cube-grid" style={{ 
-          display: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'block' : 'flex', 
+          display: 'flex', 
           flexWrap: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'nowrap' : 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
-          justifyContent: 'center', // Always center for consistent layout
-          alignItems: 'flex-start', // Default to flex-start; we'll center individual items as needed
+          justifyContent: 'center', // Always center horizontally
+          alignItems: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'center' : 'flex-start', // Center vertically for 3x2 layout
           minHeight: specialKiteMinHeight ? `${specialKiteMinHeight}px` : (isDesktop ? '100px' : '120px'), 
           width: '100%',
           // Mobile-specific layout constraints
