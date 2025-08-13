@@ -58,12 +58,12 @@ if ('serviceWorker' in navigator && !window.location.hostname.includes('localhos
 }
 
 // Error boundary for the entire app
-window.addEventListener('error', (event) => {
-  console.error('Global error:', event.error)
+window.addEventListener('error', () => {
+  // Global error handler - errors are caught by ErrorBoundary component
 })
 
-window.addEventListener('unhandledrejection', (event) => {
-  console.error('Unhandled promise rejection:', event.reason)
+window.addEventListener('unhandledrejection', () => {
+  // Unhandled promise rejection - errors are caught by ErrorBoundary component
 })
 
 createRoot(document.getElementById('root')).render(

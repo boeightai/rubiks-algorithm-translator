@@ -32,10 +32,17 @@ export function useTutorialImage(selectedAlgorithm) {
     
     // Create new AbortController for this effect
     abortControllerRef.current = new AbortController()
+    
+    // Store image references for cleanup
+    let tutorialImg = null
+    let patternImg = null
 
-    if (selectedAlgorithm) {
+    if (selectedAlgorithm && selectedAlgorithm.id) {
+      // Sanitize algorithm ID to prevent XSS
+      const sanitizedId = String(selectedAlgorithm.id).replace(/[^a-zA-Z0-9-_]/g, '')
+      
       // Create tutorial image with optimized loading for localhost
-      const tutorialImg = new Image()
+      tutorialImg = new Image()
       tutorialImg.onload = () => {
         if (!abortControllerRef.current?.signal.aborted) {
           setTutorialImageExists(true)
@@ -51,10 +58,10 @@ export function useTutorialImage(selectedAlgorithm) {
       tutorialImg.loading = 'eager'
       tutorialImg.decoding = 'async'
       
-      tutorialImg.src = `/images/moves/${selectedAlgorithm.id}-tutorial.png`
+      tutorialImg.src = `/images/moves/${sanitizedId}-tutorial.png`
       
       // Create pattern image with optimized loading for localhost
-      const patternImg = new Image()
+      patternImg = new Image()
       patternImg.onload = () => {
         if (!abortControllerRef.current?.signal.aborted) {
           setPatternImageExists(true)
@@ -70,7 +77,7 @@ export function useTutorialImage(selectedAlgorithm) {
       patternImg.loading = 'eager'
       patternImg.decoding = 'async'
       
-      patternImg.src = `/images/patterns/${selectedAlgorithm.id}-pattern.png`
+      patternImg.src = `/images/patterns/${sanitizedId}-pattern.png`
     } else {
       setTutorialImageExists(false)
       setPatternImageExists(false)
@@ -82,13 +89,32 @@ export function useTutorialImage(selectedAlgorithm) {
         abortControllerRef.current.abort()
         abortControllerRef.current = null
       }
+      
+      // Clean up image references
+      if (tutorialImg) {
+        tutorialImg.onload = null
+        tutorialImg.onerror = null
+        tutorialImg.src = ''
+        tutorialImg = null
+      }
+      
+      if (patternImg) {
+        patternImg.onload = null
+        patternImg.onerror = null
+        patternImg.src = ''
+        patternImg = null
+      }
     }
   }, [selectedAlgorithm])
 
   return {
     tutorialImageExists,
-    tutorialImageSrc: selectedAlgorithm ? `/images/moves/${selectedAlgorithm.id}-tutorial.png` : null,
+    tutorialImageSrc: selectedAlgorithm && selectedAlgorithm.id 
+      ? `/images/moves/${String(selectedAlgorithm.id).replace(/[^a-zA-Z0-9-_]/g, '')}-tutorial.png` 
+      : null,
     patternImageExists,
-    patternImageSrc: selectedAlgorithm ? `/images/patterns/${selectedAlgorithm.id}-pattern.png` : null
+    patternImageSrc: selectedAlgorithm && selectedAlgorithm.id 
+      ? `/images/patterns/${String(selectedAlgorithm.id).replace(/[^a-zA-Z0-9-_]/g, '')}-pattern.png` 
+      : null
   }
 }

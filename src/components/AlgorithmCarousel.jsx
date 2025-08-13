@@ -20,7 +20,7 @@ import { colors, typography, spacing, borderRadius, shadows } from '../styles/de
 import VisualSequence from '../VisualSequence'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
-function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
+function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoToIndex }) {
   const { isMobile, isTablet } = useMobileDetection()
   
   // Validate inputs
@@ -208,14 +208,9 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious }) {
               cursor: 'pointer',
             }}
             onClick={() => {
-              if (index > safeIndex) {
-                for (let i = safeIndex; i < index; i++) {
-                  onNext()
-                }
-              } else if (index < safeIndex) {
-                for (let i = safeIndex; i > index; i--) {
-                  onPrevious()
-                }
+              // Use direct navigation if available, otherwise skip
+              if (typeof onGoToIndex === 'function') {
+                onGoToIndex(index)
               }
             }}
           />

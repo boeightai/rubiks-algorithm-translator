@@ -59,8 +59,15 @@ function TutorialMode({ onModeToggle }) {
   const handlePrevious = () => {
     if (tutorialAlgorithms && tutorialAlgorithms.length > 0) {
       setCurrentAlgorithmIndex((prev) => 
-        prev === 0 ? tutorialAlgorithms.length - 1 : prev + 1
+        prev === 0 ? tutorialAlgorithms.length - 1 : prev - 1
       )
+    }
+  }
+  
+  const handleGoToIndex = (targetIndex) => {
+    if (tutorialAlgorithms && tutorialAlgorithms.length > 0 && 
+        targetIndex >= 0 && targetIndex < tutorialAlgorithms.length) {
+      setCurrentAlgorithmIndex(targetIndex)
     }
   }
   
@@ -79,7 +86,6 @@ function TutorialMode({ onModeToggle }) {
   // Use horizontal layout only for desktop/tablet landscape with patterns
   // Use vertical layout for mobile, tablet portrait, and iPad vertical orientation
   const shouldUseHorizontalLayout = isDesktop && patternImages && !isTablet
-  const shouldUseVerticalLayout = isMobile || isTablet || !shouldUseHorizontalLayout
   
   // Loading state
   if (isLoading) {
@@ -232,11 +238,20 @@ function TutorialMode({ onModeToggle }) {
             )}
           </div>
         ) : (
-          // Mobile/Tablet Portrait: video above pattern (if patterns exist)
+          // Mobile/Tablet Portrait: video above patterns
           <div className="vertical-layout">
             <YouTubeEmbed />
             {patternImages && currentAlgorithm && (
-              <PatternDisplay algorithmId={currentAlgorithm.id} position="top" />
+              hasMultiplePatterns ? (
+                // Display both patterns side by side for algorithms with multiple patterns
+                <div className="pattern-container-mobile">
+                  <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
+                  <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
+                </div>
+              ) : (
+                // Single pattern display
+                <PatternDisplay algorithmId={currentAlgorithm.id} position="top" />
+              )
             )}
           </div>
         )}
@@ -247,6 +262,7 @@ function TutorialMode({ onModeToggle }) {
           currentIndex={currentAlgorithmIndex}
           onNext={handleNext}
           onPrevious={handlePrevious}
+          onGoToIndex={handleGoToIndex}
         />
       </div>
     </div>

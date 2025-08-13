@@ -36,9 +36,7 @@ function validateAlgorithm(alg) {
 // Filter and validate algorithms at module level
 const algorithms = algorithmsData.filter(alg => {
   const isValid = validateAlgorithm(alg)
-  if (!isValid && import.meta.env.DEV) {
-    console.error('Invalid algorithm data:', alg)
-  }
+  // Invalid algorithm data validation occurs here
   return isValid
 })
 
