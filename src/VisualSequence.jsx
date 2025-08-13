@@ -59,12 +59,9 @@ function VisualSequence({ notation }) {
         // Always highlight trigger moves
         for (let j = 0; j < 4; j++) highlighted.add(i + j)
         
-        // Only group as trigger box if it's not almost the entire algorithm
-        const wouldGroupEntireAlgorithm = (parsedMoves.length === 5 && i === 1)
-        
-        if (!wouldGroupEntireAlgorithm) {
-          groups.push({ type: 'right', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
-        }
+        // Always create trigger boxes for 5-move algorithms that contain triggers
+        // This ensures algorithms like "Second Layer Right Edge" show their trigger patterns
+        groups.push({ type: 'right', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
       }
     }
     
@@ -78,12 +75,9 @@ function VisualSequence({ notation }) {
           leftTrigger.add(i + j)
         }
         
-        // Only group as trigger box if it's not almost the entire algorithm
-        const wouldGroupEntireAlgorithm = (parsedMoves.length === 5 && i === 1)
-        
-        if (!wouldGroupEntireAlgorithm) {
-          groups.push({ type: 'left', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
-        }
+        // Always create trigger boxes for 5-move algorithms that contain triggers
+        // This ensures algorithms like "Second Layer Left Edge" show their trigger patterns
+        groups.push({ type: 'left', start: i, end: i + 3, indices: [i, i + 1, i + 2, i + 3] })
       }
     }
     
@@ -134,21 +128,45 @@ function VisualSequence({ notation }) {
     return colors.neutral[900]
   }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
+  // Calculate optimal sizes for mobile to fit exactly 5 moves per row
+  const getMobileImageSize = useCallback(() => {
+    if (!isMobileDevice) return '64px'
+    
+    // For mobile, calculate size to fit 5 moves + 4 gaps in available width
+    // This handles both regular 5-move algorithms and algorithms with trigger boxes
+    // Assuming container width is ~100vw - padding (around 320px on small phones)
+    // Target: 5 moves + 4 gaps = 5x + 4y where x = image size, y = gap
+    // We want to maximize x while ensuring 5x + 4y <= available width
+    // Using 8px gaps (spacing[2]) and calculating optimal image size
+    const containerWidth = 320 // conservative estimate for small mobile
+    const gapSize = 8 // spacing[2]
+    const availableWidth = containerWidth - (4 * gapSize) // 4 gaps between 5 moves
+    const optimalImageSize = Math.floor(availableWidth / 5)
+    
+    // Ensure minimum size of 40px and maximum of 48px
+    // This size will work for both regular moves and trigger moves
+    return Math.max(40, Math.min(48, optimalImageSize)) + 'px'
+  }, [isMobileDevice])
+
   // Mobile-specific image size for trigger boxes (slightly smaller than regular moves)
   const getTriggerImageSize = useCallback(() => {
-    return isMobileDevice ? '44px' : '60px'
-  }, [isMobileDevice])
+    if (!isMobileDevice) return '60px'
+    
+    // Trigger moves should be slightly smaller than regular moves
+    const regularSize = parseInt(getMobileImageSize())
+    return Math.max(36, regularSize - 4) + 'px'
+  }, [isMobileDevice, getMobileImageSize])
 
   // Mobile-specific gap for trigger boxes
   const getTriggerGap = useCallback(() => {
-    return isMobileDevice ? spacing[1] : spacing[2]
+    return isMobileDevice ? spacing[2] : spacing[2] // Use consistent spacing
   }, [isMobileDevice])
 
   // Enhanced MoveImage component with mobile trigger sizing
   const MoveImage = ({ move, index, isInTrigger = false }) => {
     const imageSrc = moves[move]
-    // Smaller move images for mobile/tablet to fit 5 moves per row
-    const regularImageSize = isMobileDevice ? '48px' : '64px'
+    // Use calculated mobile sizes for optimal 5-moves-per-row layout
+    const regularImageSize = getMobileImageSize()
     const imageSize = isInTrigger ? getTriggerImageSize() : regularImageSize
     
     if (!move || !imageSrc) {
@@ -239,11 +257,16 @@ function VisualSequence({ notation }) {
         <div className="responsive-cube-grid" style={{ 
           display: 'flex', 
           flexWrap: 'wrap', 
-          gap: isDesktop ? spacing[2] : spacing[3], 
-          justifyContent: 'center', 
+          gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
+          justifyContent: isMobileDevice ? 'space-between' : 'center', // Distribute evenly on mobile
           alignItems: 'flex-end', 
           minHeight: isDesktop ? '100px' : '120px', 
-          width: '100%' 
+          width: '100%',
+          // Ensure consistent spacing for 5-moves-per-row layout on mobile
+          ...(isMobileDevice && {
+            maxWidth: '100%',
+            padding: '0 4px' // Small padding to prevent edge overflow
+          })
         }}>
           {(() => {
             const renderedMoves = []
@@ -269,7 +292,12 @@ function VisualSequence({ notation }) {
                       alignItems: 'center', 
                       gap: isDesktop ? spacing[1] : spacing[2], 
                       position: 'relative',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      // Ensure consistent sizing for trigger moves in mobile layout
+                      ...(isMobileDevice && {
+                        flex: '0 0 auto',
+                        minWidth: 'fit-content'
+                      })
                     }}>
                       <div style={{ 
                         background: getMoveNumberBackground(j), 
@@ -304,7 +332,7 @@ function VisualSequence({ notation }) {
                 }
                 
                 renderedMoves.push(
-                  <div key={`trigger-${i}`} style={{ 
+                  <div key={`trigger-${i}`} className={`trigger-box trigger-${triggerType}`} style={{ 
                     display: 'flex', 
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -314,13 +342,13 @@ function VisualSequence({ notation }) {
                   }}>
                     {/* Trigger label above the colored box */}
                     <div style={{ 
-                      background: triggerType === 'right' ? colors.success[100] : colors.info[100], 
+                      background: triggerType === 'right' ? colors.success[50] : colors.info[50], 
                       color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
                       padding: `${spacing[1]} ${spacing[2]}`, 
                       borderRadius: borderRadius.full, 
                       fontSize: typography.fontSize.xs, 
                       fontWeight: typography.fontWeight.medium, 
-                      border: `1px solid ${triggerType === 'right' ? colors.success[200] : colors.info[200]}`, 
+                      border: `2px solid ${triggerType === 'right' ? colors.success[300] : colors.info[300]}`, 
                       display: 'flex', 
                       alignItems: 'center', 
                       gap: spacing[1], 
@@ -330,7 +358,7 @@ function VisualSequence({ notation }) {
                       {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
                     </div>
                     
-                    {/* Colored trigger box - forced single line on mobile */}
+                    {/* Colored trigger box - optimized for mobile 5-moves-per-row layout */}
                     <div style={{ 
                       display: 'flex', 
                       gap: getTriggerGap(), 
@@ -341,9 +369,14 @@ function VisualSequence({ notation }) {
                       boxShadow: shadows.md, 
                       flexWrap: isMobileDevice ? 'nowrap' : 'wrap', 
                       justifyContent: 'center',
-                      width: isMobileDevice ? '100%' : 'fit-content',
+                      width: isMobileDevice ? 'fit-content' : 'fit-content',
                       overflow: isMobileDevice ? 'hidden' : 'visible',
-                      minWidth: isMobileDevice ? 'fit-content' : 'auto'
+                      minWidth: isMobileDevice ? 'fit-content' : 'auto',
+                      // Ensure trigger box fits within mobile layout constraints
+                      ...(isMobileDevice && {
+                        maxWidth: 'fit-content',
+                        boxSizing: 'border-box'
+                      })
                     }}>
                       {triggerMoves}
                     </div>
@@ -358,7 +391,12 @@ function VisualSequence({ notation }) {
                     flexDirection: 'column', 
                     alignItems: 'center', 
                     gap: isDesktop ? spacing[1] : spacing[2], 
-                    position: 'relative' 
+                    position: 'relative',
+                    // Ensure consistent width for 5-moves-per-row layout on mobile
+                    ...(isMobileDevice && {
+                      flex: '0 0 auto',
+                      minWidth: 'fit-content'
+                    })
                   }}>
                     <div style={{ 
                       background: getMoveNumberBackground(i), 
@@ -376,18 +414,18 @@ function VisualSequence({ notation }) {
                       {i + 1}
                     </div>
                     <MoveImage move={move} index={i} />
-                    <div style={{ 
-                      fontSize: typography.fontSize.xl, 
-                      color: getMoveLabelColor(i), 
-                      fontWeight: typography.fontWeight.bold, 
-                      fontFamily: typography.fontFamily.mono, 
-                      letterSpacing: '0.05em', 
-                      maxWidth: '80px', 
-                      textAlign: 'center', 
-                      lineHeight: typography.lineHeight.tight 
-                    }}>
-                      {move}
-                    </div>
+                                          <div style={{ 
+                        fontSize: isMobileDevice ? typography.fontSize.lg : typography.fontSize.xl, 
+                        color: getMoveLabelColor(i), 
+                        fontWeight: typography.fontWeight.bold, 
+                        fontFamily: typography.fontFamily.mono, 
+                        letterSpacing: '0.05em', 
+                        maxWidth: isMobileDevice ? '60px' : '80px', 
+                        textAlign: 'center', 
+                        lineHeight: typography.lineHeight.tight 
+                      }}>
+                        {move}
+                      </div>
                   </div>
                 )
                 i++

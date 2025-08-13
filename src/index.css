@@ -628,6 +628,89 @@ input, select, textarea {
   }
 }
 
+/* Responsive cube grid for algorithm moves */
+.responsive-cube-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* Mobile-specific grid layout for 5 moves per row */
+@media (max-width: 768px) {
+  .responsive-cube-grid {
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 4px;
+  }
+  
+  /* Ensure consistent spacing for 5-moves-per-row layout */
+  .responsive-cube-grid > div {
+    flex: 0 0 auto;
+    min-width: fit-content;
+  }
+  
+  /* Special handling for algorithms with trigger boxes */
+  .responsive-cube-grid .trigger-box {
+    /* Ensure trigger boxes don't break the 5-moves-per-row layout */
+    flex: 0 0 auto;
+    min-width: fit-content;
+  }
+  
+  /* Trigger box content - ensure 4 moves fit properly */
+  .responsive-cube-grid .trigger-box > div:last-child {
+    /* The colored box containing the moves */
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: fit-content;
+  }
+  
+  /* Right trigger box styling */
+  .responsive-cube-grid .trigger-right {
+    /* Additional styling for right trigger if needed */
+  }
+  
+  /* Left trigger box styling */
+  .responsive-cube-grid .trigger-left {
+    /* Additional styling for left trigger if needed */
+  }
+}
+
+/* Extra small mobile optimization */
+@media (max-width: 480px) {
+  .responsive-cube-grid {
+    gap: 6px;
+    padding: 0 2px;
+  }
+}
+
+/* iPad portrait mode optimization */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .responsive-cube-grid {
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 8px;
+  }
+  
+  /* Ensure 5 moves fit comfortably on iPad portrait */
+  .responsive-cube-grid > div {
+    flex: 0 0 auto;
+    min-width: fit-content;
+  }
+}
+
+/* Large mobile and small tablet optimization */
+@media (min-width: 481px) and (max-width: 767px) {
+  .responsive-cube-grid {
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 6px;
+  }
+}
+
 @media (max-width: 480px) {
   .pattern-image {
     max-width: 120px;
