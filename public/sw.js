@@ -17,7 +17,7 @@
  */
 
 // Update version number to force cache refresh on deployment
-const CACHE_VERSION = 'v8'
+const CACHE_VERSION = 'v9'
 const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
 const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
@@ -60,7 +60,7 @@ self.addEventListener('install', (event) => {
         // Caching static files
         return cache.addAll(STATIC_FILES)
       })
-      .catch((error) => {
+      .catch(() => {
         // Failed to cache static files
       })
   )
