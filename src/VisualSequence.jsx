@@ -181,7 +181,9 @@ function VisualSequence({ notation, algorithmId }) {
   }, [isMobileDevice, triggerGroups])
 
   // Approximate height of the trigger label + gap between label and box
-  const desktopTopNudgePx = 36
+  // 12px text height (xs) * 1.5 line-height ≈ 18px
+  // + 8px vertical padding + 4px border + 8px gap ⇒ ~38px
+  const desktopTopNudgePx = 40
 
   // Enhanced MoveImage component with mobile trigger sizing
   const MoveImage = ({ move, index, isInTrigger = false }) => {
@@ -406,8 +408,8 @@ function VisualSequence({ notation, algorithmId }) {
                     alignItems: 'center', 
                     gap: isDesktop ? spacing[1] : spacing[2], 
                     position: 'relative',
-                    // Desktop-only top nudge when any trigger group label is present
-                    marginTop: shouldApplyDesktopTopNudge ? `${desktopTopNudgePx}px` : '0',
+                    // Keep natural alignment for standalone tiles; trigger groups will be pulled up
+                    // so their box top aligns with these tiles' image tops
                     // Mobile-specific layout constraints
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
@@ -567,6 +569,9 @@ function VisualSequence({ notation, algorithmId }) {
                     width: 'fit-content',
                     overflow: 'visible', // Allow overflow for better mobile handling
                     minWidth: 'fit-content',
+                      // Desktop-only: pull the colored box upward so its top
+                      // aligns with standalone tiles' image tops (compensate for label height)
+                      marginTop: shouldApplyDesktopTopNudge ? `-${desktopTopNudgePx}px` : '0',
                     // Mobile-specific constraints
                     ...(isMobileDevice && {
                       maxWidth: '100%',
