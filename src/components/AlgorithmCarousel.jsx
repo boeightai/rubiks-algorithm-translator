@@ -209,7 +209,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
       </div>
       
       {/* Visual sequence */}
-      <VisualSequence notation={currentAlgorithm.notation} />
+      <VisualSequence notation={currentAlgorithm.notation} algorithmId={currentAlgorithm.id} />
       
       {/* Dots indicator */}
       <div style={{

@@ -21,10 +21,11 @@ import { colors, typography, spacing, borderRadius, shadows } from './styles/des
 import moves from './data/moves.json'
 import { useMobileDetection } from './hooks/useMobileDetection'
 
-function VisualSequence({ notation }) {
+function VisualSequence({ notation, algorithmId }) {
   const { isMobile, isTablet } = useMobileDetection()
   const isDesktop = !isMobile && !isTablet
   const isMobileDevice = isMobile || isTablet
+  const isKiteOLL = (algorithmId === 'kite-oll') || (typeof notation === 'string' && notation.trim() === "F U R U' R' F'")
 
   // Parse the notation string into individual moves
   const parseNotation = useCallback((notation) => {
@@ -281,6 +282,67 @@ function VisualSequence({ notation }) {
           })
         }}>
           {(() => {
+            // Special 3x3 mobile layout for Kite OLL only in tutorial carousel
+            if (isMobileDevice && isKiteOLL && moveList.length === 6) {
+              const renderTile = (i) => (
+                <div key={i} style={{ 
+                  textAlign: 'center', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  gap: isDesktop ? spacing[1] : spacing[2], 
+                  position: 'relative',
+                  ...(isMobileDevice && { flex: '0 0 auto', minWidth: 'fit-content', maxWidth: 'fit-content' })
+                }}>
+                  <div style={{ 
+                    background: getMoveNumberBackground(i), 
+                    color: getMoveNumberColor(i), 
+                    width: '24px', 
+                    height: '24px', 
+                    borderRadius: '50%', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    fontSize: typography.fontSize.xs, 
+                    fontWeight: typography.fontWeight.medium, 
+                    border: `1px solid ${getMoveNumberBorder(i)}` 
+                  }}>
+                    {i + 1}
+                  </div>
+                  <MoveImage move={moveList[i]} index={i} />
+                  <div style={{ 
+                    fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
+                    color: getMoveLabelColor(i), 
+                    fontWeight: typography.fontWeight.bold, 
+                    fontFamily: typography.fontFamily.mono, 
+                    letterSpacing: '0.05em', 
+                    maxWidth: isMobileDevice ? '50px' : '80px', 
+                    textAlign: 'center', 
+                    lineHeight: typography.lineHeight.tight,
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word'
+                  }}>
+                    {moveList[i]}
+                  </div>
+                </div>
+              )
+
+              return (
+                <div style={{ width: '100%' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: spacing[2], marginBottom: spacing[2] }}>
+                    {renderTile(0)}
+                    {renderTile(1)}
+                    {renderTile(2)}
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: spacing[2] }}>
+                    {renderTile(3)}
+                    {renderTile(4)}
+                    {renderTile(5)}
+                  </div>
+                </div>
+              )
+            }
+
             const renderedMoves = []
             // Render standalone moves first, then grouped trigger sequences
             const hasTriggerGroups = triggerGroups && triggerGroups.length > 0
