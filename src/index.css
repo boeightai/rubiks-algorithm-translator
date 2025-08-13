@@ -680,7 +680,7 @@ input, select, textarea {
   }
   
   /* Ensure all move containers have consistent sizing and NO OVERLAP */
-  .responsive-cube-grid > div {
+  .responsive-cube-grid > div:not(.trigger-box) {
     flex: 0 0 auto;
     min-width: fit-content;
     max-width: fit-content;
@@ -779,16 +779,16 @@ input, select, textarea {
     z-index: 1 !important;
   }
   
-  /* Move number circles */
-  .responsive-cube-grid > div > div:first-child {
+  /* Move number circles (only for individual move items, not trigger boxes) */
+  .responsive-cube-grid > div:not(.trigger-box) > div:first-child {
     width: 20px !important;
     height: 20px !important;
     font-size: 0.6rem !important;
     flex-shrink: 0 !important;
   }
   
-  /* Move labels */
-  .responsive-cube-grid > div > div:last-child {
+  /* Move labels (only for individual move items, not trigger boxes) */
+  .responsive-cube-grid > div:not(.trigger-box) > div:last-child {
     font-size: 0.75rem !important;
     line-height: 1.2 !important;
     max-width: 50px !important;
@@ -805,13 +805,13 @@ input, select, textarea {
 
 /* Extra small mobile optimization */
 @media (max-width: 380px) {
-  .responsive-cube-grid > div > div:first-child {
+  .responsive-cube-grid > div:not(.trigger-box) > div:first-child {
     width: 18px !important;
     height: 18px !important;
     font-size: 0.55rem !important;
   }
   
-  .responsive-cube-grid > div > div:last-child {
+  .responsive-cube-grid > div:not(.trigger-box) > div:last-child {
     font-size: 0.7rem !important;
     max-width: 45px !important;
   }
