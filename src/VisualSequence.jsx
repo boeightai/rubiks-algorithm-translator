@@ -266,8 +266,8 @@ function VisualSequence({ notation, algorithmId }) {
         </div>
       ) : (
         <div className="responsive-cube-grid" style={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', 
+          display: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'block' : 'flex', 
+          flexWrap: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'nowrap' : 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
           justifyContent: 'center', // Always center for consistent layout
           alignItems: 'flex-start', // Default to flex-start; we'll center individual items as needed
@@ -284,6 +284,7 @@ function VisualSequence({ notation, algorithmId }) {
           {(() => {
             // Special 3x3 mobile layout for Kite OLL only in tutorial carousel
             if (isMobileDevice && isKiteOLL && moveList.length === 6) {
+              const tileMinHeight = parseInt(getMobileImageSize()) + 64
               const renderTile = (i) => (
                 <div key={i} style={{ 
                   textAlign: 'center', 
@@ -292,6 +293,7 @@ function VisualSequence({ notation, algorithmId }) {
                   alignItems: 'center', 
                   gap: isDesktop ? spacing[1] : spacing[2], 
                   position: 'relative',
+                  minHeight: tileMinHeight + 'px',
                   ...(isMobileDevice && { flex: '0 0 auto', minWidth: 'fit-content', maxWidth: 'fit-content' })
                 }}>
                   <div style={{ 
@@ -329,7 +331,7 @@ function VisualSequence({ notation, algorithmId }) {
 
               return (
                 <div style={{ width: '100%' }}>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: spacing[2], marginBottom: spacing[2] }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: spacing[2], marginBottom: spacing[4] }}>
                     {renderTile(0)}
                     {renderTile(1)}
                     {renderTile(2)}
@@ -345,7 +347,6 @@ function VisualSequence({ notation, algorithmId }) {
 
             const renderedMoves = []
             // Render standalone moves first, then grouped trigger sequences
-            const hasTriggerGroups = triggerGroups && triggerGroups.length > 0
             
             // First, render all moves that are not part of trigger groups
             for (let i = 0; i < moveList.length; i++) {
