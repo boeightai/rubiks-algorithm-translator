@@ -269,7 +269,7 @@ function VisualSequence({ notation }) {
           flexWrap: 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
           justifyContent: 'center', // Always center for consistent layout
-          alignItems: 'flex-start', // Changed to flex-start to prevent overlap
+          alignItems: 'flex-start', // Default to flex-start; we'll center individual items as needed
           minHeight: isDesktop ? '100px' : '120px', 
           width: '100%',
           // Mobile-specific layout constraints
@@ -282,7 +282,7 @@ function VisualSequence({ notation }) {
         }}>
           {(() => {
             const renderedMoves = []
-            let i = 0
+            // Render standalone moves first, then grouped trigger sequences
             
             // First, render all moves that are not part of trigger groups
             for (let i = 0; i < moveList.length; i++) {
@@ -306,7 +306,9 @@ function VisualSequence({ notation }) {
                       minWidth: 'fit-content',
                       maxWidth: 'fit-content',
                       margin: '0',
-                      padding: '0'
+                      padding: '0',
+                      // Center singleton tiles vertically against taller trigger groups
+                      alignSelf: 'center'
                     })
                   }}>
                     <div style={{ 
@@ -416,7 +418,9 @@ function VisualSequence({ notation }) {
                   // Mobile-specific constraints
                   ...(isMobileDevice && {
                     maxWidth: '100%',
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    // Center the group vertically relative to neighboring items
+                    alignSelf: 'center'
                   })
                 }}>
                   {/* Trigger label above the colored box */}
