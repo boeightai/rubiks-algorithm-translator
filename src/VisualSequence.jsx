@@ -173,6 +173,16 @@ function VisualSequence({ notation, algorithmId }) {
     return isMobileDevice ? spacing[2] : spacing[2] // Use consistent spacing
   }, [isMobileDevice])
 
+  // Desktop-only: when a trigger group is present, the label above the trigger box
+  // makes that tile visually taller. Nudge standalone tiles down so that the
+  // top of their move images align with the images inside the trigger box.
+  const shouldApplyDesktopTopNudge = useMemo(() => {
+    return !isMobileDevice && triggerGroups && triggerGroups.length > 0
+  }, [isMobileDevice, triggerGroups])
+
+  // Approximate height of the trigger label + gap between label and box
+  const desktopTopNudgePx = 36
+
   // Enhanced MoveImage component with mobile trigger sizing
   const MoveImage = ({ move, index, isInTrigger = false }) => {
     const imageSrc = moves[move]
@@ -226,8 +236,8 @@ function VisualSequence({ notation, algorithmId }) {
     const movePx = parseInt(getMobileImageSize()) || 48
     // Match the exact tile height used in the renderer (image + number + label spacing)
     const tileHeight = movePx + 80
-    // Two rows of tiles plus the reduced 16px row gap
-    return tileHeight * 2 + 16
+    // Two rows of tiles plus the consistent spacing[2] row gap (8px)
+    return tileHeight * 2 + 8
   }, [isMobileDevice, isKiteOLL, notation, getMobileImageSize])
 
   return (
@@ -356,7 +366,7 @@ function VisualSequence({ notation, algorithmId }) {
                       display: 'flex',
                       gap: spacing[2],
                       justifyContent: 'center',
-                      marginBottom: '16px' // Reduced gap between rows
+                      marginBottom: spacing[2] // Use consistent spacing with main grid
                     }}>
                       {renderTile(0)}
                       {renderTile(1)}
@@ -396,6 +406,8 @@ function VisualSequence({ notation, algorithmId }) {
                     alignItems: 'center', 
                     gap: isDesktop ? spacing[1] : spacing[2], 
                     position: 'relative',
+                    // Desktop-only top nudge when any trigger group label is present
+                    marginTop: shouldApplyDesktopTopNudge ? `${desktopTopNudgePx}px` : '0',
                     // Mobile-specific layout constraints
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
