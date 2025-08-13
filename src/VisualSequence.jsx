@@ -117,9 +117,9 @@ function VisualSequence({ notation }) {
     return colors.neutral[900]
   }, [isPartOfRightTrigger, isPartOfLeftTrigger])
 
-  // Mobile-specific image size for trigger boxes
+  // Mobile-specific image size for trigger boxes (slightly smaller than regular moves)
   const getTriggerImageSize = useCallback(() => {
-    return isMobileDevice ? '48px' : '64px'
+    return isMobileDevice ? '44px' : '60px'
   }, [isMobileDevice])
 
   // Mobile-specific gap for trigger boxes
@@ -130,7 +130,9 @@ function VisualSequence({ notation }) {
   // Enhanced MoveImage component with mobile trigger sizing
   const MoveImage = ({ move, index, isInTrigger = false }) => {
     const imageSrc = moves[move]
-    const imageSize = isInTrigger ? getTriggerImageSize() : '64px'
+    // Smaller move images for mobile/tablet to fit 5 moves per row
+    const regularImageSize = isMobileDevice ? '48px' : '64px'
+    const imageSize = isInTrigger ? getTriggerImageSize() : regularImageSize
     
     if (!move || !imageSrc) {
       return (

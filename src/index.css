@@ -474,6 +474,7 @@ input, select, textarea {
   
   .responsive-image-container {
     display: flex !important;
+    flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
   }
@@ -541,7 +542,7 @@ input, select, textarea {
   font-weight: 600;
   color: #475569;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   letter-spacing: 0.025em;
 }
 
@@ -583,7 +584,7 @@ input, select, textarea {
   width: 150px;
   min-height: auto;
   flex: none;
-  padding: 0.75rem;
+  padding: 1rem;
 }
 
 .pattern-container-mobile .pattern-image {
@@ -619,6 +620,14 @@ input, select, textarea {
   }
 }
 
+@media (max-width: 380px) {
+  /* Extra small mobile phones - ensure move images are compact */
+  .move-image {
+    max-width: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
 @media (max-width: 480px) {
   .pattern-image {
     max-width: 120px;
@@ -635,7 +644,7 @@ input, select, textarea {
   
   .pattern-container-mobile .pattern-display {
     width: 120px;
-    padding: 0.5rem;
+    padding: 0.75rem;
   }
   
   .pattern-container-mobile .pattern-image {
@@ -645,7 +654,7 @@ input, select, textarea {
   
   .pattern-container-mobile .pattern-label {
     font-size: 0.7rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
   }
   
   /* Ensure single patterns also use same size on small phones */

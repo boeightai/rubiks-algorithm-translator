@@ -17,7 +17,7 @@
  */
 
 // Update version number to force cache refresh on deployment
-const CACHE_VERSION = 'v6'
+const CACHE_VERSION = 'v8'
 const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
 const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
@@ -57,11 +57,11 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME)
       .then((cache) => {
-        console.log('Caching static files')
+        // Caching static files
         return cache.addAll(STATIC_FILES)
       })
       .catch((error) => {
-        console.error('Failed to cache static files:', error)
+        // Failed to cache static files
       })
   )
 })
@@ -79,7 +79,7 @@ self.addEventListener('activate', (event) => {
             if (cacheName !== STATIC_CACHE_NAME && 
                 cacheName !== DYNAMIC_CACHE_NAME && 
                 cacheName !== CACHE_NAME) {
-              console.log('Deleting old cache:', cacheName)
+              // Deleting old cache
               return caches.delete(cacheName)
             }
           })
@@ -201,7 +201,7 @@ self.addEventListener('sync', (event) => {
   if (event.tag === 'background-sync') {
     event.waitUntil(
       // Perform background sync tasks
-      console.log('Background sync triggered')
+      // Background sync triggered
     )
   }
 })
