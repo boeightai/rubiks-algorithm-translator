@@ -580,16 +580,15 @@ input, select, textarea {
 }
 
 .pattern-container-mobile .pattern-display {
-  width: auto;
+  width: 150px;
   min-height: auto;
-  flex: 1;
-  max-width: 45%;
+  flex: none;
   padding: 0.75rem;
 }
 
 .pattern-container-mobile .pattern-image {
-  max-width: 100%;
-  width: 100%;
+  max-width: 150px;
+  width: 150px;
   height: auto;
 }
 
@@ -608,9 +607,15 @@ input, select, textarea {
     gap: 1rem;
   }
   
-  /* Ensure patterns stay side by side on tablets */
-  .pattern-container-mobile .pattern-display {
-    max-width: 45%;
+  /* Ensure single patterns in mobile also use consistent sizing */
+  .vertical-layout .pattern-display {
+    width: 150px;
+    margin: 0 auto;
+  }
+  
+  .vertical-layout .pattern-image {
+    max-width: 150px;
+    width: 150px;
   }
 }
 
@@ -623,19 +628,34 @@ input, select, textarea {
     font-size: 0.75rem;
   }
   
-  /* Ensure patterns stay side by side even on small phones */
+  /* Consistent sizing for small phones */
   .pattern-container-mobile {
     gap: 0.5rem;
   }
   
   .pattern-container-mobile .pattern-display {
-    max-width: 48%;
+    width: 120px;
     padding: 0.5rem;
+  }
+  
+  .pattern-container-mobile .pattern-image {
+    max-width: 120px;
+    width: 120px;
   }
   
   .pattern-container-mobile .pattern-label {
     font-size: 0.7rem;
     margin-bottom: 0.25rem;
+  }
+  
+  /* Ensure single patterns also use same size on small phones */
+  .vertical-layout .pattern-display {
+    width: 120px;
+  }
+  
+  .vertical-layout .pattern-image {
+    max-width: 120px;
+    width: 120px;
   }
 }
 
