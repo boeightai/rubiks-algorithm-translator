@@ -284,127 +284,14 @@ function VisualSequence({ notation }) {
             const renderedMoves = []
             let i = 0
             
-            while (i < moveList.length) {
+            // First, render all moves that are not part of trigger groups
+            for (let i = 0; i < moveList.length; i++) {
               const move = moveList[i]
-              const triggerGroup = triggerGroups.find(group => group.start === i)
+              const isInTriggerGroup = triggerGroups.some(group => 
+                group.start <= i && group.end >= i
+              )
               
-              if (triggerGroup) {
-                const triggerType = triggerGroup.type
-                const triggerColor = triggerType === 'right' ? colors.success[300] : colors.info[300]
-                const triggerBackground = triggerType === 'right' ? colors.success[50] : colors.info[50]
-                const endIndex = triggerGroup.end
-                const triggerMoves = []
-                
-                for (let j = i; j <= endIndex; j++) {
-                  triggerMoves.push(
-                    <div key={j} style={{ 
-                      textAlign: 'center', 
-                      display: 'flex', 
-                      flexDirection: 'column', 
-                      alignItems: 'center', 
-                      gap: isDesktop ? spacing[1] : spacing[2], 
-                      position: 'relative',
-                      flexShrink: 0,
-                      // Ensure consistent sizing for trigger moves in mobile layout
-                      ...(isMobileDevice && {
-                        flex: '0 0 auto',
-                        minWidth: 'fit-content',
-                        margin: '0',
-                        padding: '0'
-                      })
-                    }}>
-                      <div style={{ 
-                        background: getMoveNumberBackground(j), 
-                        color: getMoveNumberColor(j), 
-                        width: '24px', 
-                        height: '24px', 
-                        borderRadius: '50%', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        fontSize: typography.fontSize.xs, 
-                        fontWeight: typography.fontWeight.medium, 
-                        border: `1px solid ${getMoveNumberBorder(j)}` 
-                      }}>
-                        {j + 1}
-                      </div>
-                      <MoveImage move={moveList[j]} index={j} isInTrigger={true} />
-                      <div style={{ 
-                        fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
-                        color: getMoveLabelColor(j), 
-                        fontWeight: typography.fontWeight.bold, 
-                        fontFamily: typography.fontFamily.mono, 
-                        letterSpacing: '0.05em', 
-                        maxWidth: isMobileDevice ? '50px' : '80px', 
-                        textAlign: 'center', 
-                        lineHeight: typography.lineHeight.tight,
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word'
-                      }}>
-                        {moveList[j]}
-                      </div>
-                    </div>
-                  )
-                }
-                
-                renderedMoves.push(
-                  <div key={`trigger-${i}`} className={`trigger-box trigger-${triggerType}`} style={{ 
-                    display: 'flex', 
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: spacing[2],
-                    width: 'fit-content', // Always use fit-content for consistent layout
-                    flexShrink: 0,
-                    // Mobile-specific constraints
-                    ...(isMobileDevice && {
-                      maxWidth: '100%',
-                      boxSizing: 'border-box'
-                    })
-                  }}>
-                    {/* Trigger label above the colored box */}
-                    <div style={{ 
-                      background: triggerType === 'right' ? colors.success[50] : colors.info[50], 
-                      color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
-                      padding: `${spacing[1]} ${spacing[2]}`, 
-                      borderRadius: borderRadius.full, 
-                      fontSize: typography.fontSize.xs, 
-                      fontWeight: typography.fontWeight.medium, 
-                      border: `2px solid ${triggerType === 'right' ? colors.success[300] : colors.info[300]}`, 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: spacing[1], 
-                      flexShrink: 0 
-                    }}>
-                      <span style={{ fontSize: '10px' }}>🎯</span>
-                      {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
-                    </div>
-                    
-                    {/* Colored trigger box - optimized for mobile 5-moves-per-row layout */}
-                    <div style={{ 
-                      display: 'flex', 
-                      gap: getTriggerGap(), 
-                      padding: isDesktop ? spacing[2] : spacing[3], 
-                      background: triggerBackground, 
-                      border: `3px solid ${triggerColor}`, 
-                      borderRadius: borderRadius.lg, 
-                      boxShadow: shadows.md, 
-                      flexWrap: 'nowrap', // Always nowrap for consistent layout
-                      justifyContent: 'center',
-                      width: 'fit-content',
-                      overflow: 'visible', // Allow overflow for better mobile handling
-                      minWidth: 'fit-content',
-                      // Mobile-specific constraints
-                      ...(isMobileDevice && {
-                        maxWidth: '100%',
-                        boxSizing: 'border-box'
-                      })
-                    }}>
-                      {triggerMoves}
-                    </div>
-                  </div>
-                )
-                i = endIndex + 1
-              } else {
+              if (!isInTriggerGroup) {
                 renderedMoves.push(
                   <div key={i} style={{ 
                     textAlign: 'center', 
@@ -438,25 +325,143 @@ function VisualSequence({ notation }) {
                       {i + 1}
                     </div>
                     <MoveImage move={move} index={i} />
-                                          <div style={{ 
-                        fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
-                        color: getMoveLabelColor(i), 
-                        fontWeight: typography.fontWeight.bold, 
-                        fontFamily: typography.fontFamily.mono, 
-                        letterSpacing: '0.05em', 
-                        maxWidth: isMobileDevice ? '50px' : '80px', 
-                        textAlign: 'center', 
-                        lineHeight: typography.lineHeight.tight,
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word'
-                      }}>
-                        {move}
-                      </div>
+                    <div style={{ 
+                      fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
+                      color: getMoveLabelColor(i), 
+                      fontWeight: typography.fontWeight.bold, 
+                      fontFamily: typography.fontFamily.mono, 
+                      letterSpacing: '0.05em', 
+                      maxWidth: isMobileDevice ? '50px' : '80px', 
+                      textAlign: 'center', 
+                      lineHeight: typography.lineHeight.tight,
+                      wordBreak: 'break-word',
+                      overflowWrap: 'break-word'
+                    }}>
+                      {move}
+                    </div>
                   </div>
                 )
-                i++
               }
             }
+            
+            // Then, render all trigger groups
+            triggerGroups.forEach((triggerGroup, groupIndex) => {
+              const triggerType = triggerGroup.type
+              const triggerColor = triggerType === 'right' ? colors.success[300] : colors.info[300]
+              const triggerBackground = triggerType === 'right' ? colors.success[50] : colors.info[50]
+              const startIndex = triggerGroup.start
+              const endIndex = triggerGroup.end
+              const triggerMoves = []
+              
+              for (let j = startIndex; j <= endIndex; j++) {
+                triggerMoves.push(
+                  <div key={j} style={{ 
+                    textAlign: 'center', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    gap: isDesktop ? spacing[1] : spacing[2], 
+                    position: 'relative',
+                    flexShrink: 0,
+                    // Ensure consistent sizing for trigger moves in mobile layout
+                    ...(isMobileDevice && {
+                      flex: '0 0 auto',
+                      minWidth: 'fit-content',
+                      margin: '0',
+                      padding: '0'
+                    })
+                  }}>
+                    <div style={{ 
+                      background: getMoveNumberBackground(j), 
+                      color: getMoveNumberColor(j), 
+                      width: '24px', 
+                      height: '24px', 
+                      borderRadius: '50%', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      fontSize: typography.fontSize.xs, 
+                      fontWeight: typography.fontWeight.medium, 
+                      border: `1px solid ${getMoveNumberBorder(j)}` 
+                    }}>
+                      {j + 1}
+                    </div>
+                    <MoveImage move={moveList[j]} index={j} isInTrigger={true} />
+                    <div style={{ 
+                      fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
+                      color: getMoveLabelColor(j), 
+                      fontWeight: typography.fontWeight.bold, 
+                      fontFamily: typography.fontFamily.mono, 
+                      letterSpacing: '0.05em', 
+                      maxWidth: isMobileDevice ? '50px' : '80px', 
+                      textAlign: 'center', 
+                      lineHeight: typography.lineHeight.tight,
+                      wordBreak: 'break-word',
+                      overflowWrap: 'break-word'
+                    }}>
+                      {moveList[j]}
+                    </div>
+                  </div>
+                )
+              }
+              
+              renderedMoves.push(
+                <div key={`trigger-${groupIndex}`} className={`trigger-box trigger-${triggerType}`} style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: spacing[2],
+                  width: 'fit-content', // Always use fit-content for consistent layout
+                  flexShrink: 0,
+                  // Mobile-specific constraints
+                  ...(isMobileDevice && {
+                    maxWidth: '100%',
+                    boxSizing: 'border-box'
+                  })
+                }}>
+                  {/* Trigger label above the colored box */}
+                  <div style={{ 
+                    background: triggerType === 'right' ? colors.success[50] : colors.info[50], 
+                    color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
+                    padding: `${spacing[1]} ${spacing[2]}`, 
+                    borderRadius: borderRadius.full, 
+                    fontSize: typography.fontSize.xs, 
+                    fontWeight: typography.fontWeight.medium, 
+                    border: `2px solid ${triggerType === 'right' ? colors.success[300] : colors.info[300]}`, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: spacing[1], 
+                    flexShrink: 0 
+                  }}>
+                    <span style={{ fontSize: '10px' }}>🎯</span>
+                    {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
+                  </div>
+                  
+                  {/* Colored trigger box - optimized for mobile 5-moves-per-row layout */}
+                  <div style={{ 
+                    display: 'flex', 
+                    gap: getTriggerGap(), 
+                    padding: isDesktop ? spacing[2] : spacing[3], 
+                    background: triggerBackground, 
+                    border: `3px solid ${triggerColor}`, 
+                    borderRadius: borderRadius.lg, 
+                    boxShadow: shadows.md, 
+                    flexWrap: 'nowrap', // Always nowrap for consistent layout
+                    justifyContent: 'center',
+                    width: 'fit-content',
+                    overflow: 'visible', // Allow overflow for better mobile handling
+                    minWidth: 'fit-content',
+                    // Mobile-specific constraints
+                    ...(isMobileDevice && {
+                      maxWidth: '100%',
+                      boxSizing: 'border-box'
+                    })
+                  }}>
+                    {triggerMoves}
+                  </div>
+                </div>
+              )
+                         })
             return renderedMoves
           })()}
         </div>
