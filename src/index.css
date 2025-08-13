@@ -623,8 +623,29 @@ input, select, textarea {
 @media (max-width: 380px) {
   /* Extra small mobile phones - ensure move images are compact */
   .move-image {
+    max-width: 40px !important;
+    max-height: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* Mobile move image sizing */
+@media (max-width: 1024px) {
+  .move-image {
+    max-width: 48px !important;
+    max-height: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .move-image {
     max-width: 44px !important;
     max-height: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
   }
 }
 
@@ -635,79 +656,127 @@ input, select, textarea {
   gap: 8px;
   justify-content: center;
   align-items: flex-end;
+  width: 100%;
+  box-sizing: border-box;
+  /* Debug: Add border to see grid boundaries */
+  /* border: 1px solid red; */
 }
 
-/* Mobile-specific grid layout for 5 moves per row */
-@media (max-width: 768px) {
+/* Base mobile styles */
+@media (max-width: 1024px) {
   .responsive-cube-grid {
-    justify-content: space-between;
+    justify-content: center;
     gap: 8px;
-    padding: 0 4px;
+    padding: 0 8px;
+    flex-wrap: wrap;
   }
   
-  /* Ensure consistent spacing for 5-moves-per-row layout */
+  /* Ensure all move containers have consistent sizing */
   .responsive-cube-grid > div {
     flex: 0 0 auto;
     min-width: fit-content;
+    max-width: fit-content;
   }
   
-  /* Special handling for algorithms with trigger boxes */
+  /* Trigger box styling */
   .responsive-cube-grid .trigger-box {
-    /* Ensure trigger boxes don't break the 5-moves-per-row layout */
     flex: 0 0 auto;
     min-width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
-  /* Trigger box content - ensure 4 moves fit properly */
+  /* Trigger box content container */
   .responsive-cube-grid .trigger-box > div:last-child {
-    /* The colored box containing the moves */
     display: flex;
     gap: 8px;
     flex-wrap: nowrap;
     justify-content: center;
     width: fit-content;
+    max-width: 100%;
+    overflow: visible;
   }
   
-  /* Right trigger box styling */
-  .responsive-cube-grid .trigger-right {
-    /* Additional styling for right trigger if needed */
-  }
-  
-  /* Left trigger box styling */
-  .responsive-cube-grid .trigger-left {
-    /* Additional styling for left trigger if needed */
-  }
-}
-
-/* Extra small mobile optimization */
-@media (max-width: 480px) {
-  .responsive-cube-grid {
-    gap: 6px;
-    padding: 0 2px;
-  }
-}
-
-/* iPad portrait mode optimization */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .responsive-cube-grid {
-    justify-content: space-between;
-    gap: 10px;
-    padding: 0 8px;
-  }
-  
-  /* Ensure 5 moves fit comfortably on iPad portrait */
-  .responsive-cube-grid > div {
+  /* Individual move containers within trigger boxes */
+  .responsive-cube-grid .trigger-box > div:last-child > div {
     flex: 0 0 auto;
     min-width: fit-content;
   }
 }
 
-/* Large mobile and small tablet optimization */
-@media (min-width: 481px) and (max-width: 767px) {
+/* Small mobile phones */
+@media (max-width: 480px) {
   .responsive-cube-grid {
-    justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
     padding: 0 6px;
+  }
+  
+  .responsive-cube-grid .trigger-box > div:last-child {
+    gap: 6px;
+  }
+}
+
+/* Extra small mobile phones */
+@media (max-width: 380px) {
+  .responsive-cube-grid {
+    gap: 4px;
+    padding: 0 4px;
+  }
+  
+  .responsive-cube-grid .trigger-box > div:last-child {
+    gap: 4px;
+  }
+}
+
+/* iPad portrait specific */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .responsive-cube-grid {
+    gap: 10px;
+    padding: 0 12px;
+  }
+}
+
+/* Large tablets and small desktops */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .responsive-cube-grid {
+    gap: 10px;
+    padding: 0 12px;
+  }
+}
+
+/* Mobile-specific move container styling */
+@media (max-width: 1024px) {
+  .responsive-cube-grid > div {
+    /* Ensure consistent spacing between move elements */
+    gap: 4px !important;
+  }
+  
+  /* Move number circles */
+  .responsive-cube-grid > div > div:first-child {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 0.6rem !important;
+  }
+  
+  /* Move labels */
+  .responsive-cube-grid > div > div:last-child {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+    max-width: 50px !important;
+  }
+}
+
+/* Extra small mobile optimization */
+@media (max-width: 380px) {
+  .responsive-cube-grid > div > div:first-child {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 0.55rem !important;
+  }
+  
+  .responsive-cube-grid > div > div:last-child {
+    font-size: 0.7rem !important;
+    max-width: 45px !important;
   }
 }
 

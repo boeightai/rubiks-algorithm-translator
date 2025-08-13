@@ -132,20 +132,30 @@ function VisualSequence({ notation }) {
   const getMobileImageSize = useCallback(() => {
     if (!isMobileDevice) return '64px'
     
-    // For mobile, calculate size to fit 5 moves + 4 gaps in available width
-    // This handles both regular 5-move algorithms and algorithms with trigger boxes
-    // Assuming container width is ~100vw - padding (around 320px on small phones)
-    // Target: 5 moves + 4 gaps = 5x + 4y where x = image size, y = gap
-    // We want to maximize x while ensuring 5x + 4y <= available width
-    // Using 8px gaps (spacing[2]) and calculating optimal image size
-    const containerWidth = 320 // conservative estimate for small mobile
-    const gapSize = 8 // spacing[2]
-    const availableWidth = containerWidth - (4 * gapSize) // 4 gaps between 5 moves
-    const optimalImageSize = Math.floor(availableWidth / 5)
+    // More robust mobile sizing calculation
+    // Account for different mobile screen sizes and orientations
+    let baseSize = 48 // Default mobile size
     
-    // Ensure minimum size of 40px and maximum of 48px
-    // This size will work for both regular moves and trigger moves
-    return Math.max(40, Math.min(48, optimalImageSize)) + 'px'
+    // Adjust based on screen width for better responsiveness
+    if (typeof window !== 'undefined') {
+      const screenWidth = window.innerWidth
+      
+      if (screenWidth <= 380) {
+        // Extra small phones
+        baseSize = 40
+      } else if (screenWidth <= 480) {
+        // Small phones
+        baseSize = 44
+      } else if (screenWidth <= 768) {
+        // Medium phones and small tablets
+        baseSize = 48
+      } else if (screenWidth <= 1024) {
+        // Large tablets and iPad
+        baseSize = 52
+      }
+    }
+    
+    return baseSize + 'px'
   }, [isMobileDevice])
 
   // Mobile-specific image size for trigger boxes (slightly smaller than regular moves)
@@ -258,14 +268,15 @@ function VisualSequence({ notation }) {
           display: 'flex', 
           flexWrap: 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
-          justifyContent: isMobileDevice ? 'space-between' : 'center', // Distribute evenly on mobile
+          justifyContent: 'center', // Always center for consistent layout
           alignItems: 'flex-end', 
           minHeight: isDesktop ? '100px' : '120px', 
           width: '100%',
-          // Ensure consistent spacing for 5-moves-per-row layout on mobile
+          // Mobile-specific layout constraints
           ...(isMobileDevice && {
             maxWidth: '100%',
-            padding: '0 4px' // Small padding to prevent edge overflow
+            padding: '0 8px', // Increased padding for better mobile spacing
+            boxSizing: 'border-box'
           })
         }}>
           {(() => {
@@ -316,14 +327,16 @@ function VisualSequence({ notation }) {
                       </div>
                       <MoveImage move={moveList[j]} index={j} isInTrigger={true} />
                       <div style={{ 
-                        fontSize: isMobileDevice ? typography.fontSize.lg : typography.fontSize.xl, 
+                        fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
                         color: getMoveLabelColor(j), 
                         fontWeight: typography.fontWeight.bold, 
                         fontFamily: typography.fontFamily.mono, 
                         letterSpacing: '0.05em', 
-                        maxWidth: isMobileDevice ? '60px' : '80px', 
+                        maxWidth: isMobileDevice ? '50px' : '80px', 
                         textAlign: 'center', 
-                        lineHeight: typography.lineHeight.tight 
+                        lineHeight: typography.lineHeight.tight,
+                        wordBreak: 'break-word',
+                        overflowWrap: 'break-word'
                       }}>
                         {moveList[j]}
                       </div>
@@ -337,8 +350,13 @@ function VisualSequence({ notation }) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: spacing[2],
-                    width: isMobileDevice ? '100%' : 'fit-content',
-                    flexShrink: 0
+                    width: 'fit-content', // Always use fit-content for consistent layout
+                    flexShrink: 0,
+                    // Mobile-specific constraints
+                    ...(isMobileDevice && {
+                      maxWidth: '100%',
+                      boxSizing: 'border-box'
+                    })
                   }}>
                     {/* Trigger label above the colored box */}
                     <div style={{ 
@@ -367,14 +385,14 @@ function VisualSequence({ notation }) {
                       border: `3px solid ${triggerColor}`, 
                       borderRadius: borderRadius.lg, 
                       boxShadow: shadows.md, 
-                      flexWrap: isMobileDevice ? 'nowrap' : 'wrap', 
+                      flexWrap: 'nowrap', // Always nowrap for consistent layout
                       justifyContent: 'center',
-                      width: isMobileDevice ? 'fit-content' : 'fit-content',
-                      overflow: isMobileDevice ? 'hidden' : 'visible',
-                      minWidth: isMobileDevice ? 'fit-content' : 'auto',
-                      // Ensure trigger box fits within mobile layout constraints
+                      width: 'fit-content',
+                      overflow: 'visible', // Allow overflow for better mobile handling
+                      minWidth: 'fit-content',
+                      // Mobile-specific constraints
                       ...(isMobileDevice && {
-                        maxWidth: 'fit-content',
+                        maxWidth: '100%',
                         boxSizing: 'border-box'
                       })
                     }}>
@@ -392,10 +410,11 @@ function VisualSequence({ notation }) {
                     alignItems: 'center', 
                     gap: isDesktop ? spacing[1] : spacing[2], 
                     position: 'relative',
-                    // Ensure consistent width for 5-moves-per-row layout on mobile
+                    // Mobile-specific layout constraints
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
-                      minWidth: 'fit-content'
+                      minWidth: 'fit-content',
+                      maxWidth: 'fit-content'
                     })
                   }}>
                     <div style={{ 
@@ -415,14 +434,16 @@ function VisualSequence({ notation }) {
                     </div>
                     <MoveImage move={move} index={i} />
                                           <div style={{ 
-                        fontSize: isMobileDevice ? typography.fontSize.lg : typography.fontSize.xl, 
+                        fontSize: isMobileDevice ? typography.fontSize.sm : typography.fontSize.xl, 
                         color: getMoveLabelColor(i), 
                         fontWeight: typography.fontWeight.bold, 
                         fontFamily: typography.fontFamily.mono, 
                         letterSpacing: '0.05em', 
-                        maxWidth: isMobileDevice ? '60px' : '80px', 
+                        maxWidth: isMobileDevice ? '50px' : '80px', 
                         textAlign: 'center', 
-                        lineHeight: typography.lineHeight.tight 
+                        lineHeight: typography.lineHeight.tight,
+                        wordBreak: 'break-word',
+                        overflowWrap: 'break-word'
                       }}>
                         {move}
                       </div>
