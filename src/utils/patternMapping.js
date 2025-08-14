@@ -17,7 +17,10 @@
  */
 
 const PATTERN_MAPPING = {
-  'daisy-edge-flipper': ['/images/patterns/daisy-edge-flipper-pattern.png'],
+  'daisy-edge-flipper': [
+    '/images/patterns/daisy-edge-flipper-pattern.png',
+    '/images/patterns/daisy-edge-flipper-pattern-2.png'
+  ],
   'sune': [
     '/images/patterns/sune-pattern.png',
     '/images/patterns/sune-pattern-2.png'

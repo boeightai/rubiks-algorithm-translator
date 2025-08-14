@@ -248,8 +248,8 @@ const AlgorithmDetails = ({
         {/* Pattern Image Section */}
         {patternImageExists && (
           <div 
-            className="responsive-image-container"
-            style={{ flex: '1 1 250px', minWidth: '200px' }}
+            className="responsive-image-container pattern-image-container"
+            style={{ flex: '0 0 auto', minWidth: 'unset', width: 'fit-content' }}
           >
             <div style={{
               display: 'flex',
@@ -273,6 +273,7 @@ const AlgorithmDetails = ({
               borderRadius: borderRadius.xl,
               padding: spacing[4],
               border: `1px solid ${colors.border.light}`,
+              width: 'fit-content'
             }}>
               <img
                 src={patternImageSrc}
@@ -298,8 +299,8 @@ const AlgorithmDetails = ({
         {selectedAlgorithm?.additionalPatterns?.map((pattern, index) => (
           <div 
             key={pattern.filename}
-            className="responsive-image-container"
-            style={{ flex: '1 1 250px', minWidth: '200px' }}
+            className="responsive-image-container pattern-image-container"
+            style={{ flex: '0 0 auto', minWidth: 'unset', width: 'fit-content' }}
           >
             <div style={{
               display: 'flex',
@@ -323,6 +324,7 @@ const AlgorithmDetails = ({
               borderRadius: borderRadius.xl,
               padding: spacing[4],
               border: `1px solid ${colors.border.light}`,
+              width: 'fit-content'
             }}>
               <img
                 src={`/images/patterns/${pattern.filename}`}
@@ -505,11 +507,14 @@ const AlgorithmDetails = ({
           .responsive-images-section {
             flex-direction: column !important;
             gap: 24px !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
           
           .responsive-image-container {
-            flex: 1 1 auto !important;
-            min-width: auto !important;
+            flex: 0 0 auto !important;
+            min-width: unset !important;
+            width: fit-content !important;
           }
           
           .responsive-pattern-image,

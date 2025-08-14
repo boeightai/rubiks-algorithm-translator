@@ -550,7 +550,9 @@ function VisualSequence({ notation, algorithmId }) {
                       display: 'flex', 
                       alignItems: 'center', 
                       gap: spacing[1], 
-                      flexShrink: 0 
+                      flexShrink: 0,
+                      position: 'relative',
+                      zIndex: 1
                     }}>
                       <span style={{ fontSize: '10px' }}>🎯</span>
                       {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
@@ -571,9 +573,8 @@ function VisualSequence({ notation, algorithmId }) {
                     width: 'fit-content',
                     overflow: 'visible', // Allow overflow for better mobile handling
                     minWidth: 'fit-content',
-                      // Desktop-only: pull the colored box upward so its top
-                      // aligns with standalone tiles' image tops (compensate for label height)
-                      marginTop: shouldApplyDesktopTopNudge ? `-${desktopTopNudgePx}px` : '0',
+                    // Avoid negative margins that can overlap the first-row labels
+                    marginTop: 0,
                     // Mobile-specific constraints
                     ...(isMobileDevice && {
                       maxWidth: '100%',

@@ -6,7 +6,13 @@
     "category": "Utility",
     "difficulty": "beginner",
     "description": "Simple algorithm for flipping edges in daisy pattern",
-    "nicknames": []
+    "nicknames": [],
+    "additionalPatterns": [
+      {
+        "filename": "daisy-edge-flipper-pattern-2.png",
+        "label": "Alternative view"
+      }
+    ]
   },
   {
     "id": "white-corners-1",
