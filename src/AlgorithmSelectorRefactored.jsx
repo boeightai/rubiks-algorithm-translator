@@ -89,6 +89,7 @@ function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
           tutorialImageSrc={tutorialImageSrc}
           patternImageExists={patternImageExists}
           patternImageSrc={patternImageSrc}
+          notation={selectedAlgorithm?.notation}
         />
       
       {/* Visual Sequence below details and image */}

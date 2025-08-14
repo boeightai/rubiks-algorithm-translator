@@ -173,19 +173,6 @@ function VisualSequence({ notation, algorithmId }) {
     return isMobileDevice ? spacing[2] : spacing[2] // Use consistent spacing
   }, [isMobileDevice])
 
-  // Desktop-only: when a trigger group is present, the label above the trigger box
-  // makes that tile visually taller. Nudge standalone tiles down so that the
-  // top of their move images align with the images inside the trigger box.
-  const shouldApplyDesktopTopNudge = useMemo(() => {
-    return !isMobileDevice && triggerGroups && triggerGroups.length > 0
-  }, [isMobileDevice, triggerGroups])
-
-  // Approximate height of the trigger label + gap between label and box
-  // 12px text height (xs) * 1.5 line-height ≈ 18px
-  // + 8px vertical padding + 4px border + 8px gap ⇒ ~38px
-  // Total offset approximates: label (≈28) + gap (8) + border (3) + box padding top (16) ≈ 55
-  // Use a rounded value to ensure the trigger tiles' number badges align with standalone tiles
-  const desktopTopNudgePx = 56
 
   // Enhanced MoveImage component with mobile trigger sizing
   const MoveImage = ({ move, index, isInTrigger = false }) => {
@@ -297,8 +284,8 @@ function VisualSequence({ notation, algorithmId }) {
           flexWrap: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'nowrap' : 'wrap', 
           gap: isDesktop ? spacing[2] : spacing[2], // Consistent spacing for mobile
           justifyContent: 'center', // Always center horizontally
-          // Top-align contents so two-row mobile layout doesn't sit too low in the card
-          alignItems: 'flex-start',
+          // Center-align all items for consistent vertical alignment
+          alignItems: isDesktop ? 'center' : 'flex-start',
           // Reserve enough vertical space for the 3x2 Kite layout on mobile
           minHeight: specialKiteMinHeight ? `${specialKiteMinHeight}px` : (isDesktop ? '100px' : 'auto'), 
           width: '100%',
@@ -410,8 +397,6 @@ function VisualSequence({ notation, algorithmId }) {
                     alignItems: 'center', 
                     gap: isDesktop ? spacing[1] : spacing[2], 
                     position: 'relative',
-                    // Keep natural alignment for standalone tiles; trigger groups will be pulled up
-                    // so their box top aligns with these tiles' image tops
                     // Mobile-specific layout constraints
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
@@ -420,9 +405,11 @@ function VisualSequence({ notation, algorithmId }) {
                       margin: '0',
                       padding: '0',
                       // Center singleton tiles vertically against taller trigger groups
-                      alignSelf: 'center',
-                        // No nudge on mobile; we hide trigger labels so tops align naturally
-                        marginTop: '0'
+                      alignSelf: 'center'
+                    }),
+                    // Desktop: Center-align with other items
+                    ...(isDesktop && {
+                      alignSelf: 'center'
                     })
                   }}>
                     <div style={{ 
@@ -537,27 +524,6 @@ function VisualSequence({ notation, algorithmId }) {
                     alignSelf: 'center'
                   })
                 }}>
-                  {/* Trigger label above the colored box (desktop only for simpler mobile alignment) */}
-                  {!isMobileDevice && (
-                    <div style={{ 
-                      background: triggerType === 'right' ? colors.success[50] : colors.info[50], 
-                      color: triggerType === 'right' ? colors.success[700] : colors.info[700], 
-                      padding: `${spacing[1]} ${spacing[2]}`, 
-                      borderRadius: borderRadius.full, 
-                      fontSize: typography.fontSize.xs, 
-                      fontWeight: typography.fontWeight.medium, 
-                      border: `2px solid ${triggerType === 'right' ? colors.success[300] : colors.info[300]}`, 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: spacing[1], 
-                      flexShrink: 0,
-                      position: 'relative',
-                      zIndex: 1
-                    }}>
-                      <span style={{ fontSize: '10px' }}>🎯</span>
-                      {triggerType === 'right' ? 'Right Trigger' : 'Left Trigger'}
-                    </div>
-                  )}
                   
                   {/* Colored trigger box - optimized for mobile 5-moves-per-row layout */}
                   <div style={{ 
@@ -573,8 +539,6 @@ function VisualSequence({ notation, algorithmId }) {
                     width: 'fit-content',
                     overflow: 'visible', // Allow overflow for better mobile handling
                     minWidth: 'fit-content',
-                    // Avoid negative margins that can overlap the first-row labels
-                    marginTop: 0,
                     // Mobile-specific constraints
                     ...(isMobileDevice && {
                       maxWidth: '100%',

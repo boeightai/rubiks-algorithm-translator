@@ -28,12 +28,41 @@ const AlgorithmDetails = ({
   tutorialImageExists,
   tutorialImageSrc,
   patternImageExists,
-  patternImageSrc
+  patternImageSrc,
+  notation
 }) => {
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [isImageHovered, setIsImageHovered] = useState(false)
+
+  // Detect trigger patterns in the notation
+  const detectTriggerPatterns = (notation) => {
+    if (!notation || typeof notation !== 'string') return { hasRightTrigger: false, hasLeftTrigger: false }
+    
+    const moves = notation.split(' ').filter(move => move.trim() !== '')
+    const rightTriggerPattern = ['R', 'U', "R'", "U'"]
+    const leftTriggerPattern = ["L'", "U'", 'L', 'U']
+    
+    const arraysEqual = (a, b) => a.length === b.length && a.every((v, i) => v === b[i])
+    
+    let hasRightTrigger = false
+    let hasLeftTrigger = false
+    
+    for (let i = 0; i <= moves.length - 4; i++) {
+      const sequence = moves.slice(i, i + 4)
+      if (arraysEqual(sequence, rightTriggerPattern)) {
+        hasRightTrigger = true
+      }
+      if (arraysEqual(sequence, leftTriggerPattern)) {
+        hasLeftTrigger = true
+      }
+    }
+    
+    return { hasRightTrigger, hasLeftTrigger }
+  }
+
+  const { hasRightTrigger, hasLeftTrigger } = detectTriggerPatterns(notation)
 
   // Simplified tutorial image component
   const TutorialImage = ({ imageSrc, algorithmName, isZoomed }) => {
@@ -233,6 +262,44 @@ const AlgorithmDetails = ({
           }}>
             {selectedAlgorithm.category}
           </div>
+
+          {/* Right Trigger Badge */}
+          {hasRightTrigger && (
+            <div style={{
+              background: colors.success[50],
+              color: colors.success[700],
+              padding: `${spacing[1]} ${spacing[3]}`,
+              borderRadius: borderRadius.full,
+              fontSize: typography.fontSize.sm,
+              fontWeight: typography.fontWeight.medium,
+              border: `1px solid ${colors.success[300]}`,
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[1],
+            }}>
+              <span style={{ fontSize: '10px' }}>🎯</span>
+              Right Trigger
+            </div>
+          )}
+
+          {/* Left Trigger Badge */}
+          {hasLeftTrigger && (
+            <div style={{
+              background: colors.info[50],
+              color: colors.info[700],
+              padding: `${spacing[1]} ${spacing[3]}`,
+              borderRadius: borderRadius.full,
+              fontSize: typography.fontSize.sm,
+              fontWeight: typography.fontWeight.medium,
+              border: `1px solid ${colors.info[300]}`,
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[1],
+            }}>
+              <span style={{ fontSize: '10px' }}>🎯</span>
+              Left Trigger
+            </div>
+          )}
         </div>
       </div>
 
@@ -243,6 +310,8 @@ const AlgorithmDetails = ({
           display: 'flex',
           gap: spacing[6],
           flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
         }}
       >
         {/* Pattern Image Section */}
