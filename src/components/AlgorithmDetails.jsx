@@ -120,8 +120,8 @@ const AlgorithmDetails = ({
         gap: spacing[4],
       }}>
         <div style={{
-          width: '80px',
-          height: '80px',
+          width: '240px',
+          height: '240px',
           background: colors.neutral[100],
           borderRadius: '50%',
           display: 'flex',
@@ -133,8 +133,8 @@ const AlgorithmDetails = ({
             src="/images/icons/cube-icon.png"
             alt="Cube icon"
             style={{
-              width: '60px',
-              height: '60px',
+              width: '180px',
+              height: '180px',
               objectFit: 'contain',
               backgroundColor: 'var(--move-image-bg)',
               padding: 'var(--move-image-padding)',
