@@ -20,7 +20,7 @@ import { colors, typography, spacing, borderRadius, shadows } from '../styles/de
 import VisualSequence from '../VisualSequence'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 
-function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoToIndex }) {
+function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoToIndex, activeMoveIndex = null }) {
   const { isMobile, isTablet } = useMobileDetection()
   
   // Validate inputs
@@ -209,7 +209,11 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
       </div>
       
       {/* Visual sequence */}
-      <VisualSequence notation={currentAlgorithm.notation} algorithmId={currentAlgorithm.id} />
+      <VisualSequence
+        notation={currentAlgorithm.notation}
+        algorithmId={currentAlgorithm.id}
+        activeMoveIndex={activeMoveIndex}
+      />
       
       {/* Dots indicator */}
       <div style={{

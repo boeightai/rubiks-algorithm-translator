@@ -21,7 +21,7 @@ import { colors, typography, spacing, borderRadius, shadows } from './styles/des
 import moves from './data/moves.json'
 import { useMobileDetection } from './hooks/useMobileDetection'
 
-function VisualSequence({ notation, algorithmId }) {
+function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
   const { isMobile, isTablet } = useMobileDetection()
   const isDesktop = !isMobile && !isTablet
   const isMobileDevice = isMobile || isTablet
@@ -116,18 +116,28 @@ function VisualSequence({ notation, algorithmId }) {
   }, [isPartOfRightTrigger, isPartOfLeftTrigger])
   
   const getMoveImageBorder = useCallback(index => {
+    if (index === activeMoveIndex) return colors.primary[500]
     if (isPartOfRightTrigger(index) && isPartOfLeftTrigger(index)) return colors.neutral[500]
     if (isPartOfRightTrigger(index)) return colors.success[400]
     if (isPartOfLeftTrigger(index)) return colors.info[400]
     return colors.border.light
-  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
+  }, [activeMoveIndex, isPartOfRightTrigger, isPartOfLeftTrigger])
   
   const getMoveLabelColor = useCallback(index => {
+    if (index === activeMoveIndex) return colors.primary[700]
     if (isPartOfRightTrigger(index) && isPartOfLeftTrigger(index)) return colors.neutral[800]
     if (isPartOfRightTrigger(index)) return colors.success[700]
     if (isPartOfLeftTrigger(index)) return colors.info[700]
     return colors.neutral[900]
-  }, [isPartOfRightTrigger, isPartOfLeftTrigger])
+  }, [activeMoveIndex, isPartOfRightTrigger, isPartOfLeftTrigger])
+
+  const getActiveTileStyle = useCallback(index => {
+    if (index !== activeMoveIndex) return {}
+    return {
+      transform: 'translateY(-3px)',
+      filter: 'drop-shadow(0 10px 12px rgba(59, 130, 246, 0.22))',
+    }
+  }, [activeMoveIndex])
 
   // Calculate optimal sizes for mobile to fit exactly 5 moves per row
   const getMobileImageSize = useCallback(() => {
@@ -206,12 +216,13 @@ function VisualSequence({ notation, algorithmId }) {
         style={{
           width: imageSize, 
           height: imageSize, 
-          border: `2px solid ${getMoveImageBorder(index)}`, 
+          border: `${index === activeMoveIndex ? '3px' : '2px'} solid ${getMoveImageBorder(index)}`, 
           objectFit: 'contain', 
           borderRadius: borderRadius.lg, 
           boxShadow: shadows.sm, 
           display: 'block', 
           flexShrink: 0,
+          transition: 'border-color 0.2s ease, border-width 0.2s ease, transform 0.2s ease',
         }}
         draggable="false"
       />
@@ -309,8 +320,10 @@ function VisualSequence({ notation, algorithmId }) {
                   alignItems: 'center', 
                   gap: isDesktop ? spacing[1] : spacing[2], 
                   position: 'relative',
+                  transition: 'transform 0.2s ease, filter 0.2s ease',
                   height: tileMinHeight + 'px', // Fixed height instead of minHeight
-                  minWidth: 'fit-content'
+                  minWidth: 'fit-content',
+                  ...getActiveTileStyle(i)
                 }}>
                   <div style={{ 
                     background: getMoveNumberBackground(i), 
@@ -397,6 +410,7 @@ function VisualSequence({ notation, algorithmId }) {
                     alignItems: 'center', 
                     gap: isDesktop ? spacing[1] : spacing[2], 
                     position: 'relative',
+                    transition: 'transform 0.2s ease, filter 0.2s ease',
                     // Mobile-specific layout constraints
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
@@ -410,7 +424,8 @@ function VisualSequence({ notation, algorithmId }) {
                     // Desktop: Center-align with other items
                     ...(isDesktop && {
                       alignSelf: 'center'
-                    })
+                    }),
+                    ...getActiveTileStyle(i)
                   }}>
                     <div style={{ 
                       background: getMoveNumberBackground(i), 
@@ -466,13 +481,15 @@ function VisualSequence({ notation, algorithmId }) {
                     gap: isDesktop ? spacing[1] : spacing[2], 
                     position: 'relative',
                     flexShrink: 0,
+                    transition: 'transform 0.2s ease, filter 0.2s ease',
                     // Ensure consistent sizing for trigger moves in mobile layout
                     ...(isMobileDevice && {
                       flex: '0 0 auto',
                       minWidth: 'fit-content',
                       margin: '0',
                       padding: '0'
-                    })
+                    }),
+                    ...getActiveTileStyle(j)
                   }}>
                     <div style={{ 
                       background: getMoveNumberBackground(j), 

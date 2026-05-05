@@ -16,7 +16,7 @@
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import YouTubeEmbed from './components/YouTubeEmbed'
 import AlgorithmCarousel from './components/AlgorithmCarousel'
 import PatternDisplay from './components/PatternDisplay'
@@ -26,8 +26,11 @@ import { colors, spacing, typography } from './styles/designSystem'
 import { useMobileDetection } from './hooks/useMobileDetection'
 import Header from './components/Header'
 
+const InteractiveCubeDemo = lazy(() => import('./components/InteractiveCubeDemo'))
+
 function TutorialMode({ onModeToggle }) {
   const [currentAlgorithmIndex, setCurrentAlgorithmIndex] = useState(0)
+  const [activeDemoMoveIndex, setActiveDemoMoveIndex] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const { isMobile, isTablet } = useMobileDetection()
@@ -81,11 +84,31 @@ function TutorialMode({ onModeToggle }) {
   
   const patternImages = currentAlgorithm ? getPatternImages(currentAlgorithm.id) : null
   const hasMultiplePatterns = patternImages && patternImages.length > 1
+  const shouldShowInteractiveDemo = currentAlgorithm?.id === 'daisy-edge-flipper'
   
   // Enhanced responsive layout decision
   // Use horizontal layout only for desktop/tablet landscape with patterns
   // Use vertical layout for mobile, tablet portrait, and iPad vertical orientation
   const shouldUseHorizontalLayout = isDesktop && patternImages && !isTablet
+
+  useEffect(() => {
+    setActiveDemoMoveIndex(null)
+  }, [currentAlgorithmIndex])
+
+  const renderLessonMedia = () => {
+    if (!shouldShowInteractiveDemo || !currentAlgorithm) {
+      return <YouTubeEmbed />
+    }
+
+    return (
+      <Suspense fallback={<YouTubeEmbed />}>
+        <InteractiveCubeDemo
+          notation={currentAlgorithm.notation}
+          onActiveMoveChange={setActiveDemoMoveIndex}
+        />
+      </Suspense>
+    )
+  }
   
   // Loading state
   if (isLoading) {
@@ -227,20 +250,20 @@ function TutorialMode({ onModeToggle }) {
             {hasMultiplePatterns ? (
               <>
                 <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
-                <YouTubeEmbed />
+                {renderLessonMedia()}
                 <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
               </>
             ) : (
               <>
                 <PatternDisplay algorithmId={currentAlgorithm.id} position="left" />
-                <YouTubeEmbed />
+                {renderLessonMedia()}
               </>
             )}
           </div>
         ) : (
           // Mobile/Tablet Portrait: video above patterns
           <div className="vertical-layout">
-            <YouTubeEmbed />
+            {renderLessonMedia()}
             {patternImages && currentAlgorithm && (
               hasMultiplePatterns ? (
                 // Display both patterns side by side for algorithms with multiple patterns
@@ -263,6 +286,7 @@ function TutorialMode({ onModeToggle }) {
           onNext={handleNext}
           onPrevious={handlePrevious}
           onGoToIndex={handleGoToIndex}
+          activeMoveIndex={shouldShowInteractiveDemo ? activeDemoMoveIndex : null}
         />
       </div>
     </div>
