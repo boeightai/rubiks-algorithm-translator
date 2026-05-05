@@ -25,6 +25,7 @@ const CUBIE_SPACING = 1.06
 const CUBE_SCALE = 0.9
 const TURN_DURATION_MS = 1200
 const MOVE_PAUSE_MS = 450
+const START_PAUSE_MS = 1000
 
 const FACE_COLORS = {
   U: 0xf8fafc,
@@ -33,6 +34,13 @@ const FACE_COLORS = {
   B: 0x3b82f6,
   R: 0xef4444,
   L: 0xf97316,
+}
+
+const DAISY_PATTERN_COLORS = {
+  black: 0x020617,
+  blue: 0x0284c7,
+  gray: 0xcbd5e1,
+  yellow: 0xfacc15,
 }
 
 const MOVE_DEFINITIONS = {
@@ -55,6 +63,31 @@ const easeInOutCubic = (t) => {
 const parseNotation = (notation) => {
   if (!notation || typeof notation !== 'string') return []
   return notation.split(' ').filter(Boolean)
+}
+
+const getDaisyPatternStickerColor = (face, x, y, z) => {
+  if (face === 'F') {
+    if (x === 0 && y === 1) return DAISY_PATTERN_COLORS.gray
+    if (x === 0 && y === 0) return DAISY_PATTERN_COLORS.blue
+    return DAISY_PATTERN_COLORS.black
+  }
+
+  if (face === 'U') {
+    if (x === 0 && z === 1) return DAISY_PATTERN_COLORS.blue
+    if (x === 0 && z === 0) return DAISY_PATTERN_COLORS.yellow
+    if (Math.abs(x) + Math.abs(z) === 1) return DAISY_PATTERN_COLORS.gray
+    return DAISY_PATTERN_COLORS.black
+  }
+
+  if (face === 'L' || face === 'R') {
+    return DAISY_PATTERN_COLORS.black
+  }
+
+  if (face === 'D') {
+    return DAISY_PATTERN_COLORS.black
+  }
+
+  return FACE_COLORS[face]
 }
 
 function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
@@ -102,10 +135,10 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
     }
   }, [onActiveMoveChange])
 
-  const createSticker = useCallback((face, position, rotation) => {
+  const createSticker = useCallback((face, position, rotation, gridPosition) => {
     const geometry = new THREE.PlaneGeometry(0.72, 0.72)
     const material = new THREE.MeshStandardMaterial({
-      color: FACE_COLORS[face],
+      color: getDaisyPatternStickerColor(face, gridPosition.x, gridPosition.y, gridPosition.z),
       roughness: 0.72,
       metalness: 0.02,
       side: THREE.DoubleSide,
@@ -130,22 +163,22 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
     group.add(new THREE.Mesh(geometry, material))
 
     if (y === 1) {
-      group.add(createSticker('U', { x: 0, y: 0.486, z: 0 }, { x: -Math.PI / 2, y: 0, z: 0 }))
+      group.add(createSticker('U', { x: 0, y: 0.486, z: 0 }, { x: -Math.PI / 2, y: 0, z: 0 }, { x, y, z }))
     }
     if (y === -1) {
-      group.add(createSticker('D', { x: 0, y: -0.486, z: 0 }, { x: Math.PI / 2, y: 0, z: 0 }))
+      group.add(createSticker('D', { x: 0, y: -0.486, z: 0 }, { x: Math.PI / 2, y: 0, z: 0 }, { x, y, z }))
     }
     if (z === 1) {
-      group.add(createSticker('F', { x: 0, y: 0, z: 0.486 }, { x: 0, y: 0, z: 0 }))
+      group.add(createSticker('F', { x: 0, y: 0, z: 0.486 }, { x: 0, y: 0, z: 0 }, { x, y, z }))
     }
     if (z === -1) {
-      group.add(createSticker('B', { x: 0, y: 0, z: -0.486 }, { x: 0, y: Math.PI, z: 0 }))
+      group.add(createSticker('B', { x: 0, y: 0, z: -0.486 }, { x: 0, y: Math.PI, z: 0 }, { x, y, z }))
     }
     if (x === 1) {
-      group.add(createSticker('R', { x: 0.486, y: 0, z: 0 }, { x: 0, y: Math.PI / 2, z: 0 }))
+      group.add(createSticker('R', { x: 0.486, y: 0, z: 0 }, { x: 0, y: Math.PI / 2, z: 0 }, { x, y, z }))
     }
     if (x === -1) {
-      group.add(createSticker('L', { x: -0.486, y: 0, z: 0 }, { x: 0, y: -Math.PI / 2, z: 0 }))
+      group.add(createSticker('L', { x: -0.486, y: 0, z: 0 }, { x: 0, y: -Math.PI / 2, z: 0 }, { x, y, z }))
     }
 
     return group
@@ -173,7 +206,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
 
     const viewRoot = viewRootRef.current
     if (viewRoot) {
-      viewRoot.rotation.set(-0.18, 0, 0)
+      viewRoot.rotation.set(0, 0, 0)
       viewRoot.scale.setScalar(isCompact ? 0.56 : CUBE_SCALE)
       viewRoot.position.set(0, isCompact ? 0.75 : 0.25, 0)
     }
@@ -286,6 +319,10 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
     clearTimers()
     resetCube()
 
+    await new Promise((resolve) => {
+      timeoutRef.current = setTimeout(resolve, START_PAUSE_MS)
+    })
+
     for (let index = 0; index < moves.length; index += 1) {
       if (!isRunningRef.current) break
       await animateMove(moves[index], index)
@@ -342,7 +379,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
     scene.background = new THREE.Color(0xf8fafc)
 
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100)
-    camera.position.set(0, 4.6, 8.2)
+    camera.position.set(0, 7.2, 7.2)
     camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({
