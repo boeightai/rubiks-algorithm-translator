@@ -66,19 +66,49 @@ const Header = ({
         marginBottom: spacing[2],
       }}>
         {/* Left side - Title and subtitle */}
-        <div style={{
+        <div
+          className="site-brand-lockup"
+          style={{
           display: 'flex',
           alignItems: 'center',
-          gap: spacing[3],
+          gap: spacing[4],
           flex: '1 1 auto',
-        }}>
+          minWidth: 0,
+        }}
+        >
+          <div
+            className="site-mascot-frame"
+            aria-hidden="true"
+            style={{
+              width: '96px',
+              height: '96px',
+              flex: '0 0 auto',
+              borderRadius: '9999px',
+              overflow: 'hidden',
+              background: colors.neutral[100],
+              boxShadow: shadows.sm,
+            }}
+          >
+            <img
+              src="/images/icons/cube-mascot.png"
+              alt=""
+              className="site-mascot-image"
+              loading="eager"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          </div>
           <div style={{ width: '100%' }}>
             <h1 style={{ 
               color: colors.neutral[900], 
               fontSize: typography.fontSize['3xl'], 
               margin: 0, 
               fontWeight: typography.fontWeight.bold, 
-              letterSpacing: '-0.025em',
+              letterSpacing: 0,
               lineHeight: typography.lineHeight.tight,
             }}>
               <span>{title}</span>
@@ -513,11 +543,41 @@ const Header = ({
 
       {/* Mobile-responsive styles */}
       <style>{`
+        @media (max-width: 1024px) {
+          .site-brand-lockup {
+            gap: 14px !important;
+          }
+
+          .site-mascot-frame {
+            width: 76px !important;
+            height: 76px !important;
+          }
+
+          .responsive-header h1 {
+            font-size: 1.75rem !important;
+          }
+
+          .responsive-header p {
+            font-size: 1rem !important;
+          }
+        }
+
         /* iPhone vertical orientation specific styles */
         @media (max-width: 768px) and (orientation: portrait) {
           .responsive-header {
             margin-bottom: 16px !important;
             padding: 16px 0 !important;
+          }
+
+          .site-brand-lockup {
+            align-items: flex-start !important;
+            gap: 12px !important;
+          }
+
+          .site-mascot-frame {
+            width: 56px !important;
+            height: 56px !important;
+            margin-top: 2px !important;
           }
           
           .responsive-header h1 {
@@ -599,6 +659,15 @@ const Header = ({
             margin-bottom: 24px !important;
             padding: 20px 0 !important;
           }
+
+          .site-brand-lockup {
+            gap: 14px !important;
+          }
+
+          .site-mascot-frame {
+            width: 60px !important;
+            height: 60px !important;
+          }
           
           .responsive-header h1 {
             font-size: 1.5rem !important;
@@ -623,6 +692,15 @@ const Header = ({
             margin-bottom: 20px !important;
             padding: 16px 0 !important;
           }
+
+          .site-brand-lockup {
+            gap: 10px !important;
+          }
+
+          .site-mascot-frame {
+            width: 50px !important;
+            height: 50px !important;
+          }
           
           .responsive-header h1 {
             font-size: 1.375rem !important;
@@ -643,6 +721,11 @@ const Header = ({
           .responsive-header {
             margin-bottom: 16px !important;
             padding: 12px 0 !important;
+          }
+
+          .site-mascot-frame {
+            width: 56px !important;
+            height: 56px !important;
           }
           
           .responsive-header h1 {

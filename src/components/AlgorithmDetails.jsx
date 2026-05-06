@@ -130,15 +130,14 @@ const AlgorithmDetails = ({
           overflow: 'hidden',
         }}>
           <img
-            src="/images/icons/cube-icon.png"
-            alt="Cube icon"
+            src="/images/icons/cube-mascot.png"
+            alt="Cartoon cube character"
             style={{
-              width: '180px',
-              height: '180px',
-              objectFit: 'contain',
+              width: '240px',
+              height: '240px',
+              objectFit: 'cover',
               backgroundColor: 'var(--move-image-bg)',
               padding: 'var(--move-image-padding)',
-              borderRadius: '8px',
             }}
           />
         </div>

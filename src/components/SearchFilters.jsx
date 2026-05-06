@@ -56,6 +56,25 @@ const SearchFilters = ({
     <div style={{
       marginBottom: spacing[6],
     }}>
+      <div style={{ marginBottom: spacing[5] }}>
+        <h2 style={{
+          fontSize: typography.fontSize['2xl'],
+          lineHeight: typography.lineHeight.tight,
+          fontWeight: typography.fontWeight.bold,
+          color: colors.neutral[900],
+          margin: `0 0 ${spacing[1]} 0`,
+        }}>
+          Algorithms
+        </h2>
+        <div style={{
+          fontSize: typography.fontSize.sm,
+          color: colors.neutral[600],
+          fontWeight: typography.fontWeight.medium,
+        }}>
+          {filteredCount} of {totalCount}
+        </div>
+      </div>
+
       {/* Search and Filter Controls */}
       <div 
         className="responsive-form"
@@ -169,34 +188,11 @@ const SearchFilters = ({
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           marginBottom: spacing[4],
           gap: spacing[3],
         }}
       >
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: spacing[3],
-          flex: '1 1 auto'
-        }}>
-          {/* Title for count display */}
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.neutral[900],
-            fontWeight: typography.fontWeight.semibold,
-          }}>
-            Algorithms
-          </div>
-          {/* Count display shifted left */}
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.neutral[700],
-            fontWeight: typography.fontWeight.medium,
-          }}>
-            {filteredCount} of {totalCount}
-          </div>
-        </div>
         {/* Favorites button right-justified */}
         {setShowFavoritesOnly && (
           <button
@@ -362,11 +358,6 @@ const SearchFilters = ({
             flex-direction: column !important;
             gap: 12px !important;
             align-items: stretch !important;
-          }
-          
-          .responsive-button-group > div {
-            justify-content: center !important;
-            text-align: center !important;
           }
           
           .responsive-button-group button {
