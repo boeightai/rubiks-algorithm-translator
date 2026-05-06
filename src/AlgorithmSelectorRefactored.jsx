@@ -35,9 +35,13 @@ function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
     setSearchTerm,
     selectedCategory,
     setSelectedCategory,
+    selectedDifficulty,
+    setSelectedDifficulty,
     showFavoritesOnly,
     setShowFavoritesOnly,
     categories,
+    difficultyOptions,
+    difficultyCounts,
     filteredAlgorithms,
     algorithms
   } = useAlgorithms(favoriteIds)
@@ -62,7 +66,11 @@ function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
         setSearchTerm={setSearchTerm}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        selectedDifficulty={selectedDifficulty}
+        setSelectedDifficulty={setSelectedDifficulty}
         categories={categories}
+        difficultyOptions={difficultyOptions}
+        difficultyCounts={difficultyCounts}
         filteredCount={filteredAlgorithms.length}
         totalCount={algorithms.length}
         showFavoritesOnly={showFavoritesOnly}

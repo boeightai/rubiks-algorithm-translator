@@ -25,12 +25,23 @@ const SearchFilters = ({
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
+  selectedDifficulty,
+  setSelectedDifficulty,
   categories,
+  difficultyOptions,
+  difficultyCounts,
   filteredCount,
   totalCount,
   showFavoritesOnly,
   setShowFavoritesOnly,
 }) => {
+  const difficultyLabels = {
+    beginner: 'Start Here',
+    intermediate: 'Growing Skills',
+    advanced: 'Advanced',
+    all: 'Full Library',
+  }
+
   // Memoized handlers for better performance
   const handleSearchChange = useCallback((e) => {
     setSearchTerm(e.target.value)
@@ -39,6 +50,10 @@ const SearchFilters = ({
   const handleCategoryChange = useCallback((e) => {
     setSelectedCategory(e.target.value)
   }, [setSelectedCategory])
+
+  const handleDifficultyChange = useCallback((value) => {
+    setSelectedDifficulty(value)
+  }, [setSelectedDifficulty])
 
   const handleFavoritesToggle = useCallback(() => {
     setShowFavoritesOnly(prev => !prev)
@@ -51,6 +66,10 @@ const SearchFilters = ({
   const clearCategory = useCallback(() => {
     setSelectedCategory('all')
   }, [setSelectedCategory])
+
+  const clearDifficulty = useCallback(() => {
+    setSelectedDifficulty('all')
+  }, [setSelectedDifficulty])
 
   return (
     <div style={{
@@ -74,6 +93,82 @@ const SearchFilters = ({
           {filteredCount} of {totalCount}
         </div>
       </div>
+
+      {/* Learning Path */}
+      {selectedDifficulty && setSelectedDifficulty && (
+        <div style={{
+          marginBottom: spacing[4],
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: spacing[3],
+            marginBottom: spacing[2],
+          }}>
+            <div style={{
+              fontSize: typography.fontSize.sm,
+              color: colors.neutral[700],
+              fontWeight: typography.fontWeight.semibold,
+            }}>
+              Learning path
+            </div>
+            <div style={{
+              fontSize: typography.fontSize.xs,
+              color: colors.neutral[500],
+            }}>
+              {selectedDifficulty === 'beginner' ? 'Start with the essentials' : 'Browsing selected level'}
+            </div>
+          </div>
+          <div
+            className="learning-path-options"
+            role="group"
+            aria-label="Choose algorithm learning path"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gap: spacing[2],
+            }}
+          >
+            {difficultyOptions.map(option => {
+              const isActive = selectedDifficulty === option
+              const count = difficultyCounts?.[option] || 0
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => handleDifficultyChange(option)}
+                  aria-pressed={isActive}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: spacing[2],
+                    padding: `${spacing[2]} ${spacing[3]}`,
+                    borderRadius: borderRadius.lg,
+                    border: isActive ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.medium}`,
+                    background: isActive ? colors.primary[50] : colors.background.primary,
+                    color: isActive ? colors.primary[700] : colors.neutral[700],
+                    fontSize: typography.fontSize.sm,
+                    fontWeight: isActive ? typography.fontWeight.semibold : typography.fontWeight.medium,
+                    cursor: 'pointer',
+                    minHeight: '44px',
+                    boxShadow: isActive ? shadows.sm : 'none',
+                  }}
+                >
+                  <span>{difficultyLabels[option] || option}</span>
+                  <span style={{
+                    fontSize: typography.fontSize.xs,
+                    color: isActive ? colors.primary[600] : colors.neutral[500],
+                  }}>
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Search and Filter Controls */}
       <div 
@@ -233,7 +328,7 @@ const SearchFilters = ({
       </div>
 
       {/* Active Filters Display */}
-      {(searchTerm || selectedCategory !== 'all') && (
+      {(searchTerm || selectedCategory !== 'all' || (selectedDifficulty !== 'all' && selectedDifficulty !== 'beginner')) && (
         <div style={{
           display: 'flex',
           gap: spacing[2],
@@ -337,6 +432,51 @@ const SearchFilters = ({
               </button>
             </div>
           )}
+
+          {selectedDifficulty !== 'all' && selectedDifficulty !== 'beginner' && (
+            <div style={{
+              background: colors.info[100],
+              color: colors.info[700],
+              padding: `${spacing[1]} ${spacing[2]}`,
+              borderRadius: borderRadius.full,
+              fontSize: typography.fontSize.xs,
+              fontWeight: typography.fontWeight.medium,
+              display: 'flex',
+              alignItems: 'center',
+              gap: spacing[1],
+            }}>
+              <span>Path: {difficultyLabels[selectedDifficulty] || selectedDifficulty}</span>
+              <button
+                onClick={clearDifficulty}
+                aria-label="Clear learning path filter"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  color: 'inherit',
+                  fontSize: '14px',
+                  lineHeight: 1,
+                  borderRadius: '50%',
+                  width: '20px',
+                  height: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '20px',
+                  minHeight: '20px',
+                }}
+                onFocus={(e) => {
+                  e.target.style.background = colors.info[200]
+                }}
+                onBlur={(e) => {
+                  e.target.style.background = 'none'
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -363,6 +503,10 @@ const SearchFilters = ({
           .responsive-button-group button {
             width: 100% !important;
             justify-content: center !important;
+          }
+
+          .learning-path-options {
+            grid-template-columns: 1fr !important;
           }
         }
         

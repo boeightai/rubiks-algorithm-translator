@@ -139,6 +139,68 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
     }
   }, [activeMoveIndex])
 
+  const renderNotationKey = () => (
+    <details className="notation-key" style={{
+      marginBottom: spacing[4],
+      border: `1px solid ${colors.border.light}`,
+      borderRadius: borderRadius.lg,
+      background: colors.neutral[50],
+      overflow: 'hidden',
+    }}>
+      <summary style={{
+        cursor: 'pointer',
+        padding: `${spacing[3]} ${spacing[4]}`,
+        color: colors.neutral[800],
+        fontSize: typography.fontSize.sm,
+        fontWeight: typography.fontWeight.semibold,
+        minHeight: '44px',
+        display: 'flex',
+        alignItems: 'center',
+      }}>
+        Notation key
+      </summary>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: isMobileDevice ? '1fr' : 'repeat(4, minmax(0, 1fr))',
+        gap: spacing[3],
+        padding: `${spacing[1]} ${spacing[4]} ${spacing[4]}`,
+      }}>
+        {[
+          ['1', 'Step number'],
+          ['↻', 'Turn picture'],
+          ['R', 'Cube notation'],
+          ['▣', 'Trigger group'],
+        ].map(([symbol, label], index) => (
+          <div key={label} style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: spacing[2],
+            color: colors.neutral[700],
+            fontSize: typography.fontSize.sm,
+          }}>
+            <span style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: index === 0 ? borderRadius.full : borderRadius.md,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: '0 0 auto',
+              background: index === 3 ? colors.success[100] : colors.background.primary,
+              border: `1px solid ${index === 3 ? colors.success[300] : colors.border.medium}`,
+              color: index === 3 ? colors.success[700] : colors.neutral[700],
+              fontFamily: index === 2 ? typography.fontFamily.mono : typography.fontFamily.primary,
+              fontWeight: typography.fontWeight.bold,
+            }}>
+              {symbol}
+            </span>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </details>
+  )
+
   // Calculate optimal sizes for mobile to fit exactly 5 moves per row
   const getMobileImageSize = useCallback(() => {
     if (!isMobileDevice) return '64px'
@@ -290,6 +352,8 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
           )}
         </div>
       ) : (
+        <>
+        {renderNotationKey()}
         <div className="responsive-cube-grid" style={{ 
           display: 'flex', 
           flexWrap: isMobileDevice && isKiteOLL && moveList.length === 6 ? 'nowrap' : 'wrap', 
@@ -570,6 +634,7 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
             return renderedMoves
           })()}
         </div>
+        </>
       )}
     </div>
   )

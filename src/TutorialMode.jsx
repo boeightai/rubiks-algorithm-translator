@@ -99,13 +99,39 @@ function TutorialMode({ onModeToggle }) {
     setActiveDemoMoveIndex(null)
   }, [currentAlgorithmIndex])
 
+  const renderCubeLoadingState = () => (
+    <div style={{
+      width: '100%',
+      maxWidth: isMobile ? '100%' : isTablet ? '600px' : '500px',
+      margin: '0 auto',
+      backgroundColor: colors.background.secondary,
+      border: `1px solid ${colors.border.light}`,
+      borderRadius: '12px',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        minHeight: isMobile || isTablet ? '260px' : '280px',
+        aspectRatio: '16 / 9',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.neutral[50],
+        color: colors.neutral[700],
+        fontSize: typography.fontSize.sm,
+        fontWeight: typography.fontWeight.semibold,
+      }}>
+        Loading cube demo...
+      </div>
+    </div>
+  )
+
   const renderLessonMedia = () => {
     if (!shouldShowInteractiveDemo || !currentAlgorithm) {
       return <YouTubeEmbed />
     }
 
     return (
-      <Suspense fallback={<YouTubeEmbed />}>
+      <Suspense fallback={renderCubeLoadingState()}>
         <InteractiveCubeDemo
           algorithmId={currentAlgorithm.id}
           notation={demoNotation}

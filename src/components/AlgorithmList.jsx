@@ -205,12 +205,33 @@ const AlgorithmList = ({
 
                     {/* Category */}
                     <div style={{
-                      fontSize: typography.fontSize.sm,
-                      color: colors.neutral[600],
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
+                      gap: spacing[2],
                       marginBottom: spacing[2],
-                      fontWeight: typography.fontWeight.medium,
                     }}>
-                      {algorithm.category}
+                      <span style={{
+                        fontSize: typography.fontSize.sm,
+                        color: colors.neutral[600],
+                        fontWeight: typography.fontWeight.medium,
+                      }}>
+                        {algorithm.category}
+                      </span>
+                      {patternImageStatus[algorithm.id] !== undefined && (
+                        <span style={{
+                          fontSize: typography.fontSize.xs,
+                          color: patternImageStatus[algorithm.id] ? colors.success[700] : colors.neutral[500],
+                          background: patternImageStatus[algorithm.id] ? colors.success[50] : colors.neutral[100],
+                          border: `1px solid ${patternImageStatus[algorithm.id] ? colors.success[300] : colors.border.light}`,
+                          borderRadius: borderRadius.full,
+                          padding: `${spacing[1]} ${spacing[2]}`,
+                          fontWeight: typography.fontWeight.medium,
+                          whiteSpace: 'nowrap',
+                        }}>
+                          {patternImageStatus[algorithm.id] ? 'Pattern image' : 'Move cards only'}
+                        </span>
+                      )}
                     </div>
 
                     {/* Description */}

@@ -82,6 +82,12 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
       </div>
     )
   }
+
+  const moveTokens = currentAlgorithm.notation.split(/\s+/).filter(Boolean)
+  const activeMoveToken = moveTokens[activeMoveIndex] || 'Move'
+  const currentMoveLabel = activeMoveIndex === null
+    ? 'Watch the cube, then follow the move cards below.'
+    : `Current move ${activeMoveIndex + 1}: ${activeMoveToken}`
   
   return (
     <div style={{
@@ -96,7 +102,7 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: isDesktop ? spacing[4] : spacing[6],
+        marginBottom: isDesktop ? spacing[4] : spacing[5],
         flexWrap: 'wrap',
         gap: spacing[3],
       }}>
@@ -107,28 +113,34 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: isMobile ? '44px' : '48px',
-            height: isMobile ? '44px' : '48px',
-            backgroundColor: colors.white,
-            border: `2px solid ${colors.border.medium}`,
+            gap: spacing[2],
+            minWidth: isMobile ? '44px' : '116px',
+            minHeight: isMobile ? '44px' : '48px',
+            padding: isMobile ? 0 : `0 ${spacing[3]}`,
+            backgroundColor: colors.background.primary,
+            border: `1px solid ${colors.border.medium}`,
             borderRadius: borderRadius.full,
+            color: colors.neutral[800],
+            fontSize: typography.fontSize.sm,
+            fontWeight: typography.fontWeight.semibold,
             cursor: 'pointer',
             transition: 'all 0.2s ease',
             flexShrink: 0,
           }}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = colors.neutral[50]
-            e.target.style.borderColor = colors.primary[500]
+            e.currentTarget.style.backgroundColor = colors.neutral[100]
+            e.currentTarget.style.borderColor = colors.primary[500]
           }}
           onMouseLeave={(e) => {
-            e.target.style.backgroundColor = colors.white
-            e.target.style.borderColor = colors.border.medium
+            e.currentTarget.style.backgroundColor = colors.background.primary
+            e.currentTarget.style.borderColor = colors.border.medium
           }}
           aria-label="Previous algorithm"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
             <path d="M15 18l-6-6 6-6" />
           </svg>
+          {!isMobile && <span>Previous</span>}
         </button>
         
         {/* Algorithm info */}
@@ -143,16 +155,26 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
           {/* Title Container */}
           <div style={{
             position: 'relative',
-            marginBottom: isDesktop ? spacing[1] : spacing[2],
+            marginBottom: spacing[2],
             width: '100%',
           }}>
-            <h2 style={{
-              fontSize: isMobile ? typography.fontSize.sm : typography.fontSize['2xl'],
+            <div style={{
+              color: colors.primary[600],
+              fontSize: typography.fontSize.xs,
               fontWeight: typography.fontWeight.bold,
+              letterSpacing: '0.08em',
+              marginBottom: spacing[1],
+              textTransform: 'uppercase',
+            }}>
+              Lesson {safeIndex + 1} of {algorithms.length}
+            </div>
+            <h2 style={{
+              fontSize: isMobile ? typography.fontSize.lg : typography.fontSize['2xl'],
+              fontWeight: typography.fontWeight.extrabold,
               color: colors.neutral[900],
               margin: 0,
               textAlign: 'center',
-              lineHeight: '1.3',
+              lineHeight: typography.lineHeight.tight,
               wordWrap: 'break-word',
               hyphens: 'auto',
               overflow: 'visible',
@@ -161,6 +183,23 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             }}>
               {currentAlgorithm.name}
             </h2>
+
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: spacing[3],
+              padding: `${spacing[2]} ${spacing[3]}`,
+              borderRadius: borderRadius.full,
+              backgroundColor: activeMoveIndex === null ? colors.background.primary : colors.primary[50],
+              border: `1px solid ${activeMoveIndex === null ? colors.border.medium : colors.primary[200]}`,
+              color: activeMoveIndex === null ? colors.neutral[700] : colors.primary[700],
+              fontSize: isMobile ? typography.fontSize.xs : typography.fontSize.sm,
+              fontWeight: typography.fontWeight.semibold,
+              lineHeight: typography.lineHeight.tight,
+            }}>
+              {currentMoveLabel}
+            </div>
             
             {/* Show contained algorithms if they exist */}
             {currentAlgorithm.containedAlgorithms && currentAlgorithm.containedAlgorithms.length > 0 && (
@@ -183,26 +222,33 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: isMobile ? '44px' : '48px',
-            height: isMobile ? '44px' : '48px',
-            backgroundColor: colors.white,
-            border: `2px solid ${colors.border.medium}`,
+            gap: spacing[2],
+            minWidth: isMobile ? '44px' : '124px',
+            minHeight: isMobile ? '44px' : '48px',
+            padding: isMobile ? 0 : `0 ${spacing[3]}`,
+            backgroundColor: colors.primary[600],
+            border: `1px solid ${colors.primary[600]}`,
             borderRadius: borderRadius.full,
+            color: colors.background.primary,
+            fontSize: typography.fontSize.sm,
+            fontWeight: typography.fontWeight.bold,
             cursor: 'pointer',
             transition: 'all 0.2s ease',
             flexShrink: 0,
+            boxShadow: shadows.sm,
           }}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = colors.neutral[50]
-            e.target.style.borderColor = colors.primary[500]
+            e.currentTarget.style.backgroundColor = colors.primary[700]
+            e.currentTarget.style.borderColor = colors.primary[700]
           }}
           onMouseLeave={(e) => {
-            e.target.style.backgroundColor = colors.white
-            e.target.style.borderColor = colors.border.medium
+            e.currentTarget.style.backgroundColor = colors.primary[600]
+            e.currentTarget.style.borderColor = colors.primary[600]
           }}
           aria-label="Next algorithm"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.neutral[700]} strokeWidth="2">
+          {!isMobile && <span>Next Lesson</span>}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={colors.background.primary} strokeWidth="2">
             <path d="M9 18l6-6-6-6" />
           </svg>
         </button>
@@ -219,15 +265,15 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
       <div style={{
         display: 'flex',
         justifyContent: 'center',
-        gap: spacing[2],
-        marginTop: isDesktop ? spacing[4] : spacing[6], // Reduced margin for desktop
+        gap: spacing[1],
+        marginTop: isDesktop ? spacing[3] : spacing[4],
       }}>
         {algorithms.map((_, index) => (
           <div
             key={index}
             style={{
-              width: index === safeIndex ? '24px' : '8px',
-              height: '8px',
+              width: index === safeIndex ? '18px' : '6px',
+              height: '6px',
               backgroundColor: index === safeIndex ? colors.primary[500] : colors.neutral[300],
               borderRadius: borderRadius.full,
               transition: 'all 0.3s ease',

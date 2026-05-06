@@ -44,11 +44,23 @@ export function useAlgorithms(favoriteIds = []) {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedDifficulty, setSelectedDifficulty] = useState('beginner')
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
 
   // Get unique categories - memoized to prevent recalculation
   const categories = useMemo(() => {
     return ['all', ...new Set(algorithms.map(alg => alg.category))]
+  }, [])
+
+  const difficultyOptions = useMemo(() => {
+    return ['beginner', 'intermediate', 'advanced', 'all']
+  }, [])
+
+  const difficultyCounts = useMemo(() => {
+    return algorithms.reduce((counts, alg) => {
+      counts[alg.difficulty] = (counts[alg.difficulty] || 0) + 1
+      return counts
+    }, { all: algorithms.length })
   }, [])
 
   // Memoized search term for case-insensitive comparison
@@ -74,6 +86,11 @@ export function useAlgorithms(favoriteIds = []) {
         return false
       }
 
+      // Early return for learning path filter
+      if (selectedDifficulty !== 'all' && alg.difficulty !== selectedDifficulty) {
+        return false
+      }
+
       // Search filter - only run if there's a search term
       if (normalizedSearchTerm) {
         const searchFields = [
@@ -96,7 +113,7 @@ export function useAlgorithms(favoriteIds = []) {
       ...alg,
       isSelected: selectedAlgorithm && selectedAlgorithm.id === alg.id
     }))
-  }, [normalizedSearchTerm, selectedCategory, showFavoritesOnly, favoriteIds, selectedAlgorithm])
+  }, [normalizedSearchTerm, selectedCategory, selectedDifficulty, showFavoritesOnly, favoriteIds, selectedAlgorithm])
 
   // Memoized setters to prevent unnecessary re-renders
   const memoizedSetSearchTerm = useCallback((value) => {
@@ -105,6 +122,10 @@ export function useAlgorithms(favoriteIds = []) {
 
   const memoizedSetSelectedCategory = useCallback((value) => {
     setSelectedCategory(value)
+  }, [])
+
+  const memoizedSetSelectedDifficulty = useCallback((value) => {
+    setSelectedDifficulty(value)
   }, [])
 
   const memoizedSetShowFavoritesOnly = useCallback((value) => {
@@ -122,9 +143,13 @@ export function useAlgorithms(favoriteIds = []) {
     setSearchTerm: memoizedSetSearchTerm,
     selectedCategory,
     setSelectedCategory: memoizedSetSelectedCategory,
+    selectedDifficulty,
+    setSelectedDifficulty: memoizedSetSelectedDifficulty,
     showFavoritesOnly,
     setShowFavoritesOnly: memoizedSetShowFavoritesOnly,
     categories,
+    difficultyOptions,
+    difficultyCounts,
     filteredAlgorithms,
     algorithms
   }

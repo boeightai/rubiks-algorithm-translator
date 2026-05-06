@@ -31,7 +31,6 @@ const MobileTabLayout = ({
   containerStyle = {}
 }) => {
   const [activeTab, setActiveTab] = useState('algorithms')
-  const [showNotification, setShowNotification] = useState(false)
   const autoSwitchTimeoutRef = useRef(null)
   const { isMobile, isTablet, isPortrait } = useMobileDetection()
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
@@ -61,9 +60,6 @@ const MobileTabLayout = ({
       autoSwitchTimeoutRef.current = null
     }
     
-    // Hide notification if it's showing
-    setShowNotification(false)
-    
     // If switching to algorithms tab, clear the selected algorithm
     if (newTab === 'algorithms' && selectedAlgorithm) {
       setSelectedAlgorithm(null)
@@ -79,26 +75,18 @@ const MobileTabLayout = ({
     }
   }, [shouldUseMobileLayout, activeTab])
 
-  // Auto-switch to visual sequence tab when an algorithm is selected on mobile
-  // Only auto-switch if we're currently on the algorithms tab and haven't manually switched yet
+  // Auto-switch to visual sequence tab when an algorithm is selected on mobile.
   useEffect(() => {
-    // Only apply mobile-specific logic when actually on mobile
     if (shouldUseMobileLayout && selectedAlgorithm && activeTab === 'algorithms') {
-      // Clear any existing timeout
       if (autoSwitchTimeoutRef.current) {
         clearTimeout(autoSwitchTimeoutRef.current)
         autoSwitchTimeoutRef.current = null
       }
-      
-      // Show notification
-      setShowNotification(true)
-      
-      // Add a small delay to allow the user to see the selection before switching
+
       autoSwitchTimeoutRef.current = setTimeout(() => {
         setActiveTab('visual')
-        setShowNotification(false)
         autoSwitchTimeoutRef.current = null
-      }, 1200) // Increased delay to give users more time to see the selection
+      }, 450)
     }
     
     // Cleanup function to prevent memory leaks
@@ -150,56 +138,6 @@ const MobileTabLayout = ({
             tabs={tabs}
             selectedAlgorithm={safeSelectedAlgorithm}
           />
-          
-          {/* Notification when switching tabs */}
-          {showNotification && (
-            <div style={{
-              position: 'fixed',
-              top: '20px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: colors.primary[500],
-              color: colors.background.primary,
-              padding: `${spacing[3]} ${spacing[4]}`,
-              borderRadius: borderRadius.lg,
-              fontSize: typography.fontSize.sm,
-              fontWeight: typography.fontWeight.medium,
-              zIndex: 1000,
-              boxShadow: shadows.lg,
-              animation: 'slideDown 0.3s ease-out',
-              display: 'flex',
-              alignItems: 'center',
-              gap: spacing[3],
-            }}>
-              <span>Switching to Visual Sequence...</span>
-              <button
-                onClick={() => {
-                  setShowNotification(false)
-                  // Clear the auto-switch timeout
-                  if (autoSwitchTimeoutRef.current) {
-                    clearTimeout(autoSwitchTimeoutRef.current)
-                    autoSwitchTimeoutRef.current = null
-                  }
-                }}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  border: 'none',
-                  color: colors.background.primary,
-                  borderRadius: borderRadius.sm,
-                  padding: `${spacing[1]} ${spacing[2]}`,
-                  fontSize: typography.fontSize.xs,
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s ease',
-                  minWidth: '44px',
-                  minHeight: '44px',
-                }}
-                onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
-                onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
-              >
-                ✕
-              </button>
-            </div>
-          )}
         </>
       )}
 

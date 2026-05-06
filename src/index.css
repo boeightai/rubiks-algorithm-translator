@@ -540,7 +540,7 @@ input, select, textarea {
 .pattern-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--neutral-800);
   text-align: center;
   margin-bottom: 0;
   letter-spacing: 0.025em;

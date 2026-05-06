@@ -590,7 +590,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     if (!mount) return undefined
 
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xf8fafc)
+    scene.background = null
 
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100)
     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
@@ -598,7 +598,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: false,
+      alpha: true,
       powerPreference: 'high-performance',
     })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
@@ -698,7 +698,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
         position: 'relative',
         aspectRatio: '16 / 9',
         minHeight: isCompact ? '260px' : '280px',
-        backgroundColor: colors.neutral[50],
+        backgroundColor: '#f8fafc',
       }}>
         <div
           ref={mountRef}
@@ -730,12 +730,12 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
           pointerEvents: 'none',
         }}>
           <div style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.92)',
-            border: `1px solid ${colors.border.light}`,
+            backgroundColor: colors.background.primary,
+            border: `1px solid ${colors.border.medium}`,
             borderRadius: borderRadius.lg,
             padding: `${spacing[2]} ${spacing[3]}`,
             boxShadow: shadows.sm,
-            color: colors.neutral[800],
+            color: colors.neutral[900],
             fontSize: typography.fontSize.sm,
             fontWeight: typography.fontWeight.semibold,
             minWidth: isCompact ? '0' : '132px',
@@ -758,10 +758,10 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
                 padding: `${spacing[2]} ${spacing[3]}`,
                 borderRadius: borderRadius.lg,
                 border: `1px solid ${colors.border.medium}`,
-                backgroundColor: colors.white,
-                color: colors.neutral[800],
+                backgroundColor: colors.background.primary,
+                color: colors.neutral[900],
                 fontSize: typography.fontSize.sm,
-                fontWeight: typography.fontWeight.medium,
+                fontWeight: typography.fontWeight.semibold,
                 cursor: 'pointer',
                 boxShadow: shadows.sm,
               }}
@@ -776,8 +776,8 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
                 padding: `${spacing[2]} ${spacing[3]}`,
                 borderRadius: borderRadius.lg,
                 border: 'none',
-                backgroundColor: colors.primary[500],
-                color: colors.white,
+                backgroundColor: colors.primary[600],
+                color: colors.background.primary,
                 fontSize: typography.fontSize.sm,
                 fontWeight: typography.fontWeight.semibold,
                 cursor: 'pointer',
