@@ -25,14 +25,10 @@ import { getPatternImages } from './utils/patternMapping'
 import { colors, spacing, typography } from './styles/designSystem'
 import { useMobileDetection } from './hooks/useMobileDetection'
 import Header from './components/Header'
+import { canAnimateNotation } from './utils/cubeMoves'
+import { resolveAlgorithmByName } from './utils/algorithmLookup'
 
 const InteractiveCubeDemo = lazy(() => import('./components/InteractiveCubeDemo'))
-
-const INTERACTIVE_DEMO_ALGORITHMS = new Set([
-  'daisy-edge-flipper',
-  'right-trigger',
-  'left-trigger',
-])
 
 function TutorialMode({ onModeToggle }) {
   const [currentAlgorithmIndex, setCurrentAlgorithmIndex] = useState(0)
@@ -90,7 +86,9 @@ function TutorialMode({ onModeToggle }) {
   
   const patternImages = currentAlgorithm ? getPatternImages(currentAlgorithm.id) : null
   const hasMultiplePatterns = patternImages && patternImages.length > 1
-  const shouldShowInteractiveDemo = INTERACTIVE_DEMO_ALGORITHMS.has(currentAlgorithm?.id)
+  const resolvedAlgorithm = currentAlgorithm ? resolveAlgorithmByName(currentAlgorithm) : null
+  const demoNotation = resolvedAlgorithm?.notation || currentAlgorithm?.notation
+  const shouldShowInteractiveDemo = canAnimateNotation(demoNotation)
   
   // Enhanced responsive layout decision
   // Use horizontal layout only for desktop/tablet landscape with patterns
@@ -110,7 +108,7 @@ function TutorialMode({ onModeToggle }) {
       <Suspense fallback={<YouTubeEmbed />}>
         <InteractiveCubeDemo
           algorithmId={currentAlgorithm.id}
-          notation={currentAlgorithm.notation}
+          notation={demoNotation}
           onActiveMoveChange={setActiveDemoMoveIndex}
         />
       </Suspense>

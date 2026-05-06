@@ -20,6 +20,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { colors, borderRadius, shadows, typography, spacing } from '../styles/designSystem'
 import { useMobileDetection } from '../hooks/useMobileDetection'
+import { MOVE_DEFINITIONS, expandNotationForAnimation } from '../utils/cubeMoves'
 
 const CUBIE_SPACING = 1.06
 const CUBE_SCALE = 0.9
@@ -52,33 +53,13 @@ const DAISY_PATTERN_COLORS = {
   yellow: 0xfacc15,
 }
 
-const MOVE_DEFINITIONS = {
-  F: { axis: 'z', layer: 1, angle: -Math.PI / 2 },
-  "F'": { axis: 'z', layer: 1, angle: Math.PI / 2 },
-  F2: { axis: 'z', layer: 1, angle: -Math.PI },
-  R: { axis: 'x', layer: 1, angle: -Math.PI / 2 },
-  "R'": { axis: 'x', layer: 1, angle: Math.PI / 2 },
-  R2: { axis: 'x', layer: 1, angle: -Math.PI },
-  L: { axis: 'x', layer: -1, angle: Math.PI / 2 },
-  "L'": { axis: 'x', layer: -1, angle: -Math.PI / 2 },
-  L2: { axis: 'x', layer: -1, angle: Math.PI },
-  U: { axis: 'y', layer: 1, angle: -Math.PI / 2 },
-  "U'": { axis: 'y', layer: 1, angle: Math.PI / 2 },
-  U2: { axis: 'y', layer: 1, angle: -Math.PI },
-}
-
 const easeInOutCubic = (t) => {
   if (t < 0.5) return 4 * t * t * t
   return 1 - Math.pow(-2 * t + 2, 3) / 2
 }
 
-const parseNotation = (notation) => {
-  if (!notation || typeof notation !== 'string') return []
-  return notation.split(' ').filter(Boolean)
-}
-
 const getCameraPosition = (algorithmId) => {
-  if (algorithmId === 'right-trigger' || algorithmId === 'left-trigger') {
+  if (algorithmId !== 'daisy-edge-flipper') {
     return { x: 0, y: 3.8, z: 8.6 }
   }
 
@@ -110,14 +91,7 @@ const getDaisyPatternStickerColor = (face, x, y, z) => {
   return FACE_COLORS[face]
 }
 
-const getTriggerPatternStickerColor = (algorithmId, face, x, y, z) => {
-  const isRightTrigger = algorithmId === 'right-trigger'
-  const isLeftTrigger = algorithmId === 'left-trigger'
-
-  if (!isRightTrigger && !isLeftTrigger) {
-    return FACE_COLORS[face]
-  }
-
+const getReadableStickerColor = (algorithmId, face, x, y, z) => {
   const seed = `${algorithmId}:${face}:${x}:${y}:${z}`
   const hash = Array.from(seed).reduce((value, char) => {
     return ((value * 31) + char.charCodeAt(0)) % STANDARD_STICKER_COLORS.length
@@ -131,7 +105,7 @@ const getStickerColor = (algorithmId, face, x, y, z) => {
     return getDaisyPatternStickerColor(face, x, y, z)
   }
 
-  return getTriggerPatternStickerColor(algorithmId, face, x, y, z)
+  return getReadableStickerColor(algorithmId, face, x, y, z)
 }
 
 function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
@@ -160,8 +134,10 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   const [isPaused, setIsPaused] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
 
-  const moves = useMemo(() => parseNotation(notation), [notation])
-  const currentMove = activeMoveIndex === null ? null : moves[activeMoveIndex]
+  const { visualMoves, animationMoves, visualMoveIndices } = useMemo(() => {
+    return expandNotationForAnimation(notation)
+  }, [notation])
+  const currentMove = activeMoveIndex === null ? null : visualMoves[activeMoveIndex]
   const isCompact = isMobile || isTablet
   const cameraPosition = useMemo(() => getCameraPosition(algorithmId), [algorithmId])
 
@@ -172,13 +148,14 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     }
   }, [])
 
-  const setActiveMove = useCallback((index) => {
-    activeMoveRef.current = index
-    setActiveMoveIndex(index)
+  const setActiveMove = useCallback((animationIndex) => {
+    const visualIndex = animationIndex === null ? null : visualMoveIndices[animationIndex]
+    activeMoveRef.current = visualIndex
+    setActiveMoveIndex(visualIndex)
     if (typeof onActiveMoveChange === 'function') {
-      onActiveMoveChange(index)
+      onActiveMoveChange(visualIndex)
     }
-  }, [onActiveMoveChange])
+  }, [onActiveMoveChange, visualMoveIndices])
 
   const createSticker = useCallback((face, position, rotation, gridPosition) => {
     const geometry = new THREE.PlaneGeometry(0.72, 0.72)
@@ -353,7 +330,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   }, [setActiveMove])
 
   const playSequence = useCallback(async () => {
-    if (moves.length === 0) return
+    if (animationMoves.length === 0) return
 
     isRunningRef.current = true
     isPausedRef.current = false
@@ -368,9 +345,9 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
       timeoutRef.current = setTimeout(resolve, START_PAUSE_MS)
     })
 
-    for (let index = 0; index < moves.length; index += 1) {
+    for (let index = 0; index < animationMoves.length; index += 1) {
       if (!isRunningRef.current) break
-      await animateMove(moves[index], index)
+      await animateMove(animationMoves[index], index)
       if (!isRunningRef.current) break
       await new Promise((resolve) => {
         timeoutRef.current = setTimeout(resolve, MOVE_PAUSE_MS)
@@ -385,7 +362,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     setIsPlaying(false)
     setIsPaused(false)
     setActiveMove(null)
-  }, [animateMove, clearTimers, moves, resetCube, setActiveMove])
+  }, [animateMove, animationMoves, clearTimers, resetCube, setActiveMove])
 
   const stopSequence = useCallback(() => {
     isRunningRef.current = false
@@ -572,7 +549,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
             minWidth: isCompact ? '0' : '132px',
             textAlign: isCompact ? 'center' : 'left',
           }}>
-            {currentMove ? `Move ${activeMoveIndex + 1} of ${moves.length}: ${currentMove}` : hasCompleted ? 'Sequence complete' : 'Ready'}
+            {currentMove ? `Move ${activeMoveIndex + 1} of ${visualMoves.length}: ${currentMove}` : hasCompleted ? 'Sequence complete' : 'Ready'}
           </div>
 
           <div style={{
