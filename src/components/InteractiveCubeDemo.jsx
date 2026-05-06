@@ -37,6 +37,10 @@ const FACE_COLORS = {
   L: 0xf97316,
 }
 
+const PATTERN_COLORS = {
+  gray: 0xcbd5e1,
+}
+
 const STANDARD_STICKER_COLORS = [
   FACE_COLORS.U,
   FACE_COLORS.D,
@@ -46,11 +50,128 @@ const STANDARD_STICKER_COLORS = [
   FACE_COLORS.L,
 ]
 
+const FACE_NORMALS = {
+  U: new THREE.Vector3(0, 1, 0),
+  D: new THREE.Vector3(0, -1, 0),
+  F: new THREE.Vector3(0, 0, 1),
+  B: new THREE.Vector3(0, 0, -1),
+  R: new THREE.Vector3(1, 0, 0),
+  L: new THREE.Vector3(-1, 0, 0),
+}
+
+const NORMAL_TO_FACE = {
+  '0,1,0': 'U',
+  '0,-1,0': 'D',
+  '0,0,1': 'F',
+  '0,0,-1': 'B',
+  '1,0,0': 'R',
+  '-1,0,0': 'L',
+}
+
 const DAISY_PATTERN_COLORS = {
   black: 0x020617,
   blue: 0x0284c7,
   gray: 0xcbd5e1,
   yellow: 0xfacc15,
+}
+
+const ENDPOINT_SOLVED_ALGORITHMS = new Set([
+  'right-trigger',
+  'left-trigger',
+])
+
+const STANDARD_CAMERA_ALGORITHMS = new Set([
+  'daisy-edge-flipper',
+  'right-trigger',
+  'left-trigger',
+])
+
+const FULL_TOP_PATTERN = [
+  [-1, -1], [0, -1], [1, -1],
+  [-1, 0], [0, 0], [1, 0],
+  [-1, 1], [0, 1], [1, 1],
+]
+
+const STARTING_CASE_PATTERNS = {
+  'ideal-case-right-edge': {
+    top: {
+      '-1,-1': 'U',
+      '0,-1': 'U',
+      '1,-1': 'R',
+      '-1,0': 'F',
+      '0,0': 'U',
+      '1,0': 'U',
+      '-1,1': 'R',
+      '0,1': 'U',
+      '1,1': 'U',
+    },
+  },
+  'ideal-case-left-edge': {
+    top: {
+      '-1,-1': 'L',
+      '0,-1': 'U',
+      '1,-1': 'U',
+      '-1,0': 'U',
+      '0,0': 'U',
+      '1,0': 'F',
+      '-1,1': 'U',
+      '0,1': 'U',
+      '1,1': 'L',
+    },
+  },
+  'kite-oll': {
+    topYellow: [[0, -1], [-1, 0], [0, 0]],
+    sideStickers: {
+      'L:-1:1:1': 'U',
+    },
+  },
+  sune: {
+    topYellow: [[0, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1]],
+    sideStickers: {
+      'L:-1:1:1': 'U',
+    },
+  },
+  't-perm-setup': {
+    topYellow: FULL_TOP_PATTERN,
+    sideStickers: {
+      'L:-1:1:-1': 'B',
+      'L:-1:1:1': 'B',
+    },
+  },
+  'e-perm': {
+    topYellow: FULL_TOP_PATTERN,
+    sideStickers: {
+      'F:-1:1:1': 'F',
+      'F:0:1:1': 'L',
+      'F:1:1:1': 'F',
+      'R:1:1:1': 'R',
+      'R:1:1:0': 'F',
+      'R:1:1:-1': 'R',
+      'B:1:1:-1': 'B',
+      'B:0:1:-1': 'B',
+      'B:-1:1:-1': 'B',
+      'L:-1:1:-1': 'L',
+      'L:-1:1:0': 'R',
+      'L:-1:1:1': 'L',
+    },
+  },
+  'e-perm-inverse': {
+    topYellow: FULL_TOP_PATTERN,
+    sideStickers: {
+      'F:-1:1:1': 'F',
+      'F:0:1:1': 'R',
+      'F:1:1:1': 'F',
+      'R:1:1:1': 'R',
+      'R:1:1:0': 'L',
+      'R:1:1:-1': 'R',
+      'B:1:1:-1': 'B',
+      'B:0:1:-1': 'B',
+      'B:-1:1:-1': 'B',
+      'L:-1:1:-1': 'L',
+      'L:-1:1:0': 'F',
+      'L:-1:1:1': 'L',
+    },
+  },
 }
 
 const easeInOutCubic = (t) => {
@@ -59,11 +180,15 @@ const easeInOutCubic = (t) => {
 }
 
 const getCameraPosition = (algorithmId) => {
-  if (algorithmId !== 'daisy-edge-flipper') {
+  if (algorithmId === 'daisy-edge-flipper') {
+    return { x: 0, y: 7.2, z: 7.2 }
+  }
+
+  if (STANDARD_CAMERA_ALGORITHMS.has(algorithmId)) {
     return { x: 0, y: 3.8, z: 8.6 }
   }
 
-  return { x: 0, y: 7.2, z: 7.2 }
+  return { x: 0, y: 6.4, z: 7.4 }
 }
 
 const getDaisyPatternStickerColor = (face, x, y, z) => {
@@ -91,21 +216,88 @@ const getDaisyPatternStickerColor = (face, x, y, z) => {
   return FACE_COLORS[face]
 }
 
-const getReadableStickerColor = (algorithmId, face, x, y, z) => {
-  const seed = `${algorithmId}:${face}:${x}:${y}:${z}`
-  const hash = Array.from(seed).reduce((value, char) => {
-    return ((value * 31) + char.charCodeAt(0)) % STANDARD_STICKER_COLORS.length
-  }, 0)
-
-  return STANDARD_STICKER_COLORS[hash]
+const roundVectorToGrid = (vector) => {
+  return {
+    x: Math.round(vector.x),
+    y: Math.round(vector.y),
+    z: Math.round(vector.z),
+  }
 }
 
-const getStickerColor = (algorithmId, face, x, y, z) => {
+const vectorKey = (vector) => {
+  const rounded = roundVectorToGrid(vector)
+  return `${rounded.x},${rounded.y},${rounded.z}`
+}
+
+const getLayerCoordinate = (grid, axis) => {
+  if (axis === 'x') return grid.x
+  if (axis === 'y') return grid.y
+  return grid.z
+}
+
+const getSolvedCaseStickerColor = (notation, face, x, y, z) => {
+  const startNormal = FACE_NORMALS[face]
+  if (!startNormal) return FACE_COLORS[face] || STANDARD_STICKER_COLORS[0]
+
+  const { animationMoves } = expandNotationForAnimation(notation)
+  let grid = { x, y, z }
+  const normal = startNormal.clone()
+
+  animationMoves.forEach((move) => {
+    const definition = MOVE_DEFINITIONS[move]
+    if (!definition || getLayerCoordinate(grid, definition.axis) !== definition.layer) {
+      return
+    }
+
+    const axisVector = new THREE.Vector3(
+      definition.axis === 'x' ? 1 : 0,
+      definition.axis === 'y' ? 1 : 0,
+      definition.axis === 'z' ? 1 : 0
+    )
+    const rotation = new THREE.Quaternion().setFromAxisAngle(axisVector, definition.angle)
+    const position = new THREE.Vector3(grid.x, grid.y, grid.z).applyQuaternion(rotation)
+    normal.applyQuaternion(rotation)
+    grid = roundVectorToGrid(position)
+  })
+
+  const solvedFace = NORMAL_TO_FACE[vectorKey(normal)]
+  return FACE_COLORS[solvedFace] || FACE_COLORS[face] || STANDARD_STICKER_COLORS[0]
+}
+
+const patternCoordinateKey = (x, z) => `${x},${z}`
+const stickerCoordinateKey = (face, x, y, z) => `${face}:${x}:${y}:${z}`
+
+const getStartingCaseStickerColor = (algorithmId, face, x, y, z) => {
+  const pattern = STARTING_CASE_PATTERNS[algorithmId]
+  if (!pattern) return FACE_COLORS[face] || STANDARD_STICKER_COLORS[0]
+
+  if (face === 'U') {
+    const topKey = patternCoordinateKey(x, z)
+    if (pattern.top) {
+      const colorFace = pattern.top[topKey]
+      return colorFace ? FACE_COLORS[colorFace] : FACE_COLORS.U
+    }
+
+    const yellowStickers = new Set((pattern.topYellow || []).map(([topX, topZ]) => patternCoordinateKey(topX, topZ)))
+    return yellowStickers.has(topKey) ? FACE_COLORS.U : PATTERN_COLORS.gray
+  }
+
+  const sideColorFace = pattern.sideStickers?.[stickerCoordinateKey(face, x, y, z)]
+  if (sideColorFace) return FACE_COLORS[sideColorFace]
+
+  return FACE_COLORS[face] || STANDARD_STICKER_COLORS[0]
+}
+
+const getStickerColor = (algorithmId, notation, face, x, y, z) => {
   if (algorithmId === 'daisy-edge-flipper') {
     return getDaisyPatternStickerColor(face, x, y, z)
   }
 
-  return getReadableStickerColor(algorithmId, face, x, y, z)
+  if (!ENDPOINT_SOLVED_ALGORITHMS.has(algorithmId)) {
+    return getStartingCaseStickerColor(algorithmId, face, x, y, z)
+  }
+
+  return getSolvedCaseStickerColor(notation, face, x, y, z)
 }
 
 function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
@@ -160,7 +352,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   const createSticker = useCallback((face, position, rotation, gridPosition) => {
     const geometry = new THREE.PlaneGeometry(0.72, 0.72)
     const material = new THREE.MeshStandardMaterial({
-      color: getStickerColor(algorithmId, face, gridPosition.x, gridPosition.y, gridPosition.z),
+      color: getStickerColor(algorithmId, notation, face, gridPosition.x, gridPosition.y, gridPosition.z),
       roughness: 0.72,
       metalness: 0.02,
       side: THREE.DoubleSide,
@@ -169,7 +361,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     sticker.position.set(position.x, position.y, position.z)
     sticker.rotation.set(rotation.x, rotation.y, rotation.z)
     return sticker
-  }, [algorithmId])
+  }, [algorithmId, notation])
 
   const createCubie = useCallback((x, y, z) => {
     const group = new THREE.Group()
