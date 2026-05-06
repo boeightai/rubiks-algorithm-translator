@@ -28,6 +28,12 @@ import Header from './components/Header'
 
 const InteractiveCubeDemo = lazy(() => import('./components/InteractiveCubeDemo'))
 
+const INTERACTIVE_DEMO_ALGORITHMS = new Set([
+  'daisy-edge-flipper',
+  'right-trigger',
+  'left-trigger',
+])
+
 function TutorialMode({ onModeToggle }) {
   const [currentAlgorithmIndex, setCurrentAlgorithmIndex] = useState(0)
   const [activeDemoMoveIndex, setActiveDemoMoveIndex] = useState(null)
@@ -84,7 +90,7 @@ function TutorialMode({ onModeToggle }) {
   
   const patternImages = currentAlgorithm ? getPatternImages(currentAlgorithm.id) : null
   const hasMultiplePatterns = patternImages && patternImages.length > 1
-  const shouldShowInteractiveDemo = currentAlgorithm?.id === 'daisy-edge-flipper'
+  const shouldShowInteractiveDemo = INTERACTIVE_DEMO_ALGORITHMS.has(currentAlgorithm?.id)
   
   // Enhanced responsive layout decision
   // Use horizontal layout only for desktop/tablet landscape with patterns
@@ -103,6 +109,7 @@ function TutorialMode({ onModeToggle }) {
     return (
       <Suspense fallback={<YouTubeEmbed />}>
         <InteractiveCubeDemo
+          algorithmId={currentAlgorithm.id}
           notation={currentAlgorithm.notation}
           onActiveMoveChange={setActiveDemoMoveIndex}
         />

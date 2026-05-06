@@ -28,13 +28,22 @@ const MOVE_PAUSE_MS = 450
 const START_PAUSE_MS = 1000
 
 const FACE_COLORS = {
-  U: 0xf8fafc,
-  D: 0xfacc15,
+  U: 0xfacc15,
+  D: 0xf8fafc,
   F: 0x22c55e,
   B: 0x3b82f6,
   R: 0xef4444,
   L: 0xf97316,
 }
+
+const STANDARD_STICKER_COLORS = [
+  FACE_COLORS.U,
+  FACE_COLORS.D,
+  FACE_COLORS.F,
+  FACE_COLORS.B,
+  FACE_COLORS.R,
+  FACE_COLORS.L,
+]
 
 const DAISY_PATTERN_COLORS = {
   black: 0x020617,
@@ -50,6 +59,9 @@ const MOVE_DEFINITIONS = {
   R: { axis: 'x', layer: 1, angle: -Math.PI / 2 },
   "R'": { axis: 'x', layer: 1, angle: Math.PI / 2 },
   R2: { axis: 'x', layer: 1, angle: -Math.PI },
+  L: { axis: 'x', layer: -1, angle: Math.PI / 2 },
+  "L'": { axis: 'x', layer: -1, angle: -Math.PI / 2 },
+  L2: { axis: 'x', layer: -1, angle: Math.PI },
   U: { axis: 'y', layer: 1, angle: -Math.PI / 2 },
   "U'": { axis: 'y', layer: 1, angle: Math.PI / 2 },
   U2: { axis: 'y', layer: 1, angle: -Math.PI },
@@ -63,6 +75,14 @@ const easeInOutCubic = (t) => {
 const parseNotation = (notation) => {
   if (!notation || typeof notation !== 'string') return []
   return notation.split(' ').filter(Boolean)
+}
+
+const getCameraPosition = (algorithmId) => {
+  if (algorithmId === 'right-trigger' || algorithmId === 'left-trigger') {
+    return { x: 0, y: 3.8, z: 8.6 }
+  }
+
+  return { x: 0, y: 7.2, z: 7.2 }
 }
 
 const getDaisyPatternStickerColor = (face, x, y, z) => {
@@ -90,7 +110,31 @@ const getDaisyPatternStickerColor = (face, x, y, z) => {
   return FACE_COLORS[face]
 }
 
-function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
+const getTriggerPatternStickerColor = (algorithmId, face, x, y, z) => {
+  const isRightTrigger = algorithmId === 'right-trigger'
+  const isLeftTrigger = algorithmId === 'left-trigger'
+
+  if (!isRightTrigger && !isLeftTrigger) {
+    return FACE_COLORS[face]
+  }
+
+  const seed = `${algorithmId}:${face}:${x}:${y}:${z}`
+  const hash = Array.from(seed).reduce((value, char) => {
+    return ((value * 31) + char.charCodeAt(0)) % STANDARD_STICKER_COLORS.length
+  }, 0)
+
+  return STANDARD_STICKER_COLORS[hash]
+}
+
+const getStickerColor = (algorithmId, face, x, y, z) => {
+  if (algorithmId === 'daisy-edge-flipper') {
+    return getDaisyPatternStickerColor(face, x, y, z)
+  }
+
+  return getTriggerPatternStickerColor(algorithmId, face, x, y, z)
+}
+
+function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   const { isMobile, isTablet } = useMobileDetection()
   const mountRef = useRef(null)
   const rendererRef = useRef(null)
@@ -119,6 +163,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
   const moves = useMemo(() => parseNotation(notation), [notation])
   const currentMove = activeMoveIndex === null ? null : moves[activeMoveIndex]
   const isCompact = isMobile || isTablet
+  const cameraPosition = useMemo(() => getCameraPosition(algorithmId), [algorithmId])
 
   const clearTimers = useCallback(() => {
     if (timeoutRef.current) {
@@ -138,7 +183,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
   const createSticker = useCallback((face, position, rotation, gridPosition) => {
     const geometry = new THREE.PlaneGeometry(0.72, 0.72)
     const material = new THREE.MeshStandardMaterial({
-      color: getDaisyPatternStickerColor(face, gridPosition.x, gridPosition.y, gridPosition.z),
+      color: getStickerColor(algorithmId, face, gridPosition.x, gridPosition.y, gridPosition.z),
       roughness: 0.72,
       metalness: 0.02,
       side: THREE.DoubleSide,
@@ -147,7 +192,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
     sticker.position.set(position.x, position.y, position.z)
     sticker.rotation.set(rotation.x, rotation.y, rotation.z)
     return sticker
-  }, [])
+  }, [algorithmId])
 
   const createCubie = useCallback((x, y, z) => {
     const group = new THREE.Group()
@@ -379,7 +424,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
     scene.background = new THREE.Color(0xf8fafc)
 
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100)
-    camera.position.set(0, 7.2, 7.2)
+    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
     camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({
@@ -433,7 +478,7 @@ function InteractiveCubeDemo({ notation, onActiveMoveChange }) {
       renderer.dispose()
       mount.removeChild(renderer.domElement)
     }
-  }, [resetCube, resizeRenderer, stopSequence])
+  }, [cameraPosition, resetCube, resizeRenderer, stopSequence])
 
   useEffect(() => {
     replay()
