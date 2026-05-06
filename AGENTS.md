@@ -25,7 +25,6 @@ src/
 ├── hooks/
 │   ├── useAlgorithms.js             # Algorithm filtering and selection state
 │   ├── useFavorites.js              # Favorite algorithms in localStorage
-│   ├── useImageLoader.js            # Image loading with retry behavior
 │   ├── useMobileDetection.js        # Device/orientation detection
 │   └── useTutorialImage.js          # Tutorial and pattern image existence checks
 └── data/

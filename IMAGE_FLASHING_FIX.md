@@ -74,17 +74,12 @@ const imageKey = isLocalhostEnv.current
 - Optimized CSS for localhost
 - Reduced state updates
 
-### 2. `src/hooks/useImageLoader.js`
-- Added centralized localhost detection
-- Reduced retry attempts for localhost
-- Optimized image loading for localhost
-
-### 3. `src/utils/performance.js`
+### 2. `src/utils/performance.js`
 - Added centralized localhost detection
 - Reduced retry attempts for localhost
 - Optimized image loading delays
 
-### 4. `src/hooks/useTutorialImage.js`
+### 3. `src/hooks/useTutorialImage.js`
 - Added centralized localhost detection
 - Optimized image loading attributes for localhost
 - Improved error handling

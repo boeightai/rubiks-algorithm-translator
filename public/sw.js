@@ -17,7 +17,7 @@
  */
 
 // Update version number to force cache refresh on deployment
-const CACHE_VERSION = 'v16'
+const CACHE_VERSION = 'v17'
 const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
 const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
@@ -27,26 +27,9 @@ const STATIC_FILES = [
   '/',
   '/index.html',
   '/favicon.svg',
-  '/src/main.jsx',
-  '/src/AppWithModes.jsx',
-  '/src/TutorialMode.jsx',
-  '/src/components/AlgorithmCarousel.jsx',
-  '/src/components/YouTubeEmbed.jsx',
-  '/src/components/ModeToggle.jsx',
-  '/src/VisualSequence.jsx',
-  '/src/data/tutorialAlgorithms.json',
-  '/src/data/moves.json',
-  '/src/data/algorithms.json',
-  '/src/styles/designSystem.js',
-  '/src/hooks/useMobileDetection.js',
-  '/src/index.css'
-]
-
-// Image files to cache
-const IMAGE_FILES = [
-  '/public/images/moves/',
-  '/public/images/icons/',
-  '/public/images/patterns/'
+  '/manifest.json',
+  '/images/icons/cube-icon.png',
+  '/images/icons/cube-mascot.png'
 ]
 
 // Install event - cache static files
@@ -167,8 +150,8 @@ self.addEventListener('fetch', (event) => {
             })
         })
     )
-  } else if (url.pathname.includes('/src/') || url.pathname.includes('.jsx') || url.pathname.includes('.js')) {
-    // Source files - serve from cache first
+  } else if (url.pathname.includes('/assets/') || url.pathname.endsWith('.js') || url.pathname.endsWith('.css')) {
+    // Built assets - serve from cache first
     event.respondWith(
       caches.match(request)
         .then((response) => {

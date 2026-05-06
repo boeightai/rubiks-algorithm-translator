@@ -25,8 +25,9 @@ src/
 │   └── MobileTabLayout.jsx          # Responsive layout controller
 └── hooks/                           # Custom React hooks
     ├── useAlgorithms.js             # Algorithm data management
+    ├── useFavorites.js              # Favorite algorithms in localStorage
     ├── useMobileDetection.js        # Device detection logic
-    └── useImageLoader.js            # Image loading with retry
+    └── useTutorialImage.js          # Tutorial and pattern image checks
 ```
 
 ## Critical Implementation Details
@@ -45,7 +46,7 @@ This ensures iPads in portrait orientation get the mobile tabbed interface.
 
 ### 3. Performance Optimizations
 - Service worker for offline support
-- Image lazy loading with retry logic
+- Image loading checks for tutorial and pattern assets
 - Debounced resize handlers
 - Version-based cache busting (not timestamp)
 

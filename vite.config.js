@@ -30,10 +30,7 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('/node_modules/three/')) {
-            if (id.includes('/node_modules/three/src/renderers/')) {
-              return 'three-renderer'
-            }
-            return 'three-core'
+            return 'three'
           }
         },
         // Add content-based hashing to all output files
@@ -51,6 +48,7 @@ export default defineConfig({
     },
     // Generate manifest for tracking file versions
     manifest: true,
+    chunkSizeWarningLimit: 600,
     // Security optimizations
     target: 'es2015',
     minify: 'terser',
