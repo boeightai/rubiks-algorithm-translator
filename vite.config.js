@@ -28,6 +28,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        manualChunks(id) {
+          if (id.includes('/node_modules/three/')) {
+            if (id.includes('/node_modules/three/src/renderers/')) {
+              return 'three-renderer'
+            }
+            return 'three-core'
+          }
+        },
         // Add content-based hashing to all output files
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',

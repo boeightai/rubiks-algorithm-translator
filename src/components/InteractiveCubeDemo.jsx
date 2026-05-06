@@ -17,7 +17,19 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import * as THREE from 'three'
+import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera.js'
+import { DoubleSide } from 'three/src/constants.js'
+import { BoxGeometry } from 'three/src/geometries/BoxGeometry.js'
+import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry.js'
+import { AmbientLight } from 'three/src/lights/AmbientLight.js'
+import { DirectionalLight } from 'three/src/lights/DirectionalLight.js'
+import { MeshStandardMaterial } from 'three/src/materials/MeshStandardMaterial.js'
+import { Quaternion } from 'three/src/math/Quaternion.js'
+import { Vector3 } from 'three/src/math/Vector3.js'
+import { Group } from 'three/src/objects/Group.js'
+import { Mesh } from 'three/src/objects/Mesh.js'
+import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer.js'
+import { Scene } from 'three/src/scenes/Scene.js'
 import { colors, borderRadius, shadows, typography, spacing } from '../styles/designSystem'
 import { useMobileDetection } from '../hooks/useMobileDetection'
 import { MOVE_DEFINITIONS, expandNotationForAnimation } from '../utils/cubeMoves'
@@ -51,12 +63,12 @@ const STANDARD_STICKER_COLORS = [
 ]
 
 const FACE_NORMALS = {
-  U: new THREE.Vector3(0, 1, 0),
-  D: new THREE.Vector3(0, -1, 0),
-  F: new THREE.Vector3(0, 0, 1),
-  B: new THREE.Vector3(0, 0, -1),
-  R: new THREE.Vector3(1, 0, 0),
-  L: new THREE.Vector3(-1, 0, 0),
+  U: new Vector3(0, 1, 0),
+  D: new Vector3(0, -1, 0),
+  F: new Vector3(0, 0, 1),
+  B: new Vector3(0, 0, -1),
+  R: new Vector3(1, 0, 0),
+  L: new Vector3(-1, 0, 0),
 }
 
 const NORMAL_TO_FACE = {
@@ -249,13 +261,13 @@ const getSolvedCaseStickerColor = (notation, face, x, y, z) => {
       return
     }
 
-    const axisVector = new THREE.Vector3(
+    const axisVector = new Vector3(
       definition.axis === 'x' ? 1 : 0,
       definition.axis === 'y' ? 1 : 0,
       definition.axis === 'z' ? 1 : 0
     )
-    const rotation = new THREE.Quaternion().setFromAxisAngle(axisVector, definition.angle)
-    const position = new THREE.Vector3(grid.x, grid.y, grid.z).applyQuaternion(rotation)
+    const rotation = new Quaternion().setFromAxisAngle(axisVector, definition.angle)
+    const position = new Vector3(grid.x, grid.y, grid.z).applyQuaternion(rotation)
     normal.applyQuaternion(rotation)
     grid = roundVectorToGrid(position)
   })
@@ -350,31 +362,31 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   }, [onActiveMoveChange, visualMoveIndices])
 
   const createSticker = useCallback((face, position, rotation, gridPosition) => {
-    const geometry = new THREE.PlaneGeometry(0.72, 0.72)
-    const material = new THREE.MeshStandardMaterial({
+    const geometry = new PlaneGeometry(0.72, 0.72)
+    const material = new MeshStandardMaterial({
       color: getStickerColor(algorithmId, notation, face, gridPosition.x, gridPosition.y, gridPosition.z),
       roughness: 0.72,
       metalness: 0.02,
-      side: THREE.DoubleSide,
+      side: DoubleSide,
     })
-    const sticker = new THREE.Mesh(geometry, material)
+    const sticker = new Mesh(geometry, material)
     sticker.position.set(position.x, position.y, position.z)
     sticker.rotation.set(rotation.x, rotation.y, rotation.z)
     return sticker
   }, [algorithmId, notation])
 
   const createCubie = useCallback((x, y, z) => {
-    const group = new THREE.Group()
+    const group = new Group()
     group.position.set(x * CUBIE_SPACING, y * CUBIE_SPACING, z * CUBIE_SPACING)
     group.userData.grid = { x, y, z }
 
-    const geometry = new THREE.BoxGeometry(0.96, 0.96, 0.96)
-    const material = new THREE.MeshStandardMaterial({
+    const geometry = new BoxGeometry(0.96, 0.96, 0.96)
+    const material = new MeshStandardMaterial({
       color: 0x111827,
       roughness: 0.55,
       metalness: 0.03,
     })
-    group.add(new THREE.Mesh(geometry, material))
+    group.add(new Mesh(geometry, material))
 
     if (y === 1) {
       group.add(createSticker('U', { x: 0, y: 0.486, z: 0 }, { x: -Math.PI / 2, y: 0, z: 0 }, { x, y, z }))
@@ -453,7 +465,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
       return Math.round(cubie.userData.grid[definition.axis]) === definition.layer
     })
 
-    const axisVector = new THREE.Vector3(
+    const axisVector = new Vector3(
       definition.axis === 'x' ? 1 : 0,
       definition.axis === 'y' ? 1 : 0,
       definition.axis === 'z' ? 1 : 0
@@ -486,7 +498,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
 
         elapsed += delta
         const progress = Math.min(elapsed / TURN_DURATION_MS, 1)
-        const rotation = new THREE.Quaternion().setFromAxisAngle(
+        const rotation = new Quaternion().setFromAxisAngle(
           axisVector,
           definition.angle * easeInOutCubic(progress)
         )
@@ -589,14 +601,14 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     const mount = mountRef.current
     if (!mount) return undefined
 
-    const scene = new THREE.Scene()
+    const scene = new Scene()
     scene.background = null
 
-    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100)
+    const camera = new PerspectiveCamera(35, 1, 0.1, 100)
     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
     camera.lookAt(0, 0, 0)
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       antialias: true,
       alpha: true,
       powerPreference: 'high-performance',
@@ -604,19 +616,19 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     mount.appendChild(renderer.domElement)
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8)
+    const ambientLight = new AmbientLight(0xffffff, 1.8)
     scene.add(ambientLight)
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.4)
+    const keyLight = new DirectionalLight(0xffffff, 2.4)
     keyLight.position.set(4, 5, 6)
     scene.add(keyLight)
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 1.1)
+    const fillLight = new DirectionalLight(0xffffff, 1.1)
     fillLight.position.set(-3, 2, 4)
     scene.add(fillLight)
 
-    const viewRoot = new THREE.Group()
-    const cubeRoot = new THREE.Group()
+    const viewRoot = new Group()
+    const cubeRoot = new Group()
     viewRoot.add(cubeRoot)
     scene.add(viewRoot)
 
