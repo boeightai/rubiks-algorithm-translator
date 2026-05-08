@@ -157,7 +157,7 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
         display: 'flex',
         alignItems: 'center',
       }}>
-        Notation key
+        Picture move key
       </summary>
       <div style={{
         display: 'grid',
@@ -168,7 +168,7 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
         {[
           ['1', 'Step number'],
           ['↻', 'Turn picture'],
-          ['R', 'Cube notation'],
+          ['R', 'Letter code'],
           ['▣', 'Trigger group'],
         ].map(([symbol, label], index) => (
           <div key={label} style={{
@@ -330,7 +330,7 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
             fontSize: typography.fontSize.sm, 
             color: colors.neutral[500] 
           }}>
-            {!notation || typeof notation !== 'string' ? 'Select an algorithm to see the visual sequence' : 'No moves to display'}
+            {!notation || typeof notation !== 'string' ? 'Select a move to see the picture steps' : 'No moves to display'}
           </div>
           {isMobile && (
             <div style={{ 
@@ -338,7 +338,7 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
               color: colors.neutral[400], 
               marginTop: spacing[2] 
             }}>
-              💡 Tip: Switch to the "Visual" tab to see the sequence
+              Tip: Switch to Picture Steps to see the cards.
             </div>
           )}
           {!isMobile && (
@@ -347,7 +347,7 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
               color: colors.neutral[400], 
               marginTop: spacing[2] 
             }}>
-              💡 Tip: Click on an algorithm to see its visual sequence
+              Tip: Pick a move to see Bo and Hailey's picture steps.
             </div>
           )}
         </div>

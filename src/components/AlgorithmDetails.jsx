@@ -148,14 +148,14 @@ const AlgorithmDetails = ({
             marginBottom: spacing[2],
             color: colors.neutral[700],
           }}>
-            Select an Algorithm
+            Select a Move
           </div>
           <div style={{
             fontSize: typography.fontSize.sm,
             color: colors.neutral[500],
             lineHeight: typography.lineHeight.normal,
           }}>
-            Choose an algorithm from the list to see its details, notation, and visual sequence
+            Choose a move from the library to see Bo and Hailey's picture steps.
           </div>
         </div>
       </div>
@@ -224,7 +224,7 @@ const AlgorithmDetails = ({
                 marginRight: spacing[1],
                 whiteSpace: 'nowrap',
               }}>
-                Alternative Names:
+                Other Names:
               </span>
               {selectedAlgorithm.nicknames.map((nickname, index) => (
                 <div key={`nickname-${selectedAlgorithm.id}-${index}`} style={{
@@ -435,7 +435,7 @@ const AlgorithmDetails = ({
                 color: colors.neutral[900],
                 margin: 0,
               }}>
-                {shouldShowStickerLink ? 'Sticker for Field Notes Notebook' : 'Tutorial Image'}
+                {shouldShowStickerLink ? 'Sticker for Field Notes Notebook' : 'Picture Guide'}
               </h3>
               <div style={{
                 fontSize: typography.fontSize.sm,

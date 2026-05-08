@@ -23,15 +23,29 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { colors } from './styles/designSystem'
 
 function AppWithModes() {
-  // Initialize mode from localStorage or default to 'explorer'
+  // Initialize mode from URL, localStorage, or default to the beginner method.
   const [mode, setMode] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    const requestedMode = params.get('mode')
+    if (requestedMode === 'tutorial' || requestedMode === 'explorer') {
+      return requestedMode
+    }
+
     const savedMode = localStorage.getItem('appMode')
-    return savedMode === 'tutorial' ? 'tutorial' : 'explorer'
+    if (savedMode === 'tutorial' || savedMode === 'explorer') {
+      return savedMode
+    }
+
+    return 'tutorial'
   })
 
   // Save mode preference to localStorage
   useEffect(() => {
     localStorage.setItem('appMode', mode)
+
+    const url = new URL(window.location.href)
+    url.searchParams.set('mode', mode)
+    window.history.replaceState({}, '', url)
   }, [mode])
 
   const toggleMode = () => {

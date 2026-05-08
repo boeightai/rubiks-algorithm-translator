@@ -117,13 +117,13 @@ const AlgorithmList = ({
         fontWeight: typography.fontWeight.medium,
         marginBottom: spacing[1],
       }}>
-        No algorithms found
+        No moves found
       </div>
       <div style={{
         fontSize: typography.fontSize.sm,
         color: colors.neutral[500],
       }}>
-        Try adjusting your search or filters
+        Try adjusting your search or filters.
       </div>
     </div>
   ), [])
@@ -149,24 +149,13 @@ const AlgorithmList = ({
             return (
               <div
                 key={algorithm.id}
-                onClick={() => onSelectAlgorithm(algorithm)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    onSelectAlgorithm(algorithm)
-                  }
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label={`Select ${algorithm.name} algorithm`}
-                aria-describedby={`algorithm-${algorithm.id}-description`}
                 className={`algorithm-item ${algorithm.isSelected ? 'selected' : ''}`}
                 style={{
                   background: algorithm.isSelected ? colors.primary[50] : colors.background.primary,
                   border: algorithm.isSelected ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.light}`,
                   borderRadius: borderRadius.xl,
                   padding: spacing[4],
-                  cursor: 'pointer',
+                  cursor: 'default',
                   transition: 'border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease',
                   position: 'relative',
                   overflow: 'hidden',
@@ -184,7 +173,24 @@ const AlgorithmList = ({
                   justifyContent: 'space-between',
                   gap: spacing[3],
                 }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectAlgorithm(algorithm)}
+                    aria-label={`Select ${algorithm.name} move`}
+                    aria-describedby={`algorithm-${algorithm.id}-description`}
+                    className="algorithm-select-button"
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      padding: 0,
+                      border: 'none',
+                      background: 'transparent',
+                      color: 'inherit',
+                      font: 'inherit',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                    }}
+                  >
                     {/* Header */}
                     <div style={{
                       display: 'flex',
@@ -229,7 +235,7 @@ const AlgorithmList = ({
                           fontWeight: typography.fontWeight.medium,
                           whiteSpace: 'nowrap',
                         }}>
-                          {patternImageStatus[algorithm.id] ? 'Pattern image' : 'Move cards only'}
+                          {patternImageStatus[algorithm.id] ? 'Picture pattern' : 'Picture moves'}
                         </span>
                       )}
                     </div>
@@ -259,7 +265,7 @@ const AlgorithmList = ({
                         alignItems: 'center',
                         marginBottom: spacing[2],
                       }}>
-                        <span style={{ fontWeight: typography.fontWeight.medium }}>Also known as:</span>
+                        <span style={{ fontWeight: typography.fontWeight.medium }}>Other names:</span>
                         {algorithm.nicknames.map((nickname, index) => (
                           <span key={index} style={{
                             background: colors.primary[50],
@@ -336,7 +342,7 @@ const AlgorithmList = ({
                             textTransform: 'uppercase',
                             letterSpacing: '0.05em',
                           }}>
-                            Notation
+                            Letter Code
                           </div>
                           <div style={{
                             fontSize: typography.fontSize.sm,
@@ -356,7 +362,7 @@ const AlgorithmList = ({
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </button>
 
                   {/* Star button */}
                   <div style={{
@@ -399,6 +405,12 @@ const AlgorithmList = ({
           background-color: var(--primary-100) !important;
           border-color: var(--primary-600) !important;
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        .algorithm-select-button:focus-visible {
+          outline: 3px solid var(--primary-200);
+          outline-offset: 4px;
+          border-radius: ${borderRadius.lg};
         }
         
         @media (max-width: 768px) {

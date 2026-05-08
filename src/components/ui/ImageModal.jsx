@@ -30,7 +30,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
     try {
       const link = document.createElement('a')
       link.href = imageSrc
-      link.download = `${algorithmName}-tutorial.png`
+      link.download = `${algorithmName}-picture-guide.png`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -99,7 +99,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, algorithmName }) => {
             margin: 0,
             flex: '1 1 auto',
           }}>
-            {algorithmName} - Tutorial Image
+            {algorithmName} - Picture Guide
           </h2>
           <button
             onClick={onClose}

@@ -94,8 +94,11 @@ export function useAlgorithms(favoriteIds = []) {
       // Search filter - only run if there's a search term
       if (normalizedSearchTerm) {
         const searchFields = [
+          alg.id,
           alg.name,
           alg.description,
+          alg.category,
+          alg.notation,
           ...(alg.nicknames || [])
         ]
         

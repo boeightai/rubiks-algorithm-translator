@@ -39,7 +39,7 @@ const SearchFilters = ({
     beginner: 'Start Here',
     intermediate: 'Growing Skills',
     advanced: 'Advanced',
-    all: 'Full Library',
+    all: 'All Moves',
   }
 
   // Memoized handlers for better performance
@@ -83,7 +83,7 @@ const SearchFilters = ({
           color: colors.neutral[900],
           margin: `0 0 ${spacing[1]} 0`,
         }}>
-          Algorithms
+          Move Library
         </h2>
         <div style={{
           fontSize: typography.fontSize.sm,
@@ -111,19 +111,19 @@ const SearchFilters = ({
               color: colors.neutral[700],
               fontWeight: typography.fontWeight.semibold,
             }}>
-              Learning path
+              Bo and Hailey's path
             </div>
             <div style={{
               fontSize: typography.fontSize.xs,
               color: colors.neutral[500],
             }}>
-              {selectedDifficulty === 'beginner' ? 'Start with the essentials' : 'Browsing selected level'}
+              {selectedDifficulty === 'beginner' ? 'Start with picture moves' : 'Browsing selected level'}
             </div>
           </div>
           <div
             className="learning-path-options"
             role="group"
-            aria-label="Choose algorithm learning path"
+            aria-label="Choose move learning path"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
@@ -205,8 +205,8 @@ const SearchFilters = ({
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Search algorithms..."
-            aria-label="Search algorithms by name, description, or nickname"
+            placeholder="Search moves..."
+            aria-label="Search moves by name, description, nickname, or letter code"
             style={{
               width: '100%',
               padding: `${spacing[3]} ${spacing[4]} ${spacing[3]} ${spacing[10]}`,
@@ -240,7 +240,7 @@ const SearchFilters = ({
           <select
             value={selectedCategory}
             onChange={handleCategoryChange}
-            aria-label="Filter by algorithm category"
+            aria-label="Filter by move category"
             style={{
               width: '100%',
               padding: `${spacing[3]} ${spacing[4]}`,
@@ -270,7 +270,7 @@ const SearchFilters = ({
           >
             {categories.map(category => (
               <option key={category} value={category}>
-                {category === 'all' ? 'All Categories' : category}
+                {category === 'all' ? 'All Types' : category}
               </option>
             ))}
           </select>
@@ -293,7 +293,7 @@ const SearchFilters = ({
           <button
             onClick={handleFavoritesToggle}
             aria-pressed={showFavoritesOnly}
-            aria-label={showFavoritesOnly ? 'Show all algorithms' : 'Show only favorites'}
+            aria-label={showFavoritesOnly ? 'Show all moves' : 'Show only favorites'}
             style={{
               padding: `${spacing[3]} ${spacing[4]}`,
               border: showFavoritesOnly ? `2px solid ${colors.warning[500]}` : `1px solid ${colors.border.medium}`,

@@ -197,7 +197,7 @@ const AboutModal = ({ isOpen, onClose }) => {
                 backgroundClip: 'text',
               }}
             >
-              About This Project
+              About Bo and Hailey's Picture Moves
             </h1>
           </div>
 
@@ -214,7 +214,7 @@ const AboutModal = ({ isOpen, onClose }) => {
             }}>
               <img
                 src="/images/family-photo.png"
-                alt="Hailey and I working on Rubik's Cube algorithms"
+                alt="Bo and Hailey working on Rubik's Cube picture moves"
                 style={{
                   width: '100%',
                   maxWidth: isMobile ? '250px' : '300px',
@@ -235,12 +235,12 @@ const AboutModal = ({ isOpen, onClose }) => {
               backdropFilter: 'blur(10px)',
             }}>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                Welcome to our Rubik's Cube Algorithm Translator. This project was born from a shared passion 
-                between my 9 year old daughter Hailey and me - our love of solving Rubik's Cubes and learning to code.
+                This is a father-daughter project by Bo and Hailey. We built our own visual notation system so beginners
+                can learn cube moves through pictures, patterns, and checkpoints before relying on letter code.
               </p>
               <p style={{ margin: 0, marginBottom: spacing[4] }}>
-                We're excited to share our ongoing development with both the speedcubing and coding communities. 
-                We hope to attract new people to learn how to solve Rubik's Cubes with our visual notation system!
+                The goal is to teach the beginner method in our way: look for the cube pattern, follow the picture moves,
+                then check the result together. We are sharing the work as it grows so other families and learners can try it too.
               </p>
             </div>
 

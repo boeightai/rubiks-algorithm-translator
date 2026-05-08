@@ -27,7 +27,6 @@ const MobileTabLayout = ({
   algorithmsContent,
   visualSequenceContent,
   selectedAlgorithm,
-  setSelectedAlgorithm,
   containerStyle = {}
 }) => {
   const [activeTab, setActiveTab] = useState('algorithms')
@@ -52,21 +51,16 @@ const MobileTabLayout = ({
   const isIPadPortrait = isTablet && isPortrait
   const shouldUseMobileLayout = isMobile || isIPadPortrait || (isTablet && windowWidth <= 1024 && isPortrait)
 
-  // Handle tab changes and clear selection when switching to algorithms tab
+  // Handle tab changes while preserving the current visual reference.
   const handleTabChange = useCallback((newTab) => {
     // Clear any existing auto-switch timeout
     if (autoSwitchTimeoutRef.current) {
       clearTimeout(autoSwitchTimeoutRef.current)
       autoSwitchTimeoutRef.current = null
     }
-    
-    // If switching to algorithms tab, clear the selected algorithm
-    if (newTab === 'algorithms' && selectedAlgorithm) {
-      setSelectedAlgorithm(null)
-    }
-    
+
     setActiveTab(newTab)
-  }, [selectedAlgorithm, setSelectedAlgorithm])
+  }, [])
 
   // Reset active tab to algorithms when switching from mobile to desktop
   useEffect(() => {
@@ -104,13 +98,11 @@ const MobileTabLayout = ({
   const tabs = [
     {
       id: 'algorithms',
-      label: 'Algorithms',
-      icon: '📋'
+      label: 'Move Library'
     },
     {
       id: 'visual',
-      label: 'Visual Sequence',
-      icon: '🎯'
+      label: 'Picture Steps'
     }
   ]
 
@@ -187,14 +179,14 @@ const MobileTabLayout = ({
                     marginBottom: spacing[2],
                     color: colors.neutral[700],
                   }}>
-                    No Algorithm Selected
+                    No Move Selected
                   </div>
                   <div style={{
                     fontSize: typography.fontSize.sm,
                     marginBottom: spacing[4],
                     color: colors.neutral[600],
                   }}>
-                    Select an algorithm from the Algorithms tab to view its visual sequence
+                    Pick a move from the Move Library to see Bo and Hailey's picture steps.
                   </div>
                   <button
                     onClick={() => handleTabChange('algorithms')}
@@ -214,7 +206,7 @@ const MobileTabLayout = ({
                     onMouseEnter={(e) => e.target.style.background = colors.primary[600]}
                     onMouseLeave={(e) => e.target.style.background = colors.primary[500]}
                   >
-                    Browse Algorithms
+                    Browse Moves
                   </button>
                 </div>
               )}

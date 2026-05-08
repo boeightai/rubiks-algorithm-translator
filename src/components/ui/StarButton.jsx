@@ -35,7 +35,8 @@ const StarButton = ({
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
-          onToggle()
+          e.stopPropagation()
+          onToggle(e)
         }
       }}
       className={`responsive-star-button ${className}`}

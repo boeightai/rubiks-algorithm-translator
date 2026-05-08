@@ -336,7 +336,9 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   const [activeMoveIndex, setActiveMoveIndex] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const [isStarting, setIsStarting] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
+  const [webglError, setWebglError] = useState(false)
 
   const { visualMoves, animationMoves, visualMoveIndices } = useMemo(() => {
     return expandNotationForAnimation(notation)
@@ -433,12 +435,12 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     const viewRoot = viewRootRef.current
     if (viewRoot) {
       viewRoot.rotation.set(0, 0, 0)
-      viewRoot.scale.setScalar(isCompact ? 0.56 : CUBE_SCALE)
-      viewRoot.position.set(0, isCompact ? 0.75 : 0.25, 0)
+      viewRoot.scale.setScalar(isMobile ? 0.74 : isTablet ? 0.68 : CUBE_SCALE)
+      viewRoot.position.set(0, isMobile ? 0.45 : isTablet ? 0.55 : 0.25, 0)
     }
     cubeRoot.rotation.set(0, 0, 0)
     cubiesRef.current = cubies
-  }, [createCubie, isCompact])
+  }, [createCubie, isMobile, isTablet])
 
   const resizeRenderer = useCallback(() => {
     const mount = mountRef.current
@@ -540,6 +542,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     isPausedRef.current = false
     setIsPlaying(true)
     setIsPaused(false)
+    setIsStarting(true)
     setHasCompleted(false)
     setActiveMove(null)
     clearTimers()
@@ -548,6 +551,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     await new Promise((resolve) => {
       timeoutRef.current = setTimeout(resolve, START_PAUSE_MS)
     })
+    setIsStarting(false)
 
     for (let index = 0; index < animationMoves.length; index += 1) {
       if (!isRunningRef.current) break
@@ -565,6 +569,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     isPausedRef.current = false
     setIsPlaying(false)
     setIsPaused(false)
+    setIsStarting(false)
     setActiveMove(null)
   }, [animateMove, animationMoves, clearTimers, resetCube, setActiveMove])
 
@@ -578,6 +583,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     }
     setIsPlaying(false)
     setIsPaused(false)
+    setIsStarting(false)
     setActiveMove(null)
   }, [clearTimers, setActiveMove])
 
@@ -600,6 +606,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   useEffect(() => {
     const mount = mountRef.current
     if (!mount) return undefined
+    setWebglError(false)
 
     const scene = new Scene()
     scene.background = null
@@ -608,11 +615,17 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
     camera.lookAt(0, 0, 0)
 
-    const renderer = new WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      powerPreference: 'high-performance',
-    })
+    let renderer
+    try {
+      renderer = new WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance',
+      })
+    } catch {
+      setWebglError(true)
+      return undefined
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     mount.appendChild(renderer.domElement)
 
@@ -657,14 +670,17 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
         cancelAnimationFrame(renderFrameRef.current)
       }
       renderer.dispose()
-      mount.removeChild(renderer.domElement)
+      if (renderer.domElement.parentNode === mount) {
+        mount.removeChild(renderer.domElement)
+      }
     }
   }, [cameraPosition, resetCube, resizeRenderer, stopSequence])
 
   useEffect(() => {
+    if (webglError) return undefined
     replay()
     return () => stopSequence()
-  }, [replay, stopSequence])
+  }, [replay, stopSequence, webglError])
 
   const handlePointerDown = (event) => {
     pointerRef.current = {
@@ -695,6 +711,49 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     }
   }
 
+  if (webglError) {
+    return (
+      <div style={{
+        width: '100%',
+        maxWidth: isMobile ? '100%' : isTablet ? '600px' : '500px',
+        margin: '0 auto',
+        backgroundColor: colors.background.secondary,
+        borderRadius: borderRadius.xl,
+        boxShadow: shadows.lg,
+        border: `1px solid ${colors.border.light}`,
+        padding: spacing[6],
+        textAlign: 'center',
+        color: colors.neutral[800],
+      }}>
+        <div style={{
+          minHeight: isMobile ? '220px' : '260px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: spacing[3],
+          borderRadius: borderRadius.lg,
+          backgroundColor: colors.background.primary,
+          border: `1px solid ${colors.border.light}`,
+        }}>
+          <strong style={{
+            fontSize: typography.fontSize.lg,
+            color: colors.neutral[900],
+          }}>
+            3D cube is unavailable
+          </strong>
+          <span style={{
+            color: colors.neutral[600],
+            fontSize: typography.fontSize.sm,
+            lineHeight: typography.lineHeight.normal,
+          }}>
+            Use the picture moves below to keep practicing.
+          </span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{
       width: '100%',
@@ -708,9 +767,9 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     }}>
       <div style={{
         position: 'relative',
-        aspectRatio: '16 / 9',
-        minHeight: isCompact ? '260px' : '280px',
-        backgroundColor: '#f8fafc',
+        aspectRatio: isMobile ? '4 / 3' : isTablet ? '1 / 1' : '16 / 9',
+        minHeight: isMobile ? '0' : isTablet ? '300px' : '280px',
+        backgroundColor: colors.background.primary,
       }}>
         <div
           ref={mountRef}
@@ -753,7 +812,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
             minWidth: isCompact ? '0' : '132px',
             textAlign: isCompact ? 'center' : 'left',
           }}>
-            {currentMove ? `Move ${activeMoveIndex + 1} of ${visualMoves.length}: ${currentMove}` : hasCompleted ? 'Sequence complete' : 'Ready'}
+            {currentMove ? `Move ${activeMoveIndex + 1} of ${visualMoves.length}: ${currentMove}` : hasCompleted ? 'Sequence complete' : isStarting ? 'Starting...' : 'Ready'}
           </div>
 
           <div style={{
@@ -778,7 +837,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
                 boxShadow: shadows.sm,
               }}
             >
-              {isPlaying && !isPaused ? 'Pause' : 'Play'}
+              {isPlaying && !isStarting && !isPaused ? 'Pause' : 'Play'}
             </button>
             <button
               type="button"
