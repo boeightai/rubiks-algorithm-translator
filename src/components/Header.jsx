@@ -52,8 +52,8 @@ const Header = ({
     <div 
       className="responsive-header"
       style={{
-        marginBottom: spacing[8],
-        padding: `${spacing[6]} 0`,
+        marginBottom: spacing[5],
+        padding: `${spacing[4]} 0`,
         borderBottom: `1px solid ${colors.border.light}`,
         textAlign: 'left',
         ...style
@@ -80,8 +80,8 @@ const Header = ({
             className="site-mascot-frame"
             aria-hidden="true"
             style={{
-              width: '96px',
-              height: '96px',
+              width: '72px',
+              height: '72px',
               flex: '0 0 auto',
               borderRadius: '9999px',
               overflow: 'hidden',
@@ -105,7 +105,7 @@ const Header = ({
           <div style={{ flex: '1 1 auto', minWidth: 0 }}>
             <h1 style={{ 
               color: colors.neutral[900], 
-              fontSize: typography.fontSize['3xl'], 
+              fontSize: typography.fontSize['2xl'], 
               margin: 0, 
               fontWeight: typography.fontWeight.bold, 
               letterSpacing: 0,
@@ -291,7 +291,7 @@ const Header = ({
             <p style={{ 
               color: colors.neutral[600], 
               margin: `${spacing[2]} 0 0 0`, 
-              fontSize: typography.fontSize.lg,
+              fontSize: typography.fontSize.base,
               fontWeight: typography.fontWeight.normal,
               lineHeight: typography.lineHeight.normal,
             }}>

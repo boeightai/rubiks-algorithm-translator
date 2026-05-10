@@ -336,7 +336,7 @@ function TutorialMode({ onModeToggle }) {
         <Header
           title="Bo and Hailey's Beginner Method"
           subtitle="Learn one cube step at a time with picture moves."
-          style={{ marginBottom: spacing[4], paddingBottom: spacing[4] }}
+          style={{ marginBottom: spacing[3], padding: `${spacing[3]} 0`, paddingBottom: spacing[3] }}
         />
 
         <main className="method-layout">
@@ -369,12 +369,22 @@ function TutorialMode({ onModeToggle }) {
                 <span className="lesson-count">Step {currentStepIndex + 1}</span>
                 <h2 id="lesson-title">{currentStep.title}</h2>
               </div>
-              <p>{currentStep.summary}</p>
+              <div className="lesson-header-actions">
+                <p>{currentStep.summary}</p>
+                <div className="lesson-nav" aria-label="Lesson navigation">
+                  <button type="button" onClick={() => goToStep(currentStepIndex - 1)} disabled={!canGoPrevious}>
+                    Previous
+                  </button>
+                  <button type="button" onClick={() => goToStep(currentStepIndex + 1)} disabled={!canGoNext}>
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="lesson-grid">
               <section className="lesson-panel look-panel" aria-labelledby="look-title">
-                <span className="panel-label">Look</span>
+                <span className="panel-label">1. Look</span>
                 <h3 id="look-title">{lesson.lookTitle}</h3>
                 <MiniCube type={lesson.target} />
                 <p>{lesson.look}</p>
@@ -395,12 +405,34 @@ function TutorialMode({ onModeToggle }) {
                 )}
               </section>
 
+              {activeAlgorithm && (
+                <section className="cube-demo-panel" aria-label={`${activeAlgorithm.name} 3D visualization`}>
+                  <div className="cube-demo-heading">
+                    <span className="panel-label">2. Watch</span>
+                    <strong>{activeAlgorithm.name}</strong>
+                  </div>
+                  {shouldShowDemo ? (
+                    <Suspense fallback={renderCubeLoadingState()}>
+                      <InteractiveCubeDemo
+                        key={`${activeAlgorithm.id}-${activeAlgorithm.notation}`}
+                        algorithmId={activeAlgorithm.id}
+                        notation={activeNotation}
+                        onActiveMoveChange={setActiveMoveIndex}
+                      />
+                    </Suspense>
+                  ) : (
+                    <div className="cube-demo-loading">3D playback is not available for this notation yet.</div>
+                  )}
+                </section>
+              )}
+
               <section className="lesson-panel turn-panel" aria-labelledby="turn-title">
-                <span className="panel-label">Turn</span>
-                <h3 id="turn-title">{lesson.actionTitle}</h3>
-                <p>{lesson.action}</p>
-                {lessonAlgorithms.length > 0 ? (
-                  <>
+                <div className="turn-intro">
+                  <span className="panel-label">3. Turn</span>
+                  <h3 id="turn-title">{lesson.actionTitle}</h3>
+                  <p>{lesson.action}</p>
+
+                  {lessonAlgorithms.length > 1 && (
                     <div className="algorithm-tabs" aria-label="Lesson algorithms">
                       {lessonAlgorithms.map((algorithm) => (
                         <button
@@ -413,7 +445,10 @@ function TutorialMode({ onModeToggle }) {
                         </button>
                       ))}
                     </div>
-
+                  )}
+                </div>
+                {lessonAlgorithms.length > 0 ? (
+                  <>
                     {activeAlgorithm && (
                       <div className="algorithm-card" aria-label={`${activeAlgorithm.name} visual notation`}>
                         <div className="algorithm-card-header">
@@ -434,41 +469,6 @@ function TutorialMode({ onModeToggle }) {
               </section>
             </div>
 
-            {activeAlgorithm && (
-              <section className="cube-demo-panel" aria-label={`${activeAlgorithm.name} 3D visualization`}>
-                <div className="cube-demo-heading">
-                  <span className="panel-label">3D visualization</span>
-                  <strong>{activeAlgorithm.name}</strong>
-                </div>
-                {shouldShowDemo ? (
-                  <Suspense fallback={renderCubeLoadingState()}>
-                    <InteractiveCubeDemo
-                      key={`${activeAlgorithm.id}-${activeAlgorithm.notation}`}
-                      algorithmId={activeAlgorithm.id}
-                      notation={activeNotation}
-                      onActiveMoveChange={setActiveMoveIndex}
-                    />
-                  </Suspense>
-                ) : (
-                  <div className="cube-demo-loading">3D playback is not available for this notation yet.</div>
-                )}
-              </section>
-            )}
-
-            <section className="check-panel" aria-label="Check your cube">
-              <div>
-                <span className="panel-label">Check</span>
-                <strong>{lesson.check}</strong>
-              </div>
-              <div className="lesson-nav">
-                <button type="button" onClick={() => goToStep(currentStepIndex - 1)} disabled={!canGoPrevious}>
-                  Previous
-                </button>
-                <button type="button" onClick={() => goToStep(currentStepIndex + 1)} disabled={!canGoNext}>
-                  Next
-                </button>
-              </div>
-            </section>
           </section>
         </main>
       </div>
@@ -481,23 +481,22 @@ function TutorialMode({ onModeToggle }) {
         }
 
         .minimal-tutorial-container {
-          max-width: 1120px;
+          max-width: 1220px;
           margin: 0 auto;
-          padding: 0 ${spacing[4]} ${spacing[10]};
+          padding: 0 ${spacing[4]} ${spacing[6]};
         }
 
         .method-layout {
           display: grid;
-          grid-template-columns: 260px minmax(0, 1fr);
-          gap: ${spacing[5]};
+          grid-template-columns: 220px minmax(0, 1fr);
+          gap: ${spacing[4]};
           align-items: start;
         }
 
         .method-path,
         .lesson-stage,
         .lesson-panel,
-        .cube-demo-panel,
-        .check-panel {
+        .cube-demo-panel {
           border: 1px solid ${colors.border.light};
           border-radius: ${borderRadius.lg};
           background: ${colors.background.primary};
@@ -506,39 +505,41 @@ function TutorialMode({ onModeToggle }) {
 
         .method-path {
           position: sticky;
-          top: ${spacing[4]};
+          top: ${spacing[3]};
           display: grid;
-          gap: ${spacing[4]};
-          padding: ${spacing[4]};
+          gap: ${spacing[3]};
+          padding: ${spacing[3]};
         }
 
         .path-heading,
         .lesson-header,
-        .lesson-panel,
-        .check-panel {
+        .lesson-panel {
           min-width: 0;
         }
 
         .path-heading span,
         .lesson-count,
         .panel-label {
-          display: block;
+          display: inline-flex;
+          align-items: center;
+          width: fit-content;
           color: ${colors.neutral[600]};
           font-size: ${typography.fontSize.xs};
           font-weight: ${typography.fontWeight.extrabold};
-          text-transform: uppercase;
+          line-height: ${typography.lineHeight.tight};
+          text-transform: none;
         }
 
         .path-heading strong {
           display: block;
           margin-top: ${spacing[1]};
-          font-size: ${typography.fontSize.lg};
+          font-size: ${typography.fontSize.base};
           line-height: ${typography.lineHeight.tight};
         }
 
         .path-list {
           display: grid;
-          gap: ${spacing[2]};
+          gap: ${spacing[1]};
         }
 
         .path-step,
@@ -558,9 +559,9 @@ function TutorialMode({ onModeToggle }) {
 
         .path-step {
           display: grid;
-          grid-template-columns: 32px minmax(0, 1fr);
+          grid-template-columns: 28px minmax(0, 1fr);
           align-items: center;
-          gap: ${spacing[2]};
+          gap: ${spacing[1]};
           padding: ${spacing[2]};
           text-align: left;
         }
@@ -568,8 +569,8 @@ function TutorialMode({ onModeToggle }) {
         .path-step span {
           display: inline-grid;
           place-items: center;
-          width: 28px;
-          height: 28px;
+          width: 26px;
+          height: 26px;
           border-radius: 50%;
           background: ${colors.neutral[100]};
           color: ${colors.neutral[700]};
@@ -593,23 +594,37 @@ function TutorialMode({ onModeToggle }) {
 
         .lesson-stage {
           display: grid;
-          gap: ${spacing[5]};
-          padding: ${spacing[5]};
+          grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.2fr);
+          grid-template-areas:
+            "header header"
+            "look demo"
+            "turn turn";
+          gap: ${spacing[3]};
+          padding: ${spacing[3]};
+          align-items: start;
         }
 
         .lesson-header {
+          grid-area: header;
           display: grid;
           grid-template-columns: minmax(0, 0.75fr) minmax(260px, 0.65fr);
-          gap: ${spacing[4]};
+          gap: ${spacing[3]};
           align-items: end;
-          padding-bottom: ${spacing[4]};
+          padding-bottom: ${spacing[2]};
           border-bottom: 1px solid ${colors.border.light};
+        }
+
+        .lesson-header-actions {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: ${spacing[3]};
         }
 
         .lesson-header h2 {
           margin: ${spacing[1]} 0 0;
           color: ${colors.neutral[900]};
-          font-size: ${typography.fontSize['3xl']};
+          font-size: ${typography.fontSize['2xl']};
           line-height: ${typography.lineHeight.tight};
           letter-spacing: 0;
         }
@@ -618,37 +633,129 @@ function TutorialMode({ onModeToggle }) {
         .lesson-panel p {
           margin: 0;
           color: ${colors.neutral[600]};
-          font-size: ${typography.fontSize.base};
+          font-size: ${typography.fontSize.sm};
           line-height: ${typography.lineHeight.normal};
         }
 
         .lesson-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-          gap: ${spacing[4]};
+          display: contents;
         }
 
         .lesson-panel {
           display: grid;
           align-content: start;
-          gap: ${spacing[3]};
-          padding: ${spacing[4]};
+          gap: ${spacing[2]};
+          padding: ${spacing[3]};
         }
 
         .lesson-panel h3 {
           margin: 0;
           color: ${colors.neutral[900]};
-          font-size: ${typography.fontSize['2xl']};
+          font-size: ${typography.fontSize.xl};
           line-height: ${typography.lineHeight.tight};
           letter-spacing: 0;
         }
 
+        .turn-intro {
+          display: grid;
+          gap: ${spacing[2]};
+        }
+
         .look-panel {
+          grid-area: look;
           border-top: 6px solid #facc15;
         }
 
         .turn-panel {
+          grid-area: turn;
           border-top: 6px solid #2563eb;
+        }
+
+        .cube-demo-panel {
+          border-top: 6px solid #22c55e;
+        }
+
+        @media (min-width: 901px) {
+          .turn-panel {
+            grid-template-columns: minmax(170px, 0.22fr) minmax(0, 1fr);
+            grid-template-areas:
+              "turn-intro card";
+            align-items: start;
+          }
+
+          .turn-intro {
+            grid-area: turn-intro;
+            display: grid;
+            align-content: start;
+            gap: ${spacing[2]};
+          }
+
+          .turn-panel .algorithm-tabs {
+            justify-content: flex-start;
+          }
+
+          .turn-panel .algorithm-card {
+            grid-area: card;
+            grid-template-columns: minmax(180px, 0.24fr) minmax(0, 1fr);
+            grid-template-areas:
+              "card-header cards"
+              "card-copy cards";
+            align-items: start;
+          }
+
+          .turn-panel .algorithm-card-header {
+            grid-area: card-header;
+            display: grid;
+            gap: ${spacing[1]};
+          }
+
+          .turn-panel .algorithm-card-header code {
+            max-width: 100%;
+            text-align: left;
+          }
+
+          .turn-panel .algorithm-card > p {
+            grid-area: card-copy;
+            display: none;
+          }
+
+          .turn-panel .picture-card-row {
+            grid-area: cards;
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: ${spacing[1]};
+          }
+
+          .look-panel {
+            grid-template-columns: minmax(126px, auto) minmax(0, 1fr);
+            grid-template-areas:
+              "label label"
+              "title title"
+              "cube copy"
+              "cube cases";
+            align-items: start;
+          }
+
+          .look-panel .panel-label {
+            grid-area: label;
+          }
+
+          .look-panel h3 {
+            grid-area: title;
+          }
+
+          .look-panel .mini-cube {
+            grid-area: cube;
+          }
+
+          .look-panel > p {
+            grid-area: copy;
+          }
+
+          .look-panel .daisy-case-list {
+            grid-area: cases;
+          }
         }
 
         .algorithm-tabs {
@@ -678,8 +785,8 @@ function TutorialMode({ onModeToggle }) {
 
         .algorithm-card {
           display: grid;
-          gap: ${spacing[3]};
-          padding: ${spacing[3]};
+          gap: ${spacing[2]};
+          padding: ${spacing[2]};
           border: 1px solid ${colors.border.light};
           border-radius: ${borderRadius.lg};
           background: ${colors.background.secondary};
@@ -720,23 +827,6 @@ function TutorialMode({ onModeToggle }) {
           overflow-wrap: anywhere;
         }
 
-        .check-panel {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: ${spacing[4]};
-          padding: ${spacing[4]};
-          border-top: 6px solid #16a34a;
-        }
-
-        .check-panel strong {
-          display: block;
-          margin-top: ${spacing[1]};
-          color: ${colors.neutral[900]};
-          font-size: ${typography.fontSize.lg};
-          line-height: ${typography.lineHeight.tight};
-        }
-
         .lesson-nav {
           display: flex;
           gap: ${spacing[2]};
@@ -754,11 +844,11 @@ function TutorialMode({ onModeToggle }) {
 
         .mini-cube {
           display: grid;
-          grid-template-columns: repeat(3, 42px);
-          grid-template-rows: repeat(3, 42px);
-          gap: 5px;
+          grid-template-columns: repeat(3, 34px);
+          grid-template-rows: repeat(3, 34px);
+          gap: 4px;
           width: max-content;
-          padding: ${spacing[3]};
+          padding: ${spacing[2]};
           border-radius: ${borderRadius.lg};
           background: #111827;
           box-shadow: ${shadows.md};
@@ -828,17 +918,16 @@ function TutorialMode({ onModeToggle }) {
         .picture-card-row {
           display: flex;
           flex-wrap: wrap;
-          gap: ${spacing[3]};
-          margin-top: ${spacing[1]};
+          gap: ${spacing[2]};
         }
 
         .picture-card {
           display: grid;
-          grid-template-rows: 24px 78px 20px;
+          grid-template-rows: 22px 58px 18px;
           justify-items: center;
           align-items: center;
-          width: 92px;
-          padding: ${spacing[2]};
+          width: 76px;
+          padding: ${spacing[1]};
           border: 1px solid ${colors.border.medium};
           border-radius: ${borderRadius.lg};
           background: ${colors.background.secondary};
@@ -852,8 +941,8 @@ function TutorialMode({ onModeToggle }) {
         .picture-card span {
           display: inline-grid;
           place-items: center;
-          width: 24px;
-          height: 24px;
+          width: 22px;
+          height: 22px;
           border-radius: 50%;
           background: #dbeafe;
           color: #1d4ed8;
@@ -862,8 +951,8 @@ function TutorialMode({ onModeToggle }) {
         }
 
         .picture-card img {
-          width: 74px;
-          height: 74px;
+          width: 56px;
+          height: 56px;
           object-fit: contain;
           border-radius: ${borderRadius.md};
           background: var(--move-image-bg);
@@ -908,8 +997,10 @@ function TutorialMode({ onModeToggle }) {
 
         .cube-demo-panel {
           display: grid;
-          gap: ${spacing[3]};
-          padding: ${spacing[4]};
+          grid-area: demo;
+          align-content: start;
+          gap: ${spacing[2]};
+          padding: ${spacing[3]};
           overflow: hidden;
         }
 
@@ -918,25 +1009,25 @@ function TutorialMode({ onModeToggle }) {
           align-items: center;
           justify-content: space-between;
           gap: ${spacing[3]};
-          padding-bottom: ${spacing[2]};
+          padding-bottom: ${spacing[1]};
           border-bottom: 1px solid ${colors.border.light};
         }
 
         .cube-demo-heading strong {
           color: ${colors.neutral[900]};
-          font-size: ${typography.fontSize.lg};
+          font-size: ${typography.fontSize.base};
           line-height: ${typography.lineHeight.tight};
         }
 
         .cube-demo-panel > div:not(.cube-demo-heading):not(.cube-demo-loading) {
-          max-width: 720px;
+          max-width: 100%;
           margin: 0 auto;
         }
 
         .cube-demo-loading {
           display: grid;
           place-items: center;
-          min-height: 280px;
+          min-height: 220px;
           color: ${colors.neutral[600]};
           font-size: ${typography.fontSize.sm};
           font-weight: ${typography.fontWeight.bold};
@@ -958,6 +1049,25 @@ function TutorialMode({ onModeToggle }) {
           .lesson-header,
           .lesson-grid {
             grid-template-columns: 1fr;
+          }
+
+          .lesson-stage {
+            grid-template-columns: 1fr;
+            grid-template-areas: none;
+            gap: ${spacing[5]};
+            padding: ${spacing[5]};
+          }
+
+          .lesson-header,
+          .look-panel,
+          .turn-panel,
+          .cube-demo-panel {
+            grid-area: auto;
+          }
+
+          .lesson-grid {
+            display: grid;
+            gap: ${spacing[4]};
           }
 
           .lesson-stage {
@@ -987,6 +1097,11 @@ function TutorialMode({ onModeToggle }) {
             padding: 0 ${spacing[3]} ${spacing[8]};
           }
 
+          .lesson-header-actions {
+            display: grid;
+            gap: ${spacing[3]};
+          }
+
           .lesson-stage {
             padding: ${spacing[4]};
           }
@@ -1005,10 +1120,6 @@ function TutorialMode({ onModeToggle }) {
 
           .lesson-panel h3 {
             font-size: ${typography.fontSize.xl};
-          }
-
-          .check-panel {
-            display: grid;
           }
 
           .lesson-nav {

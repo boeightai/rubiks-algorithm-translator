@@ -92,7 +92,7 @@ const AlgorithmDetails = ({
 const detailStyles = `
   .algorithm-detail-minimal {
     display: grid;
-    gap: ${spacing[4]};
+    gap: ${spacing[3]};
   }
 
   .algorithm-detail-header {
@@ -100,14 +100,14 @@ const detailStyles = `
     align-items: center;
     justify-content: space-between;
     gap: ${spacing[3]};
-    padding-bottom: ${spacing[3]};
+    padding-bottom: ${spacing[2]};
     border-bottom: 1px solid ${colors.border.light};
   }
 
   .algorithm-detail-header h2 {
     margin: 0;
     color: ${colors.neutral[900]};
-    font-size: ${typography.fontSize['2xl']};
+    font-size: ${typography.fontSize.xl};
     line-height: ${typography.lineHeight.tight};
     letter-spacing: 0;
   }
@@ -131,7 +131,7 @@ const detailStyles = `
     gap: ${spacing[2]};
     justify-items: center;
     margin: 0;
-    padding: ${spacing[3]};
+    padding: ${spacing[2]};
     border: 1px solid ${colors.border.light};
     border-radius: ${borderRadius.lg};
     background: ${colors.background.secondary};
@@ -139,8 +139,8 @@ const detailStyles = `
   }
 
   .algorithm-detail-images img {
-    width: 132px;
-    height: 132px;
+    width: 112px;
+    height: 112px;
     object-fit: contain;
     border: 1px solid var(--move-image-border-color);
     border-radius: ${borderRadius.md};
@@ -158,7 +158,7 @@ const detailStyles = `
   .algorithm-detail-description {
     margin: 0;
     color: ${colors.neutral[700]};
-    font-size: ${typography.fontSize.base};
+    font-size: ${typography.fontSize.sm};
     line-height: ${typography.lineHeight.normal};
   }
 

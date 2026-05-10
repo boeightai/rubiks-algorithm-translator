@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import algorithmsData from '../data/algorithms.json'
 
 // Validate algorithm data structure
@@ -41,7 +41,9 @@ const algorithms = algorithmsData.filter(alg => {
 })
 
 export function useAlgorithms(favoriteIds = []) {
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState(
+    () => algorithms.find(alg => alg.difficulty === 'beginner') || algorithms[0] || null
+  )
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedDifficulty, setSelectedDifficulty] = useState('beginner')
@@ -117,6 +119,22 @@ export function useAlgorithms(favoriteIds = []) {
       isSelected: selectedAlgorithm && selectedAlgorithm.id === alg.id
     }))
   }, [normalizedSearchTerm, selectedCategory, selectedDifficulty, showFavoritesOnly, favoriteIds, selectedAlgorithm])
+
+  useEffect(() => {
+    if (filteredAlgorithms.length === 0) {
+      if (selectedAlgorithm !== null) {
+        setSelectedAlgorithm(null)
+      }
+      return
+    }
+
+    const selectionStillVisible = selectedAlgorithm &&
+      filteredAlgorithms.some(alg => alg.id === selectedAlgorithm.id)
+
+    if (!selectionStillVisible) {
+      setSelectedAlgorithm(filteredAlgorithms[0])
+    }
+  }, [filteredAlgorithms, selectedAlgorithm])
 
   // Memoized setters to prevent unnecessary re-renders
   const memoizedSetSearchTerm = useCallback((value) => {

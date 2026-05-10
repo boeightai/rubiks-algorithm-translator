@@ -74,7 +74,7 @@ const sequenceStyles = `
   .visual-sequence-minimal {
     display: grid;
     gap: ${spacing[4]};
-    padding: ${spacing[4]};
+    padding: ${spacing[3]};
     border: 1px solid ${colors.border.light};
     border-radius: ${borderRadius.lg};
     background: ${colors.background.primary};
@@ -102,7 +102,7 @@ const sequenceStyles = `
     align-items: center;
     justify-content: space-between;
     gap: ${spacing[3]};
-    padding-bottom: ${spacing[3]};
+    padding-bottom: ${spacing[2]};
     border-bottom: 1px solid ${colors.border.light};
   }
 
@@ -120,13 +120,13 @@ const sequenceStyles = `
 
   .visual-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
-    gap: ${spacing[3]};
+    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+    gap: ${spacing[2]};
   }
 
   .visual-card {
     display: grid;
-    grid-template-rows: 24px 88px;
+    grid-template-rows: 22px 70px;
     justify-items: center;
     align-items: center;
     min-width: 0;
@@ -144,8 +144,8 @@ const sequenceStyles = `
   .visual-card span {
     display: inline-grid;
     place-items: center;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: #dbeafe;
     color: #1d4ed8;
@@ -154,8 +154,8 @@ const sequenceStyles = `
   }
 
   .visual-card img {
-    width: 82px;
-    height: 82px;
+    width: 66px;
+    height: 66px;
     object-fit: contain;
     border-radius: ${borderRadius.md};
     background: var(--move-image-bg);

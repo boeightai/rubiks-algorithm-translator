@@ -112,7 +112,7 @@ const MobileTabLayout = ({
       style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: spacing[6],
+        padding: spacing[4],
         fontFamily: typography.fontFamily.primary,
         background: colors.background.secondary,
         minHeight: '100vh',
@@ -230,16 +230,16 @@ const MobileTabLayout = ({
             style={{
               flex: '1 1 400px',
               minWidth: '350px',
-              maxWidth: '450px',
+              maxWidth: '410px',
               background: colors.background.primary,
-              borderRadius: borderRadius['2xl'],
+              borderRadius: borderRadius.xl,
               boxShadow: shadows.lg,
               border: `1px solid ${colors.border.light}`,
-              padding: spacing[6],
-              marginBottom: spacing[6],
+              padding: spacing[4],
+              marginBottom: spacing[4],
               position: 'sticky',
-              top: spacing[6],
-              maxHeight: 'calc(100vh - 120px)',
+              top: spacing[4],
+              maxHeight: 'calc(100vh - 104px)',
               overflow: 'hidden',
             }}
           >
@@ -253,14 +253,14 @@ const MobileTabLayout = ({
               flex: '2 1 600px',
               minWidth: '400px',
               background: colors.background.primary,
-              borderRadius: borderRadius['2xl'],
+              borderRadius: borderRadius.xl,
               boxShadow: shadows.lg,
               border: `1px solid ${colors.border.light}`,
-              padding: spacing[6],
-              marginBottom: spacing[6],
+              padding: spacing[4],
+              marginBottom: spacing[4],
               display: 'flex',
               flexDirection: 'column',
-              minHeight: '600px',
+              minHeight: 'auto',
             }}
           >
             {visualSequenceContent}
@@ -336,13 +336,13 @@ const MobileTabLayout = ({
         @media (min-width: 769px) {
           .container-flex {
             flex-direction: row !important;
-            gap: 24px !important;
+            gap: 20px !important;
           }
           
           .left-column {
             position: sticky !important;
-            max-width: 450px !important;
-            max-height: calc(100vh - 120px) !important;
+            max-width: 410px !important;
+            max-height: calc(100vh - 104px) !important;
             flex: 1 1 400px !important;
             min-width: 350px !important;
           }

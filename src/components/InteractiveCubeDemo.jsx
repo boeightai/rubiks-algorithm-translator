@@ -757,7 +757,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   return (
     <div style={{
       width: '100%',
-      maxWidth: isMobile ? '100%' : isTablet ? '600px' : '500px',
+      maxWidth: isMobile ? '100%' : isTablet ? '600px' : '420px',
       margin: '0 auto',
       backgroundColor: colors.background.secondary,
       borderRadius: borderRadius.xl,
@@ -768,7 +768,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
       <div style={{
         position: 'relative',
         aspectRatio: isMobile ? '4 / 3' : isTablet ? '1 / 1' : '16 / 9',
-        minHeight: isMobile ? '0' : isTablet ? '300px' : '280px',
+        minHeight: isMobile ? '0' : isTablet ? '300px' : '180px',
         backgroundColor: colors.background.primary,
       }}>
         <div
@@ -794,10 +794,10 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
           bottom: isCompact ? spacing[3] : spacing[4],
           display: 'flex',
           alignItems: 'center',
-          justifyContent: isCompact ? 'center' : 'space-between',
-          gap: spacing[3],
+          justifyContent: 'center',
+          gap: spacing[2],
           flexWrap: 'wrap',
-          flexDirection: isCompact ? 'column' : 'row',
+          flexDirection: 'column',
           pointerEvents: 'none',
         }}>
           <div style={{
@@ -809,8 +809,8 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
             color: colors.neutral[900],
             fontSize: typography.fontSize.sm,
             fontWeight: typography.fontWeight.semibold,
-            minWidth: isCompact ? '0' : '132px',
-            textAlign: isCompact ? 'center' : 'left',
+            minWidth: 0,
+            textAlign: 'center',
           }}>
             {currentMove ? `Move ${activeMoveIndex + 1} of ${visualMoves.length}: ${currentMove}` : hasCompleted ? 'Sequence complete' : isStarting ? 'Starting...' : 'Ready'}
           </div>

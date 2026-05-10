@@ -121,7 +121,7 @@ const listStyles = `
   .algorithm-list-minimal {
     display: grid;
     gap: ${spacing[2]};
-    max-height: calc(100vh - 400px);
+    max-height: calc(100vh - 344px);
     overflow-y: auto;
     padding-right: ${spacing[2]};
     scrollbar-width: thin;
@@ -147,7 +147,7 @@ const listStyles = `
 
   .algorithm-row-button {
     display: grid;
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 48px minmax(0, 1fr);
     align-items: center;
     gap: ${spacing[3]};
     min-width: 0;
@@ -168,8 +168,8 @@ const listStyles = `
 
   .algorithm-row-button img,
   .algorithm-row-placeholder {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     border: 1px solid var(--move-image-border-color);
     border-radius: ${borderRadius.md};
     background: var(--move-image-bg);

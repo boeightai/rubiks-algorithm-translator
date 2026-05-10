@@ -73,11 +73,11 @@ const SearchFilters = ({
 
   return (
     <div style={{
-      marginBottom: spacing[6],
+      marginBottom: spacing[4],
     }}>
-      <div style={{ marginBottom: spacing[5] }}>
+      <div style={{ marginBottom: spacing[3] }}>
         <h2 style={{
-          fontSize: typography.fontSize['2xl'],
+          fontSize: typography.fontSize.xl,
           lineHeight: typography.lineHeight.tight,
           fontWeight: typography.fontWeight.bold,
           color: colors.neutral[900],
@@ -97,7 +97,7 @@ const SearchFilters = ({
       {/* Learning Path */}
       {selectedDifficulty && setSelectedDifficulty && (
         <div style={{
-          marginBottom: spacing[4],
+          marginBottom: spacing[3],
         }}>
           <div style={{
             display: 'flex',
@@ -176,7 +176,7 @@ const SearchFilters = ({
         style={{
           display: 'flex',
           gap: spacing[3],
-          marginBottom: spacing[4],
+          marginBottom: spacing[3],
           alignItems: 'center',
           flexWrap: 'wrap',
         }}
@@ -209,7 +209,7 @@ const SearchFilters = ({
             aria-label="Search moves by name, description, nickname, or letter code"
             style={{
               width: '100%',
-              padding: `${spacing[3]} ${spacing[4]} ${spacing[3]} ${spacing[10]}`,
+              padding: `${spacing[2]} ${spacing[4]} ${spacing[2]} ${spacing[10]}`,
               border: `1px solid ${colors.border.medium}`,
               borderRadius: borderRadius.xl,
               fontSize: '16px', // Prevent zoom on iOS
@@ -243,7 +243,7 @@ const SearchFilters = ({
             aria-label="Filter by move category"
             style={{
               width: '100%',
-              padding: `${spacing[3]} ${spacing[4]}`,
+              padding: `${spacing[2]} ${spacing[4]}`,
               border: `1px solid ${colors.border.medium}`,
               borderRadius: borderRadius.xl,
               fontSize: '16px', // Prevent zoom on iOS
@@ -284,7 +284,7 @@ const SearchFilters = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          marginBottom: spacing[4],
+          marginBottom: spacing[3],
           gap: spacing[3],
         }}
       >
@@ -295,7 +295,7 @@ const SearchFilters = ({
             aria-pressed={showFavoritesOnly}
             aria-label={showFavoritesOnly ? 'Show all moves' : 'Show only favorites'}
             style={{
-              padding: `${spacing[3]} ${spacing[4]}`,
+              padding: `${spacing[2]} ${spacing[4]}`,
               border: showFavoritesOnly ? `2px solid ${colors.warning[500]}` : `1px solid ${colors.border.medium}`,
               borderRadius: '12px',
               background: showFavoritesOnly ? colors.warning[50] : colors.background.primary,

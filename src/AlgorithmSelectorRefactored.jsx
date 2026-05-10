@@ -88,25 +88,42 @@ function AlgorithmSelectorRefactored({ onModeToggle, currentMode }) {
   )
 
   const visualSequenceContent = (
-    <>
-              <AlgorithmDetails
-          selectedAlgorithm={selectedAlgorithm}
-          isFavorite={isFavorite}
-          onToggleFavorite={toggleFavorite}
-          tutorialImageExists={tutorialImageExists}
-          tutorialImageSrc={tutorialImageSrc}
-          patternImageExists={patternImageExists}
-          patternImageSrc={patternImageSrc}
-          notation={selectedAlgorithm?.notation}
-        />
+    <div className="explorer-detail-grid">
+      <AlgorithmDetails
+        selectedAlgorithm={selectedAlgorithm}
+        isFavorite={isFavorite}
+        onToggleFavorite={toggleFavorite}
+        tutorialImageExists={tutorialImageExists}
+        tutorialImageSrc={tutorialImageSrc}
+        patternImageExists={patternImageExists}
+        patternImageSrc={patternImageSrc}
+        notation={selectedAlgorithm?.notation}
+      />
       
-      {/* Visual Sequence below details and image */}
       {selectedAlgorithm && (
-        <div style={{ marginTop: '32px' }}>
+        <div className="explorer-sequence-panel">
           <VisualSequence notation={selectedAlgorithm.notation} />
         </div>
       )}
-    </>
+
+      <style>{`
+        .explorer-detail-grid {
+          display: grid;
+          gap: 16px;
+        }
+
+        @media (min-width: 1100px) {
+          .explorer-detail-grid {
+            grid-template-columns: minmax(220px, 0.62fr) minmax(360px, 1fr);
+            align-items: start;
+          }
+
+          .explorer-sequence-panel {
+            min-width: 0;
+          }
+        }
+      `}</style>
+    </div>
   )
 
   return (
