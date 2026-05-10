@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useEffect, useState } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import { useMemo, useCallback, useState, useEffect } from 'react'
 
 const AlgorithmList = ({
   algorithms,
@@ -27,44 +27,18 @@ const AlgorithmList = ({
   isFavorite,
   onToggleFavorite
 }) => {
-  // Track which algorithms have loadable pattern images
   const [patternImageStatus, setPatternImageStatus] = useState({})
 
-  // Memoized Enhanced pattern image component to prevent re-renders
-  const EnhancedPatternImage = useCallback(({ algorithmId, algorithmName }) => {
-    const imageSrc = `/images/patterns/${algorithmId}-pattern.png`
-    
-    return (
-      <img
-        src={imageSrc}
-        alt={`${algorithmName} pattern`}
-        className="responsive-pattern-image"
-        loading="lazy"
-        style={{
-          width: '70px',
-          height: '70px',
-            border: `1px solid var(--move-image-border-color)`,
-          borderRadius: borderRadius.base,
-            background: 'var(--move-image-bg)',
-            padding: 'var(--move-image-padding)',
-          maxWidth: '100%',
-          display: 'block',
-        }}
-      />
-    )
-  }, [])
-
-  // Pre-check pattern images for all algorithms with proper cleanup
   useEffect(() => {
     const images = []
     const uncheckedAlgorithms = algorithms.filter(
       algorithm => patternImageStatus[algorithm.id] === undefined
     )
-    
+
     uncheckedAlgorithms.forEach(algorithm => {
       const img = new Image()
       images.push(img)
-      
+
       img.onload = () => {
         setPatternImageStatus(prev => ({ ...prev, [algorithm.id]: true }))
       }
@@ -73,8 +47,7 @@ const AlgorithmList = ({
       }
       img.src = `/images/patterns/${algorithm.id}-pattern.png`
     })
-    
-    // Cleanup function to prevent memory leaks
+
     return () => {
       images.forEach(img => {
         img.onload = null
@@ -84,400 +57,175 @@ const AlgorithmList = ({
     }
   }, [algorithms, patternImageStatus])
 
-  // Memoized algorithm list to prevent unnecessary re-renders
-  const algorithmItems = useMemo(() => {
-    return algorithms.map(algorithm => {
-      const isSelected = selectedAlgorithm?.id === algorithm.id
-      const isFav = isFavorite(algorithm.id)
-      
-      return {
-        ...algorithm,
-        isSelected,
-        isFav
-      }
-    })
-  }, [algorithms, selectedAlgorithm, isFavorite])
-
-  // Memoized empty state to prevent re-renders
-  const emptyState = useMemo(() => (
-    <div style={{
-      textAlign: 'center',
-      padding: spacing[8],
-      color: colors.neutral[500],
-    }}>
-      <div style={{
-        fontSize: typography.fontSize.xl,
-        marginBottom: spacing[2],
-        color: colors.neutral[400],
-      }}>
-        🔍
+  if (algorithms.length === 0) {
+    return (
+      <div className="algorithm-list-empty">
+        <strong>No moves found</strong>
+        <span>Try a different search.</span>
+        <style>{listStyles}</style>
       </div>
-      <div style={{
-        fontSize: typography.fontSize.lg,
-        fontWeight: typography.fontWeight.medium,
-        marginBottom: spacing[1],
-      }}>
-        No moves found
-      </div>
-      <div style={{
-        fontSize: typography.fontSize.sm,
-        color: colors.neutral[500],
-      }}>
-        Try adjusting your search or filters.
-      </div>
-    </div>
-  ), [])
+    )
+  }
 
   return (
-    <div 
-      className="responsive-algorithm-list"
-      style={{ 
-        maxHeight: 'calc(100vh - 400px)', 
-        overflowY: 'auto', 
-        paddingRight: spacing[4],
-        scrollbarWidth: 'thin',
-        scrollbarColor: `${colors.neutral[300]} transparent`,
-      }}
-    >
-      {algorithms.length === 0 ? emptyState : (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: spacing[3],
-        }}>
-          {algorithmItems.map(algorithm => {
-            return (
-              <div
-                key={algorithm.id}
-                className={`algorithm-item ${algorithm.isSelected ? 'selected' : ''}`}
-                style={{
-                  background: algorithm.isSelected ? colors.primary[50] : colors.background.primary,
-                  border: algorithm.isSelected ? `2px solid ${colors.primary[500]}` : `1px solid ${colors.border.light}`,
-                  borderRadius: borderRadius.xl,
-                  padding: spacing[4],
-                  cursor: 'default',
-                  transition: 'border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transform: 'translateZ(0)', // Force hardware acceleration
-                  willChange: 'border-color, box-shadow, background-color', // Optimize for animations
-                  boxShadow: algorithm.isSelected ? shadows.lg : shadows.sm,
-                  borderColor: algorithm.isSelected ? colors.primary[500] : colors.border.light,
-                  outline: 'none',
-                  minHeight: '44px',
-                }}
-              >
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  gap: spacing[3],
-                }}>
-                  <button
-                    type="button"
-                    onClick={() => onSelectAlgorithm(algorithm)}
-                    aria-label={`Select ${algorithm.name} move`}
-                    aria-describedby={`algorithm-${algorithm.id}-description`}
-                    className="algorithm-select-button"
-                    style={{
-                      flex: 1,
-                      minWidth: 0,
-                      padding: 0,
-                      border: 'none',
-                      background: 'transparent',
-                      color: 'inherit',
-                      font: 'inherit',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {/* Header */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: spacing[2],
-                      marginBottom: spacing[2],
-                    }}>
-                      <h3 style={{
-                        fontSize: typography.fontSize.lg,
-                        fontWeight: typography.fontWeight.semibold,
-                        color: colors.neutral[900],
-                        margin: 0,
-                        lineHeight: typography.lineHeight.tight,
-                      }}>
-                        {algorithm.name}
-                      </h3>
-                    </div>
+    <div className="responsive-algorithm-list algorithm-list-minimal">
+      {algorithms.map(algorithm => {
+        const isSelected = selectedAlgorithm?.id === algorithm.id
+        const hasPattern = patternImageStatus[algorithm.id]
 
-                    {/* Category */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexWrap: 'wrap',
-                      gap: spacing[2],
-                      marginBottom: spacing[2],
-                    }}>
-                      <span style={{
-                        fontSize: typography.fontSize.sm,
-                        color: colors.neutral[600],
-                        fontWeight: typography.fontWeight.medium,
-                      }}>
-                        {algorithm.category}
-                      </span>
-                      {patternImageStatus[algorithm.id] !== undefined && (
-                        <span style={{
-                          fontSize: typography.fontSize.xs,
-                          color: patternImageStatus[algorithm.id] ? colors.success[700] : colors.neutral[500],
-                          background: patternImageStatus[algorithm.id] ? colors.success[50] : colors.neutral[100],
-                          border: `1px solid ${patternImageStatus[algorithm.id] ? colors.success[300] : colors.border.light}`,
-                          borderRadius: borderRadius.full,
-                          padding: `${spacing[1]} ${spacing[2]}`,
-                          fontWeight: typography.fontWeight.medium,
-                          whiteSpace: 'nowrap',
-                        }}>
-                          {patternImageStatus[algorithm.id] ? 'Picture pattern' : 'Picture moves'}
-                        </span>
-                      )}
-                    </div>
+        return (
+          <div
+            key={algorithm.id}
+            className={`algorithm-row ${isSelected ? 'algorithm-row-active' : ''}`}
+          >
+            <button
+              type="button"
+              className="algorithm-row-button"
+              onClick={() => onSelectAlgorithm(algorithm)}
+              aria-label={`Select ${algorithm.name}`}
+            >
+              {hasPattern ? (
+                <img
+                  src={`/images/patterns/${algorithm.id}-pattern.png`}
+                  alt=""
+                  loading="lazy"
+                  draggable="false"
+                />
+              ) : (
+                <span className="algorithm-row-placeholder">{algorithm.notation.split(/\s+/).filter(Boolean).length}</span>
+              )}
+              <span className="algorithm-row-copy">
+                <strong>{algorithm.name}</strong>
+                <span>{algorithm.category}</span>
+              </span>
+            </button>
 
-                    {/* Description */}
-                    <div 
-                      id={`algorithm-${algorithm.id}-description`}
-                      style={{
-                        fontSize: typography.fontSize.sm,
-                        color: colors.neutral[700],
-                        marginBottom: spacing[2],
-                        lineHeight: typography.lineHeight.normal,
-                      }}
-                    >
-                      {algorithm.description}
-                    </div>
+            <StarButton
+              isFavorite={isFavorite(algorithm.id)}
+              onToggle={(event) => {
+                event.stopPropagation()
+                onToggleFavorite(algorithm.id)
+              }}
+              size={20}
+            />
+          </div>
+        )
+      })}
 
-                    {/* Nicknames */}
-                    {algorithm.nicknames && algorithm.nicknames.length > 0 && (
-                      <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: colors.primary[600],
-                        fontStyle: 'italic',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: spacing[1],
-                        alignItems: 'center',
-                        marginBottom: spacing[2],
-                      }}>
-                        <span style={{ fontWeight: typography.fontWeight.medium }}>Other names:</span>
-                        {algorithm.nicknames.map((nickname, index) => (
-                          <span key={index} style={{
-                            background: colors.primary[50],
-                            padding: `${spacing[1]} ${spacing[2]}`,
-                            borderRadius: borderRadius.base,
-                            fontSize: typography.fontSize.xs,
-                          }}>
-                            {nickname}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Pattern Image and Notation preview */}
-                    <div 
-                      className="responsive-pattern-section"
-                      style={{
-                        marginTop: spacing[3],
-                        padding: spacing[3],
-                        background: colors.neutral[50],
-                        borderRadius: borderRadius.lg,
-                        border: `1px solid ${colors.border.light}`,
-                        minHeight: '120px',
-                      }}
-                    >
-                      <div 
-                        className="responsive-pattern-layout"
-                        style={{
-                          display: 'flex',
-                          gap: spacing[4],
-                          alignItems: 'center',
-                          justifyContent: patternImageStatus[algorithm.id] ? 'space-between' : 'center',
-                        }}
-                      >
-                        {/* Only show Pattern Image Section if image exists */}
-                        {patternImageStatus[algorithm.id] && (
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: spacing[2],
-                            flex: '0 0 auto',
-                          }}>
-                            <div style={{
-                              fontSize: typography.fontSize.xs,
-                              color: colors.neutral[500],
-                              fontWeight: typography.fontWeight.medium,
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.05em',
-                            }}>
-                              Pattern
-                            </div>
-                            <EnhancedPatternImage 
-                              algorithmId={algorithm.id}
-                              algorithmName={algorithm.name}
-                            />
-                          </div>
-                        )}
-                        
-                        {/* Notation Section - always shown, centered when no pattern */}
-                        <div style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: spacing[2],
-                          flex: patternImageStatus[algorithm.id] ? '1 1 auto' : '0 0 auto',
-                          width: patternImageStatus[algorithm.id] ? 'calc(100% - 90px)' : '100%',
-                          minWidth: 0, // Important for flex children to respect width constraints
-                        }}>
-                          <div style={{
-                            fontSize: typography.fontSize.xs,
-                            color: colors.neutral[500],
-                            fontWeight: typography.fontWeight.medium,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
-                          }}>
-                            Letter Code
-                          </div>
-                          <div style={{
-                            fontSize: typography.fontSize.sm,
-                            fontFamily: typography.fontFamily.mono,
-                            color: colors.neutral[800],
-                            fontWeight: typography.fontWeight.medium,
-                            textAlign: 'center',
-                            lineHeight: typography.lineHeight.normal,
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            width: '100%',
-                            padding: '0 8px',
-                            boxSizing: 'border-box',
-                          }}>
-                            {algorithm.notation}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Star button */}
-                  <div style={{
-                    flexShrink: 0,
-                    marginTop: spacing[1],
-                    display: 'flex',
-                    gap: spacing[2],
-                    alignItems: 'center',
-                  }}>
-                    <StarButton
-                      isFavorite={algorithm.isFav}
-                      onToggle={(e) => {
-                        e.stopPropagation()
-                        onToggleFavorite(algorithm.id)
-                      }}
-                      size={20}
-                    />
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Mobile-responsive styles */}
-      <style>{`
-        /* CSS-only hover effects to prevent JavaScript state glitching */
-        .algorithm-item {
-          transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-        }
-        
-        .algorithm-item:hover {
-          background-color: var(--neutral-50) !important;
-          border-color: var(--border-medium) !important;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-        }
-        
-        .algorithm-item.selected:hover {
-          background-color: var(--primary-100) !important;
-          border-color: var(--primary-600) !important;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-        }
-
-        .algorithm-select-button:focus-visible {
-          outline: 3px solid var(--primary-200);
-          outline-offset: 4px;
-          border-radius: ${borderRadius.lg};
-        }
-        
-        @media (max-width: 768px) {
-          .responsive-algorithm-list {
-            max-height: none !important;
-            padding-right: 0 !important;
-            overflow-y: visible !important;
-          }
-          
-          .responsive-pattern-layout {
-            flex-direction: column !important;
-            gap: 16px !important;
-            align-items: center !important;
-          }
-          
-          .responsive-pattern-image {
-            width: 60px !important;
-            height: 60px !important;
-          }
-          
-          .responsive-pattern-section {
-            min-height: auto !important;
-            padding: 16px !important;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          .responsive-pattern-layout {
-            gap: 12px !important;
-          }
-          
-          .responsive-pattern-image {
-            width: 50px !important;
-            height: 50px !important;
-          }
-          
-          .responsive-pattern-section {
-            padding: 12px !important;
-          }
-        }
-        
-        @media (max-width: 360px) {
-          .responsive-pattern-image {
-            width: 45px !important;
-            height: 45px !important;
-          }
-          
-          .responsive-pattern-section {
-            padding: 8px !important;
-          }
-        }
-        
-        /* Landscape orientation adjustments */
-        @media (max-width: 768px) and (orientation: landscape) {
-          .responsive-pattern-layout {
-            flex-direction: row !important;
-            gap: 12px !important;
-          }
-          
-          .responsive-pattern-image {
-            width: 55px !important;
-            height: 55px !important;
-          }
-        }
-      `}</style>
+      <style>{listStyles}</style>
     </div>
   )
 }
+
+const listStyles = `
+  .algorithm-list-minimal {
+    display: grid;
+    gap: ${spacing[2]};
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+    padding-right: ${spacing[2]};
+    scrollbar-width: thin;
+    scrollbar-color: ${colors.neutral[300]} transparent;
+  }
+
+  .algorithm-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 32px;
+    align-items: center;
+    gap: ${spacing[2]};
+    padding: ${spacing[2]};
+    border: 1px solid ${colors.border.light};
+    border-radius: ${borderRadius.lg};
+    background: ${colors.background.primary};
+    box-shadow: ${shadows.sm};
+  }
+
+  .algorithm-row-active {
+    border-color: ${colors.primary[500]};
+    background: ${colors.primary[50]};
+  }
+
+  .algorithm-row-button {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    align-items: center;
+    gap: ${spacing[3]};
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .algorithm-row-button:focus-visible {
+    outline: 3px solid ${colors.primary[200]};
+    outline-offset: 3px;
+    border-radius: ${borderRadius.md};
+  }
+
+  .algorithm-row-button img,
+  .algorithm-row-placeholder {
+    width: 56px;
+    height: 56px;
+    border: 1px solid var(--move-image-border-color);
+    border-radius: ${borderRadius.md};
+    background: var(--move-image-bg);
+    padding: var(--move-image-padding);
+    object-fit: contain;
+  }
+
+  .algorithm-row-placeholder {
+    display: inline-grid;
+    place-items: center;
+    color: ${colors.neutral[700]};
+    font-family: ${typography.fontFamily.mono};
+    font-weight: ${typography.fontWeight.bold};
+  }
+
+  .algorithm-row-copy {
+    display: grid;
+    gap: ${spacing[1]};
+    min-width: 0;
+  }
+
+  .algorithm-row-copy strong {
+    overflow: hidden;
+    color: ${colors.neutral[900]};
+    font-size: ${typography.fontSize.base};
+    line-height: ${typography.lineHeight.tight};
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .algorithm-row-copy span {
+    color: ${colors.neutral[600]};
+    font-size: ${typography.fontSize.sm};
+  }
+
+  .algorithm-list-empty {
+    display: grid;
+    place-items: center;
+    gap: ${spacing[1]};
+    min-height: 180px;
+    color: ${colors.neutral[600]};
+    text-align: center;
+  }
+
+  .algorithm-list-empty strong {
+    color: ${colors.neutral[900]};
+    font-size: ${typography.fontSize.lg};
+  }
+
+  @media (max-width: 768px) {
+    .algorithm-list-minimal {
+      max-height: none;
+      overflow-y: visible;
+      padding-right: 0;
+    }
+  }
+`
 
 export default AlgorithmList

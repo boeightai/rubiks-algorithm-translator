@@ -16,10 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { colors, spacing, typography, borderRadius, transitions, shadows } from '../styles/designSystem'
+import { colors, spacing, typography, borderRadius, shadows } from '../styles/designSystem'
 import StarButton from './ui/StarButton'
-import ImageModal from './ui/ImageModal'
-import { useState } from 'react'
 
 const AlgorithmDetails = ({
   selectedAlgorithm,
@@ -29,605 +27,173 @@ const AlgorithmDetails = ({
   tutorialImageSrc,
   patternImageExists,
   patternImageSrc,
-  notation
 }) => {
-  const [isImageZoomed, setIsImageZoomed] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isButtonHovered, setIsButtonHovered] = useState(false)
-  const [isImageHovered, setIsImageHovered] = useState(false)
-
-  // Detect trigger patterns in the notation
-  const detectTriggerPatterns = (notation) => {
-    if (!notation || typeof notation !== 'string') return { hasRightTrigger: false, hasLeftTrigger: false }
-    
-    const moves = notation.split(' ').filter(move => move.trim() !== '')
-    const rightTriggerPattern = ['R', 'U', "R'", "U'"]
-    const leftTriggerPattern = ["L'", "U'", 'L', 'U']
-    
-    const arraysEqual = (a, b) => a.length === b.length && a.every((v, i) => v === b[i])
-    
-    let hasRightTrigger = false
-    let hasLeftTrigger = false
-    
-    for (let i = 0; i <= moves.length - 4; i++) {
-      const sequence = moves.slice(i, i + 4)
-      if (arraysEqual(sequence, rightTriggerPattern)) {
-        hasRightTrigger = true
-      }
-      if (arraysEqual(sequence, leftTriggerPattern)) {
-        hasLeftTrigger = true
-      }
-    }
-    
-    return { hasRightTrigger, hasLeftTrigger }
-  }
-
-  const { hasRightTrigger, hasLeftTrigger } = detectTriggerPatterns(notation)
-
-  // Simplified tutorial image component
-  const TutorialImage = ({ imageSrc, algorithmName, isZoomed }) => {
-    if (!imageSrc) {
-      return (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: spacing[8],
-          color: colors.neutral[500],
-          fontSize: typography.fontSize.sm,
-        }}>
-          No tutorial image available
-        </div>
-      )
-    }
-
-    return (
-      <img
-        src={imageSrc}
-        alt={`${algorithmName} tutorial`}
-        className="responsive-tutorial-image"
-        style={{
-          maxWidth: isZoomed ? '100%' : '80%',
-          maxHeight: isZoomed ? '600px' : '300px',
-          width: 'auto',
-          height: 'auto',
-          borderRadius: borderRadius.lg,
-          boxShadow: shadows.md,
-          border: `1px solid ${colors.border.light}`,
-          background: colors.background.primary,
-          transition: transitions.normal,
-          transform: isZoomed ? 'scale(1.02)' : 'scale(1)',
-        }}
-      />
-    )
-  }
-
-  // Check if this algorithm should show the "Sticker Image" link instead of direct image
-  const shouldShowStickerLink = selectedAlgorithm && (
-    selectedAlgorithm.id === '2look-oll-4' || 
-    selectedAlgorithm.id === 'oll-case-24'
-  )
-
   if (!selectedAlgorithm) {
     return (
-      <div style={{
-        textAlign: 'center',
-        padding: spacing[12],
-        color: colors.neutral[500],
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: spacing[4],
-      }}>
-        <div style={{
-          width: '240px',
-          height: '240px',
-          background: colors.neutral[100],
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}>
-          <img
-            src="/images/icons/cube-mascot.png"
-            alt="Cartoon cube character"
-            style={{
-              width: '240px',
-              height: '240px',
-              objectFit: 'cover',
-              backgroundColor: 'var(--move-image-bg)',
-              padding: 'var(--move-image-padding)',
-            }}
-          />
-        </div>
-        <div>
-          <div style={{
-            fontSize: typography.fontSize.xl,
-            fontWeight: typography.fontWeight.semibold,
-            marginBottom: spacing[2],
-            color: colors.neutral[700],
-          }}>
-            Select a Move
-          </div>
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.neutral[500],
-            lineHeight: typography.lineHeight.normal,
-          }}>
-            Choose a move from the library to see Bo and Hailey's picture steps.
-          </div>
-        </div>
+      <div className="algorithm-detail-empty">
+        <img src="/images/icons/cube-mascot.png" alt="" />
+        <strong>Select a move</strong>
+        <span>Picture steps will appear here.</span>
+        <style>{detailStyles}</style>
       </div>
     )
   }
 
+  const patternImages = [
+    ...(patternImageExists ? [{ src: patternImageSrc, label: 'Pattern' }] : []),
+    ...(selectedAlgorithm.additionalPatterns || []).map((pattern) => ({
+      src: `/images/patterns/${pattern.filename}`,
+      label: pattern.label || 'Pattern',
+    })),
+    ...(tutorialImageExists ? [{ src: tutorialImageSrc, label: 'Guide' }] : []),
+  ]
+
   return (
-    <div 
-      className="responsive-algorithm-details"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spacing[6],
-      }}
-    >
-      {/* Header Section */}
-      <div style={{
-        paddingBottom: spacing[4],
-        borderBottom: `1px solid ${colors.border.light}`,
-      }}>
-        <div 
-          className="responsive-header-layout"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: spacing[3],
-            marginBottom: spacing[3],
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], flex: '1 1 auto' }}>
-            <h2 style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
-              color: colors.neutral[900],
-              margin: 0,
-              lineHeight: typography.lineHeight.tight,
-            }}>
-              {selectedAlgorithm.name}
-            </h2>
-            <div style={{ display: 'flex', gap: spacing[2], alignItems: 'center' }}>
-              <StarButton
-                isFavorite={isFavorite(selectedAlgorithm.id)}
-                onToggle={() => onToggleFavorite(selectedAlgorithm.id)}
-                size={24}
-              />
-            </div>
-          </div>
-          {/* Alternative Names (Nicknames) right-justified */}
-          {selectedAlgorithm.nicknames && selectedAlgorithm.nicknames.length > 0 && (
-            <div 
-              className="responsive-nicknames"
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: spacing[2],
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                maxWidth: '50%',
-              }}
-            >
-              <span style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.primary[700],
-                fontWeight: typography.fontWeight.medium,
-                marginRight: spacing[1],
-                whiteSpace: 'nowrap',
-              }}>
-                Other Names:
-              </span>
-              {selectedAlgorithm.nicknames.map((nickname, index) => (
-                <div key={`nickname-${selectedAlgorithm.id}-${index}`} style={{
-                  background: colors.primary[50],
-                  color: colors.primary[700],
-                  padding: `${spacing[2]} ${spacing[3]}`,
-                  borderRadius: borderRadius.lg,
-                  fontSize: typography.fontSize.sm,
-                  fontWeight: typography.fontWeight.medium,
-                  border: `1px solid ${colors.primary[200]}`,
-                  whiteSpace: 'nowrap',
-                }}>
-                  {nickname}
-                </div>
-              ))}
-            </div>
-          )}
+    <div className="algorithm-detail-minimal">
+      <header className="algorithm-detail-header">
+        <div>
+          <h2>{selectedAlgorithm.name}</h2>
+          <span>{selectedAlgorithm.category}</span>
         </div>
+        <StarButton
+          isFavorite={isFavorite(selectedAlgorithm.id)}
+          onToggle={() => onToggleFavorite(selectedAlgorithm.id)}
+          size={24}
+        />
+      </header>
 
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: spacing[3],
-          flexWrap: 'wrap',
-        }}>
-          {/* Category */}
-          <div style={{
-            background: colors.neutral[100],
-            color: colors.neutral[700],
-            padding: `${spacing[1]} ${spacing[3]}`,
-            borderRadius: borderRadius.full,
-            fontSize: typography.fontSize.sm,
-            fontWeight: typography.fontWeight.medium,
-          }}>
-            {selectedAlgorithm.category}
-          </div>
-
-          {/* Right Trigger Badge */}
-          {hasRightTrigger && (
-            <div style={{
-              background: colors.success[50],
-              color: colors.success[700],
-              padding: `${spacing[1]} ${spacing[3]}`,
-              borderRadius: borderRadius.full,
-              fontSize: typography.fontSize.sm,
-              fontWeight: typography.fontWeight.medium,
-              border: `1px solid ${colors.success[300]}`,
-              display: 'flex',
-              alignItems: 'center',
-              gap: spacing[1],
-            }}>
-              <span style={{ fontSize: '10px' }}>🎯</span>
-              Right Trigger
-            </div>
-          )}
-
-          {/* Left Trigger Badge */}
-          {hasLeftTrigger && (
-            <div style={{
-              background: colors.info[50],
-              color: colors.info[700],
-              padding: `${spacing[1]} ${spacing[3]}`,
-              borderRadius: borderRadius.full,
-              fontSize: typography.fontSize.sm,
-              fontWeight: typography.fontWeight.medium,
-              border: `1px solid ${colors.info[300]}`,
-              display: 'flex',
-              alignItems: 'center',
-              gap: spacing[1],
-            }}>
-              <span style={{ fontSize: '10px' }}>🎯</span>
-              Left Trigger
-            </div>
-          )}
+      {patternImages.length > 0 && (
+        <div className="algorithm-detail-images" aria-label="Move pictures">
+          {patternImages.map((image) => (
+            <figure key={`${image.label}-${image.src}`}>
+              <img
+                src={image.src}
+                alt={`${selectedAlgorithm.name} ${image.label}`}
+                draggable="false"
+                onError={(event) => {
+                  event.currentTarget.closest('figure').style.display = 'none'
+                }}
+              />
+              <figcaption>{image.label}</figcaption>
+            </figure>
+          ))}
         </div>
-      </div>
+      )}
 
-      {/* Images Section */}
-      <div 
-        className="responsive-images-section"
-        style={{
-          display: 'flex',
-          gap: spacing[6],
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-        }}
-      >
-        {/* Pattern Image Section */}
-        {patternImageExists && (
-          <div 
-            className="responsive-image-container pattern-image-container"
-            style={{ flex: '0 0 auto', minWidth: 'unset', width: 'fit-content' }}
-          >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: spacing[3],
-            }}>
-              <h3 style={{
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.semibold,
-                color: colors.neutral[900],
-                margin: 0,
-              }}>
-                Pattern to Look For
-              </h3>
-            </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              background: colors.neutral[50],
-              borderRadius: borderRadius.xl,
-              padding: spacing[4],
-              border: `1px solid ${colors.border.light}`,
-              width: 'fit-content'
-            }}>
-              <img
-                src={patternImageSrc}
-                alt={`${selectedAlgorithm.name} pattern`}
-                className="responsive-pattern-image"
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '200px',
-                  width: 'auto',
-                  height: 'auto',
-                  borderRadius: borderRadius.lg,
-                  boxShadow: shadows.md,
-                  border: `1px solid var(--move-image-border-color)`,
-                  background: 'var(--move-image-bg)',
-                  padding: 'var(--move-image-padding)',
-                }}
-              />
-            </div>
-          </div>
-        )}
+      {selectedAlgorithm.description && (
+        <p className="algorithm-detail-description">{selectedAlgorithm.description}</p>
+      )}
 
-        {/* Additional Pattern Images */}
-        {selectedAlgorithm?.additionalPatterns?.map((pattern, index) => (
-          <div 
-            key={pattern.filename}
-            className="responsive-image-container pattern-image-container"
-            style={{ flex: '0 0 auto', minWidth: 'unset', width: 'fit-content' }}
-          >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: spacing[3],
-            }}>
-              <h3 style={{
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.semibold,
-                color: colors.neutral[900],
-                margin: 0,
-              }}>
-                {pattern.label || `Pattern ${index + 2}`}
-              </h3>
-            </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              background: colors.neutral[50],
-              borderRadius: borderRadius.xl,
-              padding: spacing[4],
-              border: `1px solid ${colors.border.light}`,
-              width: 'fit-content'
-            }}>
-              <img
-                src={`/images/patterns/${pattern.filename}`}
-                alt={`${selectedAlgorithm.name} ${pattern.label || `pattern ${index + 2}`}`}
-                className="responsive-pattern-image"
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '200px',
-                  width: 'auto',
-                  height: 'auto',
-                  borderRadius: borderRadius.lg,
-                  boxShadow: shadows.md,
-                  border: `1px solid var(--move-image-border-color)`,
-                  background: 'var(--move-image-bg)',
-                  padding: 'var(--move-image-padding)',
-                }}
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                }}
-              />
-            </div>
-          </div>
-        ))}
-
-        {/* Tutorial Image Section */}
-        {tutorialImageExists && (
-          <div 
-            className="responsive-image-container"
-            style={{ flex: '1 1 250px', minWidth: '200px' }}
-          >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: spacing[3],
-            }}>
-              <h3 style={{
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.semibold,
-                color: colors.neutral[900],
-                margin: 0,
-              }}>
-                {shouldShowStickerLink ? 'Sticker for Field Notes Notebook' : 'Picture Guide'}
-              </h3>
-              <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.neutral[500],
-                fontStyle: 'italic',
-              }}>
-                {shouldShowStickerLink ? 'Click to view' : 'Click to zoom'}
-              </div>
-            </div>
-            
-            {shouldShowStickerLink ? (
-              // Show "Sticker Image" link for specific algorithms
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                background: colors.neutral[50],
-                borderRadius: borderRadius.xl,
-                padding: spacing[4],
-                border: `1px solid ${colors.border.light}`,
-              }}>
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  onMouseEnter={() => setIsButtonHovered(true)}
-                  onMouseLeave={() => setIsButtonHovered(false)}
-                  style={{
-                    background: isButtonHovered ? colors.primary[700] : colors.primary[600],
-                    color: 'white',
-                    border: 'none',
-                    padding: `${spacing[3]} ${spacing[4]}`,
-                    borderRadius: borderRadius.lg,
-                    fontSize: typography.fontSize.base,
-                    fontWeight: typography.fontWeight.medium,
-                    cursor: 'pointer',
-                    transition: transitions.fast,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: spacing[2],
-                    minHeight: '44px', // Touch target optimization
-                  }}
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <polyline points="21,15 16,10 5,21" />
-                  </svg>
-                  Sticker Image
-                </button>
-              </div>
-            ) : (
-              // Show regular image display for other algorithms
-              <div 
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  background: isImageHovered ? colors.neutral[100] : colors.neutral[50],
-                  borderRadius: borderRadius.xl,
-                  padding: spacing[4],
-                  border: `1px solid ${isImageHovered ? colors.border.medium : colors.border.light}`,
-                  cursor: 'pointer',
-                  transition: transitions.fast,
-                }}
-                onClick={() => setIsImageZoomed(!isImageZoomed)}
-                onMouseEnter={() => setIsImageHovered(true)}
-                onMouseLeave={() => setIsImageHovered(false)}
-              >
-                <TutorialImage
-                  imageSrc={tutorialImageSrc}
-                  algorithmName={selectedAlgorithm.name}
-                  isZoomed={isImageZoomed}
-                />
-              </div>
-            )}
-            
-            {!shouldShowStickerLink && isImageZoomed && (
-              <div style={{
-                textAlign: 'center',
-                marginTop: spacing[2],
-                fontSize: typography.fontSize.sm,
-                color: colors.neutral[500],
-              }}>
-                Click again to zoom out
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Description */}
-      <div>
-        <p style={{
-          fontSize: typography.fontSize.base,
-          color: colors.neutral[700],
-          lineHeight: typography.lineHeight.normal,
-          margin: 0,
-        }}>
-          {selectedAlgorithm.description}
-        </p>
-      </div>
-
-      {/* Image Modal */}
-      <ImageModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        imageSrc={tutorialImageSrc}
-        imageAlt={`${selectedAlgorithm.name} tutorial`}
-        algorithmName={selectedAlgorithm.name}
-      />
-
-      {/* Mobile-responsive styles */}
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        
-        @media (max-width: 768px) {
-          .responsive-header-layout {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 12px !important;
-          }
-          
-          .responsive-nicknames {
-            max-width: 100% !important;
-            justify-content: flex-start !important;
-          }
-          
-          .responsive-images-section {
-            flex-direction: column !important;
-            gap: 24px !important;
-            align-items: center !important;
-            justify-content: center !important;
-          }
-          
-          .responsive-image-container {
-            flex: 0 0 auto !important;
-            min-width: unset !important;
-            width: fit-content !important;
-          }
-          
-          .responsive-pattern-image,
-          .responsive-tutorial-image {
-            max-height: 150px !important;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          .responsive-header-layout {
-            gap: 8px !important;
-          }
-          
-          .responsive-images-section {
-            gap: 16px !important;
-          }
-          
-          .responsive-pattern-image,
-          .responsive-tutorial-image {
-            max-height: 120px !important;
-          }
-        }
-        
-        @media (max-width: 360px) {
-          .responsive-pattern-image,
-          .responsive-tutorial-image {
-            max-height: 100px !important;
-          }
-        }
-        
-        /* Landscape orientation adjustments */
-        @media (max-width: 768px) and (orientation: landscape) {
-          .responsive-images-section {
-            flex-direction: row !important;
-            gap: 16px !important;
-          }
-          
-          .responsive-pattern-image,
-          .responsive-tutorial-image {
-            max-height: 140px !important;
-          }
-        }
-      `}</style>
+      <style>{detailStyles}</style>
     </div>
   )
 }
+
+const detailStyles = `
+  .algorithm-detail-minimal {
+    display: grid;
+    gap: ${spacing[4]};
+  }
+
+  .algorithm-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${spacing[3]};
+    padding-bottom: ${spacing[3]};
+    border-bottom: 1px solid ${colors.border.light};
+  }
+
+  .algorithm-detail-header h2 {
+    margin: 0;
+    color: ${colors.neutral[900]};
+    font-size: ${typography.fontSize['2xl']};
+    line-height: ${typography.lineHeight.tight};
+    letter-spacing: 0;
+  }
+
+  .algorithm-detail-header span {
+    display: block;
+    margin-top: ${spacing[1]};
+    color: ${colors.neutral[600]};
+    font-size: ${typography.fontSize.sm};
+    font-weight: ${typography.fontWeight.bold};
+  }
+
+  .algorithm-detail-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${spacing[3]};
+  }
+
+  .algorithm-detail-images figure {
+    display: grid;
+    gap: ${spacing[2]};
+    justify-items: center;
+    margin: 0;
+    padding: ${spacing[3]};
+    border: 1px solid ${colors.border.light};
+    border-radius: ${borderRadius.lg};
+    background: ${colors.background.secondary};
+    box-shadow: ${shadows.sm};
+  }
+
+  .algorithm-detail-images img {
+    width: 132px;
+    height: 132px;
+    object-fit: contain;
+    border: 1px solid var(--move-image-border-color);
+    border-radius: ${borderRadius.md};
+    background: var(--move-image-bg);
+    padding: var(--move-image-padding);
+  }
+
+  .algorithm-detail-images figcaption {
+    color: ${colors.neutral[600]};
+    font-size: ${typography.fontSize.xs};
+    font-weight: ${typography.fontWeight.bold};
+    text-transform: uppercase;
+  }
+
+  .algorithm-detail-description {
+    margin: 0;
+    color: ${colors.neutral[700]};
+    font-size: ${typography.fontSize.base};
+    line-height: ${typography.lineHeight.normal};
+  }
+
+  .algorithm-detail-empty {
+    display: grid;
+    place-items: center;
+    gap: ${spacing[2]};
+    min-height: 320px;
+    color: ${colors.neutral[600]};
+    text-align: center;
+  }
+
+  .algorithm-detail-empty img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: ${colors.neutral[100]};
+    object-fit: cover;
+  }
+
+  .algorithm-detail-empty strong {
+    color: ${colors.neutral[900]};
+    font-size: ${typography.fontSize.xl};
+  }
+
+  .algorithm-detail-empty span {
+    font-size: ${typography.fontSize.sm};
+  }
+
+  @media (max-width: 600px) {
+    .algorithm-detail-images img {
+      width: 112px;
+      height: 112px;
+    }
+  }
+`
 
 export default AlgorithmDetails
