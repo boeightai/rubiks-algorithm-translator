@@ -3,6 +3,15 @@
 ## Project Overview
 This is a React-based web application that translates Rubik's Cube algorithm notation into visual step-by-step move sequences. The app is designed to work seamlessly across desktop browsers, iPads, and iPhones.
 
+## Canonical Workspace
+
+- Local project root: `/Users/overwatch/Documents/AI OS/Skunkworks/Way of the Cube`
+- GitHub repository: `https://github.com/boeightai/rubiks-algorithm-translator`
+- Production site: `https://www.wayofthecube.com`
+- Project context: `docs/PROJECT_CONTEXT.md`
+
+Keep future product notes and design references in this repository under `docs/`.
+
 ## Key Architecture Decisions
 
 ### Mobile-First Responsive Design

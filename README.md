@@ -4,6 +4,8 @@ A modern web application for learning and practicing Rubik's Cube algorithms wit
 
 **Live Demo**: [https://www.wayofthecube.com](https://www.wayofthecube.com)
 
+Project documentation: [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md)
+
 ## 🚀 Features
 
 ### Two Operating Modes
@@ -39,8 +41,8 @@ A modern web application for learning and practicing Rubik's Cube algorithms wit
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/rubiks-translator.git
-cd rubiks-translator
+git clone https://github.com/boeightai/rubiks-algorithm-translator.git
+cd rubiks-algorithm-translator
 
 # Install dependencies
 npm install

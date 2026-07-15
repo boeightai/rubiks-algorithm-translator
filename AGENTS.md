@@ -6,6 +6,15 @@ This React/Vite website helps kids learn to solve Rubik's cubes using a custom v
 
 Prioritize clarity, approachability, and cross-device usability. The experience should work well for children and parents on desktop browsers, iPhones, and iPads.
 
+## Canonical Workspace
+
+- Local project root: `/Users/overwatch/Documents/AI OS/Skunkworks/Way of the Cube`
+- GitHub: `https://github.com/boeightai/rubiks-algorithm-translator`
+- Production: `https://www.wayofthecube.com`
+- Project context and working references: `docs/PROJECT_CONTEXT.md`
+
+Use this repository as the source of truth for future product and feature work. Keep substantive project notes and design references under `docs/` rather than in separate agent-memory or vault locations.
+
 ## Current Architecture
 
 ```
