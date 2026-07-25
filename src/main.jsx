@@ -21,6 +21,10 @@ import { createRoot } from 'react-dom/client'
 import AppWithModes from './AppWithModes.jsx'
 import './index.css'
 
+// Expose the deployed build version so it can be checked from a device console.
+// Console output is stripped in production builds, so read it via window.__WOTC_VERSION__
+window.__WOTC_VERSION__ = document.querySelector('meta[name="build-version"]')?.content || 'unknown'
+
 // Initialize theme before app renders
 const savedTheme = localStorage.getItem('theme')
 // Default to light mode unless user has explicitly chosen dark mode
