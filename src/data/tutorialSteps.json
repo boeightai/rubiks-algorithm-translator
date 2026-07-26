@@ -35,7 +35,9 @@
       "heading": "What to do",
       "instruction": "Look at the side color of a petal. Turn the top until that color is facing you and matches the center in front of you. Then turn the whole front face twice to drop the petal to the bottom. Repeat for all four petals.",
       "notation": "F2",
-      "algorithmId": "white-cross-insert"
+      "algorithmId": "white-cross-insert",
+      "revealBottom": true,
+      "note": "The demo shows the last petal going in. Watch the cube tip over at the end to see the finished cross underneath."
     },
     "cases": [],
     "doneWhen": "There is a white cross on the bottom and every edge color matches the center above it."

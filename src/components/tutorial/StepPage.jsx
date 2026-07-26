@@ -130,6 +130,7 @@ function StepPage({ step, isMobile }) {
             notation={step.normalPath.notation}
             algorithmId={step.normalPath.algorithmId}
             note={step.normalPath.note}
+            revealBottom={step.normalPath.revealBottom}
           />
         </div>
       )}

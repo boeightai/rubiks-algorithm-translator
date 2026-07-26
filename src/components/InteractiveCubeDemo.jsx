@@ -40,6 +40,14 @@ const TURN_DURATION_MS = 1200
 const MOVE_PAUSE_MS = 450
 const START_PAUSE_MS = 1000
 
+// Some steps build on the down face — the white cross, the first layer — which
+// the camera cannot see from above. After the moves finish, tip the cube over so
+// the learner can actually look at the result they were told to make.
+// -120° about X swings the down face round to point at the camera.
+const REVEAL_BOTTOM_ROTATION_X = -2.09
+const REVEAL_DELAY_MS = 600
+const REVEAL_DURATION_MS = 1300
+
 const FACE_COLORS = {
   U: 0xfacc15,
   D: 0xf8fafc,
@@ -106,15 +114,22 @@ const STANDARD_CAMERA_ALGORITHMS = new Set([
 const TUTORIAL_DIM_COLOR = 0x020617
 
 /*
- * Step 2. A daisy on top — yellow centre, four white petals — with the front
- * petal's side colour matched to the front centre. F2 then carries that petal
- * down: the green sticker travels down the front face and the white lands on
- * the bottom.
+ * Step 2. Shows the LAST petal going in, so that tipping the cube over at the
+ * end reveals a finished white cross rather than a single lonely edge.
+ *
+ * Three cross edges are already on the bottom, the fourth slot is empty, and the
+ * remaining petal sits on top with its green side matched to the green centre.
+ * F2 then carries it down: the green travels down the front face and the white
+ * completes the cross underneath.
  */
 const getWhiteCrossStickerColor = (face, x, y, z) => {
+  const isFrontEdge = x === 0 && z === 1
+  const isEdge = Math.abs(x) + Math.abs(z) === 1
+  const isCentre = x === 0 && z === 0
+
   if (face === 'U') {
-    if (x === 0 && z === 0) return FACE_COLORS.U
-    if (Math.abs(x) + Math.abs(z) === 1) return FACE_COLORS.D
+    if (isCentre) return FACE_COLORS.U
+    if (isFrontEdge) return FACE_COLORS.D
     return TUTORIAL_DIM_COLOR
   }
 
@@ -124,7 +139,12 @@ const getWhiteCrossStickerColor = (face, x, y, z) => {
     return TUTORIAL_DIM_COLOR
   }
 
-  if (face === 'D' && x === 0 && z === 0) return FACE_COLORS.D
+  if (face === 'D') {
+    if (isCentre) return FACE_COLORS.D
+    // three already placed; the front slot is the one about to be filled
+    if (isEdge && !isFrontEdge) return FACE_COLORS.D
+    return TUTORIAL_DIM_COLOR
+  }
 
   return TUTORIAL_DIM_COLOR
 }
@@ -363,7 +383,7 @@ const getStickerColor = (algorithmId, notation, face, x, y, z) => {
   return getSolvedCaseStickerColor(notation, face, x, y, z)
 }
 
-function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
+function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange, revealBottomOnComplete = false }) {
   const { isMobile, isTablet } = useMobileDetection()
   const mountRef = useRef(null)
   const rendererRef = useRef(null)
@@ -374,6 +394,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   const cubiesRef = useRef([])
   const renderFrameRef = useRef(null)
   const moveFrameRef = useRef(null)
+  const revealFrameRef = useRef(null)
   const timeoutRef = useRef(null)
   const isRunningRef = useRef(false)
   const isPausedRef = useRef(false)
@@ -388,6 +409,7 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
+  const [hasRevealedBottom, setHasRevealedBottom] = useState(false)
 
   const { visualMoves, animationMoves, visualMoveIndices } = useMemo(() => {
     return expandNotationForAnimation(notation)
@@ -584,6 +606,52 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     })
   }, [setActiveMove])
 
+  /*
+   * Tips the whole view over so the down face comes round to meet the camera.
+   * Animates the same group the drag handler uses, so it composes with a learner
+   * spinning the cube themselves.
+   */
+  const revealBottom = useCallback(() => {
+    const viewRoot = viewRootRef.current
+    if (!viewRoot) return Promise.resolve()
+
+    const startX = viewRoot.rotation.x
+
+    return new Promise((resolve) => {
+      let elapsed = 0
+      let lastTime = performance.now()
+
+      const tick = (now) => {
+        const delta = now - lastTime
+        lastTime = now
+
+        if (!isRunningRef.current) {
+          resolve()
+          return
+        }
+
+        if (isPausedRef.current) {
+          revealFrameRef.current = requestAnimationFrame(tick)
+          return
+        }
+
+        elapsed += delta
+        const progress = Math.min(elapsed / REVEAL_DURATION_MS, 1)
+        viewRoot.rotation.x = startX + (REVEAL_BOTTOM_ROTATION_X - startX) * easeInOutCubic(progress)
+
+        if (progress < 1) {
+          revealFrameRef.current = requestAnimationFrame(tick)
+          return
+        }
+
+        setHasRevealedBottom(true)
+        resolve()
+      }
+
+      revealFrameRef.current = requestAnimationFrame(tick)
+    })
+  }, [])
+
   const playSequence = useCallback(async () => {
     if (animationMoves.length === 0) return
 
@@ -592,9 +660,16 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     setIsPlaying(true)
     setIsPaused(false)
     setHasCompleted(false)
+    setHasRevealedBottom(false)
     setActiveMove(null)
     clearTimers()
     resetCube()
+
+    // Replays must start from the original viewpoint, not wherever the last
+    // reveal (or the learner's drag) left the cube
+    if (revealBottomOnComplete && viewRootRef.current) {
+      viewRootRef.current.rotation.set(0, 0, 0)
+    }
 
     await new Promise((resolve) => {
       timeoutRef.current = setTimeout(resolve, START_PAUSE_MS)
@@ -612,12 +687,23 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     if (isRunningRef.current) {
       setHasCompleted(true)
     }
+
+    // Show the result on the down face, which the camera cannot otherwise see
+    if (isRunningRef.current && revealBottomOnComplete) {
+      await new Promise((resolve) => {
+        timeoutRef.current = setTimeout(resolve, REVEAL_DELAY_MS)
+      })
+      if (isRunningRef.current) {
+        await revealBottom()
+      }
+    }
+
     isRunningRef.current = false
     isPausedRef.current = false
     setIsPlaying(false)
     setIsPaused(false)
     setActiveMove(null)
-  }, [animateMove, animationMoves, clearTimers, resetCube, setActiveMove])
+  }, [animateMove, animationMoves, clearTimers, resetCube, setActiveMove, revealBottom, revealBottomOnComplete])
 
   const stopSequence = useCallback(() => {
     isRunningRef.current = false
@@ -626,6 +712,10 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
     if (moveFrameRef.current) {
       cancelAnimationFrame(moveFrameRef.current)
       moveFrameRef.current = null
+    }
+    if (revealFrameRef.current) {
+      cancelAnimationFrame(revealFrameRef.current)
+      revealFrameRef.current = null
     }
     setIsPlaying(false)
     setIsPaused(false)
@@ -804,7 +894,13 @@ function InteractiveCubeDemo({ algorithmId, notation, onActiveMoveChange }) {
             minWidth: isCompact ? '0' : '132px',
             textAlign: isCompact ? 'center' : 'left',
           }}>
-            {currentMove ? `Move ${activeMoveIndex + 1} of ${visualMoves.length}: ${currentMove}` : hasCompleted ? 'Sequence complete' : 'Ready'}
+            {currentMove
+              ? `Move ${activeMoveIndex + 1} of ${visualMoves.length}: ${currentMove}`
+              : hasRevealedBottom
+                ? '↻ Now looking at the bottom'
+                : hasCompleted
+                  ? 'Sequence complete'
+                  : 'Ready'}
           </div>
 
           <div style={{

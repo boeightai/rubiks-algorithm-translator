@@ -37,7 +37,7 @@ const InteractiveCubeDemo = lazy(() => import('../InteractiveCubeDemo'))
  * animated elsewhere on the page — repeating it doubles the page height and
  * teaches nothing new.
  */
-function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true, stacked = false }) {
+function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true, stacked = false, revealBottom = false }) {
   const [activeMoveIndex, setActiveMoveIndex] = useState(null)
   const { isMobile, isTablet } = useMobileDetection()
   // stacked is required in narrow containers (the interlude's two columns): the
@@ -91,6 +91,7 @@ function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true, st
                 algorithmId={algorithmId || name}
                 notation={notation}
                 onActiveMoveChange={setActiveMoveIndex}
+                revealBottomOnComplete={revealBottom}
               />
             </div>
           </Suspense>
