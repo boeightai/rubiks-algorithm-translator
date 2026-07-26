@@ -18,7 +18,7 @@
     <meta name="keywords" content="rubik's cube, algorithms, speedcubing, notation, visual, tutorial" />
     <meta name="author" content="Bo Nam" />
     <!-- Kept in sync with the service worker cache version by update-sw-version.js -->
-    <meta name="build-version" content="v18" />
+    <meta name="build-version" content="v20" />
     <meta name="theme-color" content="#3b82f6" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -26,17 +26,26 @@
     <link rel="apple-touch-icon" href="/favicon.svg" />
     
     <!-- Open Graph / Facebook -->
+    <!-- Card images must be an absolute URL and a raster format. Social crawlers
+         do not resolve relative paths and do not render SVG, so either one on its
+         own leaves the link preview blank. -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Bo and Hailey's Rubik's Cube Algorithm Translator" />
-    <meta property="og:description" content="Learn and practice Rubik's Cube algorithms with visual notation translation." />
+    <meta property="og:site_name" content="Way of the Cube" />
+    <meta property="og:title" content="Way of the Cube — Rubik's Cube algorithms turned into pictures" />
+    <meta property="og:description" content="Learn and practice Rubik's Cube algorithms with visual notation translation. Every move becomes a picture anyone can follow." />
     <meta property="og:url" content="https://www.wayofthecube.com" />
-    <meta property="og:image" content="/favicon.svg" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Bo and Hailey's Rubik's Cube Algorithm Translator" />
-    <meta property="twitter:description" content="Learn and practice Rubik's Cube algorithms with visual notation translation." />
-    <meta property="twitter:image" content="/favicon.svg" />
+    <meta property="og:image" content="https://www.wayofthecube.com/images/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Way of the Cube: the cube mascot beside the R U R' U' moves drawn as arrow diagrams" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Way of the Cube — Rubik's Cube algorithms turned into pictures" />
+    <meta name="twitter:description" content="Learn and practice Rubik's Cube algorithms with visual notation translation. Every move becomes a picture anyone can follow." />
+    <meta name="twitter:image" content="https://www.wayofthecube.com/images/og-image.png" />
+    <meta name="twitter:image:alt" content="Way of the Cube: the cube mascot beside the R U R' U' moves drawn as arrow diagrams" />
   </head>
   <body>
     <div id="root"></div>
