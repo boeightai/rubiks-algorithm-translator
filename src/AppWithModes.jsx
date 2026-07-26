@@ -16,26 +16,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import AlgorithmSelectorRefactored from './AlgorithmSelectorRefactored'
 import TutorialMode from './TutorialMode'
 import ErrorBoundary from './components/ErrorBoundary'
 import { colors } from './styles/designSystem'
 
+/*
+ * Only written when someone deliberately switches modes.
+ *
+ * The previous key ('appMode') was written on every mount, so it recorded the
+ * default rather than a choice — every past visitor has 'explorer' stored
+ * whether they wanted it or not. That value cannot be trusted, so it is ignored
+ * and preferences start fresh here.
+ */
+const MODE_STORAGE_KEY = 'appModeChoice'
+
 function AppWithModes() {
-  // Initialize mode from localStorage or default to 'explorer'
+  // Everyone lands on the tutorial. Explorer is opt-in, and only sticks once
+  // someone has actually asked for it.
   const [mode, setMode] = useState(() => {
-    const savedMode = localStorage.getItem('appMode')
-    return savedMode === 'tutorial' ? 'tutorial' : 'explorer'
+    try {
+      return localStorage.getItem(MODE_STORAGE_KEY) === 'explorer' ? 'explorer' : 'tutorial'
+    } catch {
+      return 'tutorial'
+    }
   })
 
-  // Save mode preference to localStorage
-  useEffect(() => {
-    localStorage.setItem('appMode', mode)
-  }, [mode])
-
   const toggleMode = () => {
-    setMode(prevMode => prevMode === 'tutorial' ? 'explorer' : 'tutorial')
+    setMode(prevMode => {
+      const nextMode = prevMode === 'tutorial' ? 'explorer' : 'tutorial'
+      try {
+        localStorage.setItem(MODE_STORAGE_KEY, nextMode)
+      } catch {
+        // Remembering the choice is best-effort
+      }
+      return nextMode
+    })
   }
 
   return (
