@@ -37,10 +37,12 @@ const InteractiveCubeDemo = lazy(() => import('../InteractiveCubeDemo'))
  * animated elsewhere on the page — repeating it doubles the page height and
  * teaches nothing new.
  */
-function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true }) {
+function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true, stacked = false }) {
   const [activeMoveIndex, setActiveMoveIndex] = useState(null)
   const { isMobile, isTablet } = useMobileDetection()
-  const stackVertically = isMobile || isTablet
+  // stacked is required in narrow containers (the interlude's two columns): the
+  // cube needs 500px, and side by side there is nothing left for the move cards
+  const stackVertically = isMobile || isTablet || stacked
   const canAnimate = canAnimateNotation(notation) && showDemo
 
   if (!notation) return null
@@ -64,7 +66,7 @@ function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true }) 
         gap: stackVertically ? spacing[3] : spacing[5],
         alignItems: stackVertically ? 'stretch' : 'flex-start',
         // Without a cube alongside it, the sequence should not stretch into dead space
-        maxWidth: canAnimate ? 'none' : '440px',
+        maxWidth: canAnimate ? '100%' : '440px',
       }}>
         {canAnimate && (
           <Suspense fallback={
@@ -94,7 +96,8 @@ function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true }) 
           </Suspense>
         )}
 
-        <div style={{ flex: stackVertically ? 'none' : '1 1 0', minWidth: 0 }}>
+        {/* overflow guard: the sequence must never escape its container onto the page */}
+        <div style={{ flex: stackVertically ? 'none' : '1 1 0', minWidth: 0, overflow: 'hidden' }}>
           <VisualSequence
             notation={notation}
             algorithmId={algorithmId}

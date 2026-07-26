@@ -98,6 +98,7 @@ function InterludePage({ step, isMobile }) {
               notation={algorithm.notation}
               algorithmId={algorithm.id}
               note={algorithm.note}
+              stacked
             />
           </div>
         ))}
