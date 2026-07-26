@@ -17,7 +17,7 @@
  */
 
 // Update version number to force cache refresh on deployment
-const CACHE_VERSION = 'v18'
+const CACHE_VERSION = 'v19'
 const CACHE_NAME = `rubiks-translator-${CACHE_VERSION}`
 const STATIC_CACHE_NAME = `rubiks-translator-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE_NAME = `rubiks-translator-dynamic-${CACHE_VERSION}`
@@ -95,14 +95,23 @@ self.addEventListener('fetch', (event) => {
 
   // Handle different types of requests
   if (url.pathname === '/' || url.pathname === '/index.html') {
-    // Main page - serve from cache first
+    // Main page - ALWAYS network first.
+    //
+    // index.html references content-hashed bundles (index-<hash>.js). Serving a
+    // cached copy after a deploy points the browser at a bundle that no longer
+    // exists on the server, which 404s and renders a blank white page. The cache
+    // is only a fallback for genuinely being offline.
     event.respondWith(
-      caches.match(request)
-        .then((response) => {
-          return response || fetch(request)
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.ok) {
+            const copy = networkResponse.clone()
+            caches.open(STATIC_CACHE_NAME).then((cache) => cache.put(request, copy))
+          }
+          return networkResponse
         })
         .catch(() => {
-          return caches.match('/index.html')
+          return caches.match(request).then((cached) => cached || caches.match('/index.html'))
         })
     )
   } else if (url.pathname.includes('/src/data/') || url.pathname.includes('.json')) {
