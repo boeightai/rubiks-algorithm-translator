@@ -75,15 +75,15 @@
       "heading": "What to do",
       "instruction": "Find a white corner in the top layer. Turn the top until that corner sits directly above the slot it belongs in — the slot whose two colors match the corner's other two colors. Then repeat the Right Trigger until it drops into place.",
       "notation": "R U R' U'",
-      "algorithmId": "right-trigger",
-      "note": "Repeat as many times as it takes. The corner will drop in on its own."
+      "algorithmId": "first-layer-insert",
+      "note": "The demo shows one Right Trigger dropping the corner in. On your cube it may take more than one — keep repeating until it lands."
     },
     "cases": [
       {
         "id": "first-layer-stuck-corner",
         "when": "A white corner is already in the bottom layer, but in the wrong slot or twisted the wrong way.",
         "setup": "Hold that corner at the front-right, then run the Right Trigger once to pop it out into the top layer. Now solve it normally.",
-        "name": "Right Trigger — the same one from above",
+        "name": "Right Trigger (you already know this one)",
         "notation": "R U R' U'",
         "algorithmId": "right-trigger",
         "showDemo": false

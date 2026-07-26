@@ -92,11 +92,53 @@ const ENDPOINT_SOLVED_ALGORITHMS = new Set([
   'left-trigger',
 ])
 
+// The step 2 and 3 demos both depend on seeing the top face, so they use the
+// default higher camera rather than the front-on standard one.
 const STANDARD_CAMERA_ALGORITHMS = new Set([
   'daisy-edge-flipper',
   'right-trigger',
   'left-trigger',
 ])
+
+// Tutorial demos dim everything the learner is not working on yet, the same way
+// the daisy demo does. A fully coloured cube reads as "already solved" and hides
+// the one piece the step is actually about.
+const TUTORIAL_DIM_COLOR = 0x020617
+
+/*
+ * Step 2. A daisy on top — yellow centre, four white petals — with the front
+ * petal's side colour matched to the front centre. F2 then carries that petal
+ * down: the green sticker travels down the front face and the white lands on
+ * the bottom.
+ */
+const getWhiteCrossStickerColor = (face, x, y, z) => {
+  if (face === 'U') {
+    if (x === 0 && z === 0) return FACE_COLORS.U
+    if (Math.abs(x) + Math.abs(z) === 1) return FACE_COLORS.D
+    return TUTORIAL_DIM_COLOR
+  }
+
+  if (face === 'F') {
+    if (x === 0 && y === 0) return FACE_COLORS.F
+    if (x === 0 && y === 1) return FACE_COLORS.F
+    return TUTORIAL_DIM_COLOR
+  }
+
+  if (face === 'D' && x === 0 && z === 0) return FACE_COLORS.D
+
+  return TUTORIAL_DIM_COLOR
+}
+
+/*
+ * Step 3. The starting state is computed backwards from solved, so it is
+ * correct by construction: the white corner sits at the top front-right with
+ * white facing right, and one Right Trigger drops it into its slot. Only the
+ * first layer and that corner are shown in colour.
+ */
+const FIRST_LAYER_FOCUS = (face, x, y, z) => {
+  if (y === -1) return true
+  return x === 1 && y === 1 && z === 1
+}
 
 const FULL_TOP_PATTERN = [
   [-1, -1], [0, -1], [1, -1],
@@ -303,6 +345,15 @@ const getStartingCaseStickerColor = (algorithmId, face, x, y, z) => {
 const getStickerColor = (algorithmId, notation, face, x, y, z) => {
   if (algorithmId === 'daisy-edge-flipper') {
     return getDaisyPatternStickerColor(face, x, y, z)
+  }
+
+  if (algorithmId === 'white-cross-insert') {
+    return getWhiteCrossStickerColor(face, x, y, z)
+  }
+
+  if (algorithmId === 'first-layer-insert') {
+    if (!FIRST_LAYER_FOCUS(face, x, y, z)) return TUTORIAL_DIM_COLOR
+    return getSolvedCaseStickerColor(notation, face, x, y, z)
   }
 
   if (!ENDPOINT_SOLVED_ALGORITHMS.has(algorithmId)) {

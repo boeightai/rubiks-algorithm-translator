@@ -82,13 +82,14 @@ function StepPage({ step, isMobile }) {
         {step.goal}
       </p>
 
-      {/* Goal + normal path */}
+      {/* Goal + normal path. The algorithm sits full width below rather than
+          beside the goal image, which otherwise leaves a tall dead column. */}
       <div style={{
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
         gap: isMobile ? spacing[5] : spacing[8],
         alignItems: 'flex-start',
-        marginBottom: spacing[8],
+        marginBottom: step.normalPath.notation ? spacing[5] : spacing[8],
       }}>
         <div style={{ flexShrink: 0, alignSelf: isMobile ? 'center' : 'flex-start' }}>
           <StepImage
@@ -112,7 +113,7 @@ function StepPage({ step, isMobile }) {
           </div>
 
           <p style={{
-            margin: `0 0 ${spacing[4]}`,
+            margin: 0,
             fontSize: isMobile ? typography.fontSize.base : typography.fontSize.lg,
             color: colors.neutral[800],
             lineHeight: typography.lineHeight.relaxed,
@@ -120,16 +121,18 @@ function StepPage({ step, isMobile }) {
           }}>
             {step.normalPath.instruction}
           </p>
-
-          {step.normalPath.notation && (
-            <AlgorithmBlock
-              notation={step.normalPath.notation}
-              algorithmId={step.normalPath.algorithmId}
-              note={step.normalPath.note}
-            />
-          )}
         </div>
       </div>
+
+      {step.normalPath.notation && (
+        <div style={{ marginBottom: spacing[8] }}>
+          <AlgorithmBlock
+            notation={step.normalPath.notation}
+            algorithmId={step.normalPath.algorithmId}
+            note={step.normalPath.note}
+          />
+        </div>
+      )}
 
       {/* Cases */}
       {step.cases && step.cases.length > 0 && step.cases.map((caseItem) => {
@@ -172,6 +175,7 @@ function StepPage({ step, isMobile }) {
               flexDirection: isMobile ? 'column' : 'row',
               gap: isMobile ? spacing[4] : spacing[6],
               alignItems: 'flex-start',
+              marginBottom: spacing[4],
             }}>
               {images.length > 0 && (
                 <div style={{
@@ -192,27 +196,28 @@ function StepPage({ step, isMobile }) {
                 </div>
               )}
 
-              <div style={{ flex: 1, minWidth: 0, width: isMobile ? '100%' : 'auto' }}>
-                {caseItem.setup && (
-                  <p style={{
-                    margin: `0 0 ${spacing[3]}`,
-                    fontSize: typography.fontSize.base,
-                    color: colors.neutral[800],
-                    lineHeight: typography.lineHeight.relaxed,
-                    maxWidth: '60ch',
-                  }}>
-                    <strong>First:</strong> {caseItem.setup}
-                  </p>
-                )}
-                <AlgorithmBlock
-                  name={caseItem.name}
-                  notation={caseItem.notation}
-                  algorithmId={caseItem.algorithmId || caseItem.id}
-                  note={caseItem.note}
-                  showDemo={caseItem.showDemo !== false}
-                />
-              </div>
+              {caseItem.setup && (
+                <p style={{
+                  flex: 1,
+                  minWidth: 0,
+                  margin: 0,
+                  fontSize: typography.fontSize.base,
+                  color: colors.neutral[800],
+                  lineHeight: typography.lineHeight.relaxed,
+                  maxWidth: '60ch',
+                }}>
+                  <strong>First:</strong> {caseItem.setup}
+                </p>
+              )}
             </div>
+
+            <AlgorithmBlock
+              name={caseItem.name}
+              notation={caseItem.notation}
+              algorithmId={caseItem.algorithmId || caseItem.id}
+              note={caseItem.note}
+              showDemo={caseItem.showDemo !== false}
+            />
           </div>
         )
       })}

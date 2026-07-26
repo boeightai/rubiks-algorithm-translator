@@ -64,7 +64,7 @@ function AlgorithmBlock({ name, notation, algorithmId, note, showDemo = true }) 
         gap: stackVertically ? spacing[3] : spacing[5],
         alignItems: stackVertically ? 'stretch' : 'flex-start',
         // Without a cube alongside it, the sequence should not stretch into dead space
-        maxWidth: canAnimate ? 'none' : '540px',
+        maxWidth: canAnimate ? 'none' : '440px',
       }}>
         {canAnimate && (
           <Suspense fallback={
