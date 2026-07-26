@@ -1,0 +1,94 @@
+[
+  {
+    "id": "daisy",
+    "label": "1",
+    "type": "step",
+    "title": "Make the Daisy",
+    "goal": "Get a white edge on all four sides of the yellow center.",
+    "hold": "Yellow center up, white center down",
+    "goalImage": "/images/goals/daisy-goal.png",
+    "normalPath": {
+      "heading": "What to do",
+      "instruction": "Turn any side face until a white edge comes up next to the yellow center. Keep going until all four petals are white.",
+      "notation": null
+    },
+    "cases": [
+      {
+        "id": "daisy-edge-flipper",
+        "when": "A petal is flipped — the white sticker faces out instead of up.",
+        "setup": "Turn the top until the flipped petal is facing you.",
+        "name": "Daisy Edge Flipper",
+        "notation": "F U' R"
+      }
+    ],
+    "doneWhen": "All four petals are white and facing up."
+  },
+  {
+    "id": "white-cross",
+    "label": "2",
+    "type": "step",
+    "title": "Make the White Cross",
+    "goal": "Move the petals down to the bottom, with every color matching its center.",
+    "hold": "Yellow center up, white center down",
+    "goalImage": "/images/goals/white-cross-goal.png",
+    "normalPath": {
+      "heading": "What to do",
+      "instruction": "Look at the side color of a petal. Turn the top until that color is facing you and matches the center in front of you. Then turn the whole front face twice to drop the petal to the bottom. Repeat for all four petals.",
+      "notation": "F2",
+      "algorithmId": "white-cross-insert"
+    },
+    "cases": [],
+    "doneWhen": "There is a white cross on the bottom and every edge color matches the center above it."
+  },
+  {
+    "id": "triggers",
+    "label": "2.5",
+    "type": "interlude",
+    "title": "Learn Your Two Triggers",
+    "goal": "Memorize both of these. They are the most-used moves in the rest of the solve.",
+    "why": "This is not a solving step — it is a tool you are picking up. Every cuber learns these first. The Left Trigger is not a second thing to memorize: it is the same move with your other hand.",
+    "algorithms": [
+      {
+        "id": "right-trigger",
+        "name": "Right Trigger",
+        "notation": "R U R' U'",
+        "note": "Also called the \"sexy move\" in the cubing world."
+      },
+      {
+        "id": "left-trigger",
+        "name": "Left Trigger",
+        "notation": "L' U' L U",
+        "note": "The mirror of the Right Trigger."
+      }
+    ],
+    "doneWhen": "You can do both without looking at the screen."
+  },
+  {
+    "id": "first-layer",
+    "label": "3",
+    "type": "step",
+    "title": "Finish the First Layer",
+    "goal": "A solid white face on the bottom, with matching bands of color around the sides.",
+    "hold": "White cross on the bottom, yellow up",
+    "goalImage": "/images/goals/first-layer-goal.png",
+    "normalPath": {
+      "heading": "What to do",
+      "instruction": "Find a white corner in the top layer. Turn the top until that corner sits directly above the slot it belongs in — the slot whose two colors match the corner's other two colors. Then repeat the Right Trigger until it drops into place.",
+      "notation": "R U R' U'",
+      "algorithmId": "right-trigger",
+      "note": "Repeat as many times as it takes. The corner will drop in on its own."
+    },
+    "cases": [
+      {
+        "id": "first-layer-stuck-corner",
+        "when": "A white corner is already in the bottom layer, but in the wrong slot or twisted the wrong way.",
+        "setup": "Hold that corner at the front-right, then run the Right Trigger once to pop it out into the top layer. Now solve it normally.",
+        "name": "Right Trigger — the same one from above",
+        "notation": "R U R' U'",
+        "algorithmId": "right-trigger",
+        "showDemo": false
+      }
+    ],
+    "doneWhen": "The whole bottom face is white, and the side colors form solid matching bands."
+  }
+]

@@ -13,166 +13,72 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useEffect, lazy, Suspense } from 'react'
-import YouTubeEmbed from './components/YouTubeEmbed'
-import AlgorithmCarousel from './components/AlgorithmCarousel'
-import PatternDisplay from './components/PatternDisplay'
-import tutorialAlgorithms from './data/tutorialAlgorithms.json'
-import { getPatternImages } from './utils/patternMapping'
+import { useState, useEffect, useCallback } from 'react'
+import Header from './components/Header'
+import StepPage from './components/tutorial/StepPage'
+import InterludePage from './components/tutorial/InterludePage'
+import StepNav from './components/tutorial/StepNav'
+import tutorialSteps from './data/tutorialSteps.json'
 import { colors, spacing, typography } from './styles/designSystem'
 import { useMobileDetection } from './hooks/useMobileDetection'
-import Header from './components/Header'
-import { canAnimateNotation } from './utils/cubeMoves'
-import { resolveAlgorithmByName } from './utils/algorithmLookup'
 
-const InteractiveCubeDemo = lazy(() => import('./components/InteractiveCubeDemo'))
+const STORAGE_KEY = 'tutorialStepIndex'
 
+/*
+ * Tutorial mode is an onboarding wizard: one solve step per screen, with
+ * everything needed to finish that step contained on the page. The learner has
+ * a cube in their hands, so nothing here should require navigating away.
+ */
 function TutorialMode({ onModeToggle }) {
-  const [currentAlgorithmIndex, setCurrentAlgorithmIndex] = useState(0)
-  const [activeDemoMoveIndex, setActiveDemoMoveIndex] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
   const { isMobile, isTablet } = useMobileDetection()
-  
-  // Ensure algorithms are loaded properly
-  useEffect(() => {
+  const useCompactLayout = isMobile || isTablet
+
+  // Resume where the learner left off — a step can take days
+  const [currentIndex, setCurrentIndex] = useState(() => {
     try {
-      if (tutorialAlgorithms && Array.isArray(tutorialAlgorithms) && tutorialAlgorithms.length > 0) {
-        setIsLoading(false)
-        setError(null)
-      } else {
-        setError('No tutorial algorithms found')
-        setIsLoading(false)
+      const saved = parseInt(localStorage.getItem(STORAGE_KEY), 10)
+      if (Number.isInteger(saved) && saved >= 0 && saved < tutorialSteps.length) {
+        return saved
       }
     } catch {
-      setError('Failed to load tutorial algorithms')
-      setIsLoading(false)
+      // localStorage unavailable — start at the beginning
     }
-  }, [])
-  
-  const handleNext = () => {
-    if (tutorialAlgorithms && tutorialAlgorithms.length > 0) {
-      setCurrentAlgorithmIndex((prev) => 
-        prev === tutorialAlgorithms.length - 1 ? 0 : prev + 1
-      )
-    }
-  }
-  
-  const handlePrevious = () => {
-    if (tutorialAlgorithms && tutorialAlgorithms.length > 0) {
-      setCurrentAlgorithmIndex((prev) => 
-        prev === 0 ? tutorialAlgorithms.length - 1 : prev - 1
-      )
-    }
-  }
-  
-  const handleGoToIndex = (targetIndex) => {
-    if (tutorialAlgorithms && tutorialAlgorithms.length > 0 && 
-        targetIndex >= 0 && targetIndex < tutorialAlgorithms.length) {
-      setCurrentAlgorithmIndex(targetIndex)
-    }
-  }
-  
-  // Determine if we're on desktop for compact layout
-  const isDesktop = !isMobile && !isTablet
-  
-  // Get current algorithm and pattern information
-  const currentAlgorithm = tutorialAlgorithms && tutorialAlgorithms.length > 0 
-    ? tutorialAlgorithms[currentAlgorithmIndex] 
-    : null
-  
-  const patternImages = currentAlgorithm ? getPatternImages(currentAlgorithm.id) : null
-  const hasMultiplePatterns = patternImages && patternImages.length > 1
-  const resolvedAlgorithm = currentAlgorithm ? resolveAlgorithmByName(currentAlgorithm) : null
-  const demoNotation = resolvedAlgorithm?.notation || currentAlgorithm?.notation
-  const shouldShowInteractiveDemo = canAnimateNotation(demoNotation)
-  
-  // Enhanced responsive layout decision
-  // Use horizontal layout only for desktop/tablet landscape with patterns
-  // Use vertical layout for mobile, tablet portrait, and iPad vertical orientation
-  const shouldUseHorizontalLayout = isDesktop && patternImages && !isTablet
+    return 0
+  })
 
   useEffect(() => {
-    setActiveDemoMoveIndex(null)
-  }, [currentAlgorithmIndex])
-
-  const renderCubeLoadingState = () => (
-    <div style={{
-      width: '100%',
-      maxWidth: isMobile ? '100%' : isTablet ? '600px' : '500px',
-      margin: '0 auto',
-      backgroundColor: colors.background.secondary,
-      border: `1px solid ${colors.border.light}`,
-      borderRadius: '12px',
-      overflow: 'hidden',
-    }}>
-      <div style={{
-        minHeight: isMobile || isTablet ? '260px' : '280px',
-        aspectRatio: '16 / 9',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.neutral[50],
-        color: colors.neutral[700],
-        fontSize: typography.fontSize.sm,
-        fontWeight: typography.fontWeight.semibold,
-      }}>
-        Loading cube demo...
-      </div>
-    </div>
-  )
-
-  const renderLessonMedia = () => {
-    if (!shouldShowInteractiveDemo || !currentAlgorithm) {
-      return <YouTubeEmbed />
+    try {
+      localStorage.setItem(STORAGE_KEY, String(currentIndex))
+    } catch {
+      // Persisting progress is best-effort
     }
+  }, [currentIndex])
 
-    return (
-      <Suspense fallback={renderCubeLoadingState()}>
-        <InteractiveCubeDemo
-          algorithmId={currentAlgorithm.id}
-          notation={demoNotation}
-          onActiveMoveChange={setActiveDemoMoveIndex}
-        />
-      </Suspense>
-    )
-  }
-  
-  // Loading state
-  if (isLoading) {
-    return (
-      <div style={{
-        backgroundColor: colors.background.primary,
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <div style={{
-          textAlign: 'center',
-          color: colors.neutral[600],
-        }}>
-          <div style={{
-            fontSize: typography.fontSize.xl,
-            marginBottom: spacing[2],
-          }}>
-            🔄
-          </div>
-          <div style={{
-            fontSize: typography.fontSize.sm,
-          }}>
-            Loading tutorial...
-          </div>
-        </div>
-      </div>
-    )
-  }
-  
-  // Error state
-  if (error) {
+  // A new step means new content above the fold
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [currentIndex])
+
+  const goToIndex = useCallback((index) => {
+    if (index >= 0 && index < tutorialSteps.length) {
+      setCurrentIndex(index)
+    }
+  }, [])
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => Math.min(prev + 1, tutorialSteps.length - 1))
+  }, [])
+
+  const handlePrevious = useCallback(() => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0))
+  }, [])
+
+  const currentStep = tutorialSteps[currentIndex]
+
+  if (!currentStep) {
     return (
       <div style={{
         backgroundColor: colors.background.primary,
@@ -180,144 +86,51 @@ function TutorialMode({ onModeToggle }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: spacing[4],
+        color: colors.neutral[600],
+        fontSize: typography.fontSize.sm,
       }}>
-        <div style={{
-          textAlign: 'center',
-          color: colors.error[600],
-          maxWidth: '400px',
-        }}>
-          <div style={{
-            fontSize: typography.fontSize.xl,
-            marginBottom: spacing[2],
-          }}>
-            ⚠️
-          </div>
-          <div style={{
-            fontSize: typography.fontSize.sm,
-            marginBottom: spacing[3],
-          }}>
-            {error}
-          </div>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: `${spacing[2]} ${spacing[4]}`,
-              backgroundColor: colors.primary[500],
-              color: colors.white,
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: typography.fontSize.sm,
-              cursor: 'pointer',
-            }}
-          >
-            Retry
-          </button>
-        </div>
+        No tutorial steps available
       </div>
     )
   }
-  
-  // Ensure we have algorithms to display
-  if (!tutorialAlgorithms || tutorialAlgorithms.length === 0) {
-    return (
-      <div style={{
-        backgroundColor: colors.background.primary,
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <div style={{
-          textAlign: 'center',
-          color: colors.neutral[600],
-        }}>
-          <div style={{
-            fontSize: typography.fontSize.xl,
-            marginBottom: spacing[2],
-          }}>
-            📚
-          </div>
-          <div style={{
-            fontSize: typography.fontSize.sm,
-          }}>
-            No tutorial algorithms available
-          </div>
-        </div>
-      </div>
-    )
-  }
-  
+
   return (
     <div style={{
       backgroundColor: colors.background.primary,
       minHeight: '100vh',
+      paddingBottom: spacing[10],
     }}>
-      {/* Header */}
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
         padding: `${spacing[4]} ${spacing[4]} 0`,
       }}>
-        <Header 
+        <Header
           title="A Visual Way to Solve Rubik's Cubes"
           subtitle="Step-by-step tutorial using Bo and Hailey's Visual Notation System"
           onModeToggle={onModeToggle}
           currentMode="tutorial"
         />
       </div>
-      
-      {/* Content Container */}
+
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: `0 ${spacing[4]}`,
-        paddingTop: isDesktop ? spacing[4] : spacing[6], // Reduced padding after header
+        padding: `${useCompactLayout ? spacing[5] : spacing[6]} ${spacing[4]} 0`,
       }}>
-        {/* Pattern Display and YouTube Video Section */}
-        {shouldUseHorizontalLayout && currentAlgorithm ? (
-          // Desktop/Tablet Landscape: pattern + video + pattern (if multiple patterns)
-          <div className="horizontal-layout">
-            {hasMultiplePatterns ? (
-              <>
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
-                {renderLessonMedia()}
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
-              </>
-            ) : (
-              <>
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="left" />
-                {renderLessonMedia()}
-              </>
-            )}
-          </div>
+        {currentStep.type === 'interlude' ? (
+          <InterludePage step={currentStep} isMobile={useCompactLayout} />
         ) : (
-          // Mobile/Tablet Portrait: video above patterns
-          <div className="vertical-layout">
-            {renderLessonMedia()}
-            {patternImages && currentAlgorithm && (
-              hasMultiplePatterns ? (
-                // Display both patterns side by side for algorithms with multiple patterns
-                <div className="pattern-container-mobile">
-                  <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
-                  <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
-                </div>
-              ) : (
-                // Single pattern display
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="top" />
-              )
-            )}
-          </div>
+          <StepPage step={currentStep} isMobile={useCompactLayout} />
         )}
-        
-        {/* Algorithm Carousel Section */}
-        <AlgorithmCarousel
-          algorithms={tutorialAlgorithms}
-          currentIndex={currentAlgorithmIndex}
-          onNext={handleNext}
+
+        <StepNav
+          steps={tutorialSteps}
+          currentIndex={currentIndex}
           onPrevious={handlePrevious}
-          onGoToIndex={handleGoToIndex}
-          activeMoveIndex={shouldShowInteractiveDemo ? activeDemoMoveIndex : null}
+          onNext={handleNext}
+          onGoToIndex={goToIndex}
+          isMobile={useCompactLayout}
         />
       </div>
     </div>
