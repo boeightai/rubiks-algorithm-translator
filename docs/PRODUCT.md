@@ -36,3 +36,32 @@ Steps:
 Notes:
 - Sune appears in both Step 6 and the back half of Step 7; Bo wants both.
 - The daisy edge flipper may already exist in the explorer data under Utility.
+
+## Visual Notation System
+
+Designed by Bo and Hailey.
+
+- Each move token maps to an image (cube + arrow) via `src/data/moves.json` and `public/images/moves/`.
+- Pattern images live in `public/images/patterns/`. Only 5 algorithms have them now; goal: all.
+- The explorer has 109 algorithms across Utility, F2L, OLL, and PLL, and already uses visual move cards and pattern images.
+- Tutorial mode is a 10-card carousel via the header toggle — not yet a step-by-step solve.
+- Target: the tutorial becomes the full WIRED-skeleton solve with Bo's three layers per step.
+
+## Printable Cards (endgame, build last)
+
+- 3x5 inch cards with the same three elements: pattern to look for, standard notation, visual notation.
+- Print as stickers or cut-outs for a notebook quick reference.
+- Bo made one or two already; they may exist on the site or elsewhere.
+- Not in current launch scope.
+
+## Shop
+
+- Non-transacting UI for sticker products Bo fulfills and ships himself.
+- No money until Bo says go.
+- No domain purchases, paid plans, or spend.
+
+## Open Decisions for Bo
+
+- Exact daisy edge flipper algorithm.
+- Whether to swap the Step 8 edge-cycle PLL, and with what.
+- Tutorial structure details beyond the method spec.
