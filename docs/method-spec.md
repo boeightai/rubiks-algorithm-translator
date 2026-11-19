@@ -26,3 +26,20 @@ Same as WIRED.
 - Insert edge to the right: U R U R', then fix displaced corner with a trigger.
 - Insert edge to the left: U' L' U' L, then fix the corner the same way.
 Same as WIRED.
+
+### 5. Yellow Cross
+Algorithm "fururf": F U R U' R' F'
+Same as WIRED.
+
+### 6. Solve the Yellow Face
+Sune: R U R' U R U2 R'
+Same as WIRED. Bo confirmed Sune is included.
+
+### 7. Position the Corners
+Corner positioning: L' U R U' L U R' R U R' U R U2 R'
+Note: the R' and R cancel, and the back half is Sune. Same as WIRED. Bo confirmed this is included.
+
+### 8. Position the Edges
+- Cycle edges clockwise: F2 U R' L F2 L' R U F2
+- Cycle edges counterclockwise: F2 U' R' L F2 L' R U' F2
+Same as WIRED. This is the PLL pair Bo mentioned he might swap at the very end — mark as the possible swap point.
