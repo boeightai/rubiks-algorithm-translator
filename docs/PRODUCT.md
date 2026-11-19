@@ -12,3 +12,27 @@ Every solve step presents three layers: (1) the pattern on the cube that signals
 - Shop built as non-transacting UI only (no payments, pricing, shipping charges, taxes, or live checkout); Bo fulfills and ships sticker orders himself when he says to take money.
 - Site safe for public use: security headers, no exposed env vars in client code, dependencies patched, no open admin or debug routes.
 - No personal data (addresses, emails, payments) collected on the live site without Bo's yes.
+
+## Solve Method (summary; full detail in docs/method-spec.md)
+
+Skeleton follows the WIRED magazine beginner method.
+
+Bo's augmentations:
+1. Daisy edge flipper added to the yellow daisy step — Bo's personal addition, since many people get stuck on the daisy. Algorithm TBD from Bo.
+2. Possible swap of the final edge-cycle PLL in Step 8.
+
+Everything between tracks WIRED.
+
+Steps:
+1. Yellow daisy plus edge flipper
+2. White cross
+3. First layer via right/left triggers
+4. Second layer
+5. Yellow cross (fururf)
+6. Yellow face (Sune)
+7. Position corners (back half is Sune)
+8. Position edges: clockwise/counterclockwise cycles — possible PLL swap point
+
+Notes:
+- Sune appears in both Step 6 and the back half of Step 7; Bo wants both.
+- The daisy edge flipper may already exist in the explorer data under Utility.
