@@ -86,3 +86,27 @@ Findings:
 - The second-layer cards mention which trigger they contain.
 - All move images load.
 - The 3D cube animation is on every card.
+
+## Tutorial Gaps vs Target (2026-11-19)
+
+Mapping of the 10 live cards to docs/method-spec.md:
+- Step 1 Yellow daisy: Daisy Edge Flipper card exists (`F U' R`). Bo's augmentation is already on the site; confirm this is the algorithm he wants.
+- Step 2 White cross: no card.
+- Step 3 First layer: no step card. Only the Right/Left Trigger cards, and they use `R U R' U'` / `L' U' L U` (extra trailing U) instead of WIRED's `R U R'` / `L' U' L`.
+- Step 4 Second layer: both insert cards exist, also with the extra trailing U.
+- Step 5 Yellow cross: matches (named Kite OLL, not fururf).
+- Step 6 Yellow face: Sune matches.
+- Step 7 Position corners: only the first half ("T-Perm Setup" `L' U R U' L U R'`); the Sune back half is not shown.
+- Step 8 Position edges: both cycles exist but are labeled E-Perm / E-Perm Inverse and described as a diagonal corner swap, which is wrong; they cycle edges.
+
+Blocking gaps for the full solve:
+- Structure is one card per algorithm, not one screen per solve step; a step needs room for the pattern to spot, one or more algorithms, and tips.
+- Pattern images missing on 6 of 10 cards; the "pattern to spot" layer is incomplete.
+- No tips or per-step explanation anywhere.
+- Names are speedcuber terms and differ from the Explorer ("Right Trigger" vs "Right Hand Algorithm").
+
+Smaller UI issues:
+- Layout shifts depending on how many pattern images a card has.
+- Notation key is folded shut by default, so first-time viewers see arrows without explanation.
+- Progress dots are unlabeled.
+- Next button stays active on the last card.
