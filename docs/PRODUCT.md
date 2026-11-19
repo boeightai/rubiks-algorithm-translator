@@ -65,3 +65,24 @@ Designed by Bo and Hailey.
 - Exact daisy edge flipper algorithm.
 - Whether to swap the Step 8 edge-cycle PLL, and with what.
 - Tutorial structure details beyond the method spec.
+
+## Tutorial Audit (2026-11-19)
+
+Full visual inspection of the live tutorial at wayofthecube.com.
+
+Current state: a 10-card carousel reached via the header toggle.
+
+Every card has:
+- An animated 3D cube with Play/Replay.
+- A "Lesson n of 10" title.
+- The generic line "Watch the cube, then follow the move cards below."
+- A notation key, folded shut by default.
+- A row of move images with arrows (F2 shows a red 2x).
+- Ten unlabeled progress dots.
+
+Findings:
+- No card has tips or explanation.
+- Only 4 cards have pattern images: Daisy Edge Flipper, Kite (fururf), Sune, T-Perm Setup.
+- The second-layer cards mention which trigger they contain.
+- All move images load.
+- The 3D cube animation is on every card.
