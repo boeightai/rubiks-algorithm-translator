@@ -110,3 +110,17 @@ Smaller UI issues:
 - Notation key is folded shut by default, so first-time viewers see arrows without explanation.
 - Progress dots are unlabeled.
 - Next button stays active on the last card.
+
+## Ranked Backlog (updated 2026-11-25)
+
+1. Tutorial polish (in progress, branch algo/tutorial-polish): fix Step 8 card descriptions (they cycle edges, not corners), notation key open by default, labeled progress dots, Next disabled on last card, stable card layout.
+2. Bo decision: confirm the daisy edge flipper (live: F U' R). Blocks finalizing Step 1.
+3. Restructure the tutorial into one screen per solve step (Steps 1-8), each with pattern to spot, standard notation, visual notation, and tips. Check whether Bo's tutorial-wizard branch is the starting point (ask Bo what redesign and tutorial-wizard are before using or removing them).
+4. Fill missing steps: white cross (Step 2) and the Sune back half of Step 7.
+5. Bo decision: switch trigger cards to WIRED's R U R' / L' U' L (live cards add a trailing U).
+6. Pattern images for every tutorial step (6 of 10 cards missing).
+7. Plain-language names that match between Tutorial and Explorer.
+8. Security headers (CSP, X-Content-Type-Options, Referrer-Policy, frame-ancestors). Live site sends only HSTS as of 2026-11-25. Needs Bo's yes since it changes deploy config (vercel.json).
+9. Dependency audit and patch pass.
+10. Shop: non-transacting sticker UI only.
+11. Printable 3x5 cards (build last).
