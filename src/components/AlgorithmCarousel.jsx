@@ -83,6 +83,9 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
     )
   }
 
+  const isFirst = safeIndex === 0
+  const isLast = safeIndex === algorithms.length - 1
+
   const moveTokens = currentAlgorithm.notation.split(/\s+/).filter(Boolean)
   const activeMoveToken = moveTokens[activeMoveIndex] || 'Move'
   const currentMoveLabel = activeMoveIndex === null
@@ -108,7 +111,9 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
       }}>
         {/* Previous button */}
         <button
+          type="button"
           onClick={onPrevious}
+          disabled={isFirst}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -123,11 +128,13 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             color: colors.neutral[800],
             fontSize: typography.fontSize.sm,
             fontWeight: typography.fontWeight.semibold,
-            cursor: 'pointer',
+            cursor: isFirst ? 'not-allowed' : 'pointer',
+            opacity: isFirst ? 0.4 : 1,
             transition: 'all 0.2s ease',
             flexShrink: 0,
           }}
           onMouseEnter={(e) => {
+            if (isFirst) return
             e.currentTarget.style.backgroundColor = colors.neutral[100]
             e.currentTarget.style.borderColor = colors.primary[500]
           }}
@@ -217,7 +224,9 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
         
         {/* Next button */}
         <button
+          type="button"
           onClick={onNext}
+          disabled={isLast}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -232,12 +241,14 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
             color: colors.background.primary,
             fontSize: typography.fontSize.sm,
             fontWeight: typography.fontWeight.bold,
-            cursor: 'pointer',
+            cursor: isLast ? 'not-allowed' : 'pointer',
+            opacity: isLast ? 0.4 : 1,
             transition: 'all 0.2s ease',
             flexShrink: 0,
-            boxShadow: shadows.sm,
+            boxShadow: isLast ? 'none' : shadows.sm,
           }}
           onMouseEnter={(e) => {
+            if (isLast) return
             e.currentTarget.style.backgroundColor = colors.primary[700]
             e.currentTarget.style.borderColor = colors.primary[700]
           }}
@@ -259,34 +270,59 @@ function AlgorithmCarousel({ algorithms, currentIndex, onNext, onPrevious, onGoT
         notation={currentAlgorithm.notation}
         algorithmId={currentAlgorithm.id}
         activeMoveIndex={activeMoveIndex}
+        notationKeyDefaultOpen
       />
       
       {/* Dots indicator */}
       <div style={{
         display: 'flex',
         justifyContent: 'center',
-        gap: spacing[1],
+        flexWrap: 'wrap',
+        gap: 0,
         marginTop: isDesktop ? spacing[3] : spacing[4],
       }}>
-        {algorithms.map((_, index) => (
-          <div
-            key={index}
-            style={{
-              width: index === safeIndex ? '18px' : '6px',
-              height: '6px',
-              backgroundColor: index === safeIndex ? colors.primary[500] : colors.neutral[300],
-              borderRadius: borderRadius.full,
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              // Use direct navigation if available, otherwise skip
-              if (typeof onGoToIndex === 'function') {
-                onGoToIndex(index)
-              }
-            }}
-          />
-        ))}
+        {algorithms.map((algorithm, index) => {
+          const dotLabel = `Lesson ${index + 1} of ${algorithms.length}: ${algorithm?.name || 'Untitled'}`
+          const isCurrent = index === safeIndex
+          return (
+            <button
+              key={algorithm?.id || index}
+              type="button"
+              aria-label={dotLabel}
+              title={dotLabel}
+              aria-current={isCurrent ? 'step' : undefined}
+              onClick={() => {
+                // Use direct navigation if available, otherwise skip
+                if (typeof onGoToIndex === 'function') {
+                  onGoToIndex(index)
+                }
+              }}
+              style={{
+                // Transparent hit area around the visible dot
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '6px 2px',
+                margin: 0,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  display: 'block',
+                  width: isCurrent ? '18px' : '6px',
+                  height: '6px',
+                  backgroundColor: isCurrent ? colors.primary[500] : colors.neutral[300],
+                  borderRadius: borderRadius.full,
+                  transition: 'all 0.3s ease',
+                }}
+              />
+            </button>
+          )
+        })}
       </div>
     </div>
   )

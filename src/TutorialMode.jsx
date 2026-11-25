@@ -55,17 +55,15 @@ function TutorialMode({ onModeToggle }) {
   
   const handleNext = () => {
     if (tutorialAlgorithms && tutorialAlgorithms.length > 0) {
-      setCurrentAlgorithmIndex((prev) => 
-        prev === tutorialAlgorithms.length - 1 ? 0 : prev + 1
+      setCurrentAlgorithmIndex((prev) =>
+        Math.min(prev + 1, tutorialAlgorithms.length - 1)
       )
     }
   }
-  
+
   const handlePrevious = () => {
     if (tutorialAlgorithms && tutorialAlgorithms.length > 0) {
-      setCurrentAlgorithmIndex((prev) => 
-        prev === 0 ? tutorialAlgorithms.length - 1 : prev - 1
-      )
+      setCurrentAlgorithmIndex((prev) => Math.max(prev - 1, 0))
     }
   }
   
@@ -90,10 +88,13 @@ function TutorialMode({ onModeToggle }) {
   const demoNotation = resolvedAlgorithm?.notation || currentAlgorithm?.notation
   const shouldShowInteractiveDemo = canAnimateNotation(demoNotation)
   
-  // Enhanced responsive layout decision
-  // Use horizontal layout only for desktop/tablet landscape with patterns
-  // Use vertical layout for mobile, tablet portrait, and iPad vertical orientation
-  const shouldUseHorizontalLayout = isDesktop && patternImages && !isTablet
+  const patternCount = patternImages ? patternImages.length : 0
+
+  // Responsive layout decision
+  // Desktop always uses the three-column layout (pattern slot | media | pattern slot),
+  // and mobile/tablet always reserves a pattern row, so the card height stays stable
+  // whether a lesson has zero, one, or two pattern images.
+  const shouldUseHorizontalLayout = isDesktop
 
   useEffect(() => {
     setActiveDemoMoveIndex(null)
@@ -276,36 +277,40 @@ function TutorialMode({ onModeToggle }) {
       }}>
         {/* Pattern Display and YouTube Video Section */}
         {shouldUseHorizontalLayout && currentAlgorithm ? (
-          // Desktop/Tablet Landscape: pattern + video + pattern (if multiple patterns)
-          <div className="horizontal-layout">
-            {hasMultiplePatterns ? (
-              <>
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
-                {renderLessonMedia()}
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
-              </>
+          // Desktop: fixed three-column grid; empty pattern slots keep their width
+          <div className="horizontal-layout tutorial-stable-layout">
+            {patternCount > 0 ? (
+              <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
             ) : (
-              <>
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="left" />
-                {renderLessonMedia()}
-              </>
+              <div className="pattern-slot-empty" aria-hidden="true" />
+            )}
+            {renderLessonMedia()}
+            {hasMultiplePatterns ? (
+              <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
+            ) : (
+              <div className="pattern-slot-empty" aria-hidden="true" />
             )}
           </div>
         ) : (
-          // Mobile/Tablet Portrait: video above patterns
+          // Mobile/Tablet Portrait: video above a fixed-height pattern row
           <div className="vertical-layout">
             {renderLessonMedia()}
-            {patternImages && currentAlgorithm && (
-              hasMultiplePatterns ? (
-                // Display both patterns side by side for algorithms with multiple patterns
-                <div className="pattern-container-mobile">
-                  <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
-                  <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
-                </div>
-              ) : (
-                // Single pattern display
-                <PatternDisplay algorithmId={currentAlgorithm.id} position="top" />
-              )
+            {currentAlgorithm && (
+              <div className="pattern-container-mobile tutorial-pattern-row">
+                {patternCount > 0 ? (
+                  <>
+                    <PatternDisplay algorithmId={currentAlgorithm.id} position="left" patternIndex={0} />
+                    {hasMultiplePatterns && (
+                      <PatternDisplay algorithmId={currentAlgorithm.id} position="right" patternIndex={1} />
+                    )}
+                  </>
+                ) : (
+                  <div className="pattern-display pattern-placeholder" aria-hidden="true">
+                    <div className="pattern-label" />
+                    <div className="pattern-placeholder-box" />
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}

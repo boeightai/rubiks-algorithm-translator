@@ -597,8 +597,49 @@ input, select, textarea {
   height: auto;
 }
 
+/* Tutorial: keep card height stable regardless of pattern count (0, 1, or 2) */
+.pattern-slot-empty {
+  width: 200px;
+  visibility: hidden;
+}
+
+.tutorial-stable-layout .pattern-image,
+.tutorial-pattern-row .pattern-image {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+/* Fill the fixed-width desktop pattern column so image height never depends on file size */
+.tutorial-stable-layout .pattern-image {
+  width: 100%;
+}
+
+.tutorial-pattern-row {
+  flex-wrap: nowrap;
+}
+
+/* Invisible stand-in when a lesson has no pattern image: reserves space, shows nothing */
+.pattern-placeholder {
+  visibility: hidden;
+}
+
+/* Empty label still occupies one line so height matches a real pattern card */
+.pattern-placeholder .pattern-label {
+  min-height: 1.2em;
+  min-height: 1lh;
+}
+
+.pattern-placeholder-box {
+  width: 150px;
+  aspect-ratio: 1 / 1;
+}
+
 /* Responsive adjustments for pattern display */
 @media (max-width: 768px) {
+  .pattern-slot-empty {
+    display: none;
+  }
+
   .pattern-image {
     max-width: 150px;
   }
@@ -844,6 +885,10 @@ input, select, textarea {
   .pattern-container-mobile .pattern-label {
     font-size: 0.7rem;
     margin-bottom: 0;
+  }
+
+  .pattern-placeholder-box {
+    width: 120px;
   }
   
   /* Ensure single patterns also use same size on small phones */
