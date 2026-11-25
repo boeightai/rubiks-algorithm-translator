@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useState } from 'react'
 import { colors, typography, spacing, borderRadius, shadows } from './styles/designSystem'
 import moves from './data/moves.json'
 import { useMobileDetection } from './hooks/useMobileDetection'
 
-function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
+function VisualSequence({ notation, algorithmId, activeMoveIndex = null, notationKeyDefaultOpen = false }) {
   const { isMobile, isTablet } = useMobileDetection()
+  const [isNotationKeyOpen, setIsNotationKeyOpen] = useState(notationKeyDefaultOpen)
   const isDesktop = !isMobile && !isTablet
   const isMobileDevice = isMobile || isTablet
   const isKiteOLL = (algorithmId === 'kite-oll') || (typeof notation === 'string' && notation.trim() === "F U R U' R' F'")
@@ -140,7 +141,11 @@ function VisualSequence({ notation, algorithmId, activeMoveIndex = null }) {
   }, [activeMoveIndex])
 
   const renderNotationKey = () => (
-    <details className="notation-key" style={{
+    <details
+      className="notation-key"
+      open={isNotationKeyOpen}
+      onToggle={(e) => setIsNotationKeyOpen(e.currentTarget.open)}
+      style={{
       marginBottom: spacing[4],
       border: `1px solid ${colors.border.light}`,
       borderRadius: borderRadius.lg,
