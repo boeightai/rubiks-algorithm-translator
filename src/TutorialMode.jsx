@@ -305,9 +305,9 @@ function TutorialMode({ onModeToggle }) {
                     )}
                   </>
                 ) : (
-                  <div className="pattern-display pattern-placeholder">
-                    <div className="pattern-label">Pattern to Look For</div>
-                    <div className="pattern-placeholder-box">No pattern needed for this step</div>
+                  <div className="pattern-display pattern-placeholder" aria-hidden="true">
+                    <div className="pattern-label" />
+                    <div className="pattern-placeholder-box" />
                   </div>
                 )}
               </div>
