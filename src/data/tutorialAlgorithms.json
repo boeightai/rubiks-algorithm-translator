@@ -74,13 +74,13 @@
     "name": "E-Perm",
     "notation": "F2 U R' L F2 L' R U F2",
     "nicknames": [],
-    "description": "Advanced PLL algorithm for diagonal corner swap in the last layer"
+    "description": "Cycles three last-layer edges clockwise to finish the last layer"
   },
   {
     "id": "e-perm-inverse",
     "name": "E-Perm Inverse",
     "notation": "F2 U' R' L F2 L' R U' F2",
     "nicknames": [],
-    "description": "Inverse version of E-Perm for diagonal corner swap in the opposite direction"
+    "description": "Cycles three last-layer edges counterclockwise to finish the last layer"
   }
 ]

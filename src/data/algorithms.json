@@ -983,7 +983,7 @@
     "notation": "F2 U R' L F2 L' R U F2",
     "category": "PLL",
     "difficulty": "advanced",
-    "description": "E-Perm algorithm for diagonal corner swap",
+    "description": "Cycles three last-layer edges clockwise to finish the last layer",
     "nicknames": []
   },
   {
@@ -992,7 +992,7 @@
     "notation": "F2 U' R' L F2 L' R U' F2",
     "category": "PLL",
     "difficulty": "advanced",
-    "description": "E-Perm inverse algorithm for diagonal corner swap",
+    "description": "Cycles three last-layer edges counterclockwise to finish the last layer",
     "nicknames": []
   },
   {
